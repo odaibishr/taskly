@@ -42,4 +42,11 @@ export function SignUpForm() {
 	});
 	const [fieldErrors, setFieldErrors] = useState<FormErrors>({});
 	const [showPassword, setShowPassword] = useState(false);
+
+	function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
+		const { name, value } = e.target;
+		setFields((prev) => ({ ...prev, [name]: value }));
+		setFieldErrors(prev => ({ ...prev, [name]: undefined }));
+		if (error) clearError();
+	}
 }
