@@ -19,3 +19,11 @@ export interface FormsFields {
 	password: string;
 	confirmPassword: string;
 }	
+
+export interface FormErrors {
+	name?: string;
+	email?: string;
+	department?: string;
+	password?: string;
+	confirmPassword?: string;
+}
