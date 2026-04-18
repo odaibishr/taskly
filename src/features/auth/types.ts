@@ -11,3 +11,11 @@ export interface AuthError {
 	message: string;
 	status: number;
 }
+
+export interface FormsFields {
+	name: string;
+	email: string;
+	department: string;
+	password: string;
+	confirmPassword: string;
+}	
