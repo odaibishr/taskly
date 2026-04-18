@@ -49,4 +49,24 @@ export function SignUpForm() {
 		setFieldErrors(prev => ({ ...prev, [name]: undefined }));
 		if (error) clearError();
 	}
+
+
+	async function handleSubmit(e: FormEvent) {
+		e.preventDefault();
+
+		const errors = validate(fields);
+		if (Object.keys(errors).length > 0) {
+			setFieldErrors(errors);
+			return;
+		}
+
+		await handleSignUp({
+			email: fields.email,
+			password: fields.password,
+			data: {
+				name: fields.name,
+				department: fields.department,
+			},
+		});
+	}
 }
