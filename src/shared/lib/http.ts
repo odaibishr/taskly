@@ -1,7 +1,7 @@
 import axios from 'axios';
 
-const API_URL = import.meta.env.SUPABASE_URL;
-const API_KEY = import.meta.env.SUPABASE_ANON_KEY;
+const API_URL = import.meta.env.VITE_SUPABASE_URL;
+const API_KEY = import.meta.env.VITE_SUPABASE_ANON_KEY;
 
 export const http = axios.create({
 	baseURL: API_URL,
