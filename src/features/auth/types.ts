@@ -12,7 +12,7 @@ export interface AuthError {
 	status: number;
 }
 
-export interface FormsFields {
+export interface FormFields {
 	name: string;
 	email: string;
 	department: string;
