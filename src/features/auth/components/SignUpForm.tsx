@@ -30,3 +30,16 @@ function validate(fields: FormFields): FormErrors {
 	}
 	return errors;
 }
+
+export function SignUpForm() {
+	const { isLoading, error, isSignUpSuccess, handleSignUp, clearError } = useAuthStore();
+	const [fields, setFields] = useState<FormFields>({
+		name: '',
+		email: '',
+		department: '',
+		password: '',
+		confirmPassword: '',
+	});
+	const [fieldErrors, setFieldErrors] = useState<FormErrors>({});
+	const [showPassword, setShowPassword] = useState(false);
+}
