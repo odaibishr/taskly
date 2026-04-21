@@ -1,76 +1,48 @@
-import { useState, type FormEvent } from "react";
-import { useAuthStore } from "../store/auth.store";
-import { Link } from 'react-router-dom';
-import type { FormFields, FormErrors } from "../types";
+import { useForm } from 'react-hook-form';
+import { zodResolver } from "@hookform/resolvers/zod";
+import { signUpSchema } from '../validation';
+import type { z } from 'zod';
+import { useAuthStore } from '../store/auth.store';
 
-function validate(fields: FormFields): FormErrors {
-	const errors: FormErrors = {};
-	if (!fields.name.trim()) {
-		errors.name = 'Name is required';
-	}
-	if (!fields.email.trim()) {
-		errors.email = 'Email is required';
-	} else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(fields.email)) {
-		errors.email = 'Invalid email format';
-	}
-	if (!fields.department.trim()) {
-		errors.department = 'Department is required';
-	}
-	if (!fields.password) {
-		errors.password = 'Password is required';
-	} else if (fields.password.length < 8) {
-		errors.password = 'Password must be at least 8 characters';
-	} else if (!/[A-Z]/.test(fields.password)) {
-		errors.password = 'Password must contain an uppercase letter';
-	} else if (!/[!@#$%^&*(),.?":{}|<>]/.test(fields.password)) {
-		errors.password = 'Password must contain a special character';
-	}
-	if (fields.password !== fields.confirmPassword) {
-		errors.confirmPassword = 'Passwords do not match';
-	}
-	return errors;
-}
+type SignUpFormData = z.infer<typeof signUpSchema>;
 
-export function SignUpForm() {
+export const SignUpForm = () => {
 	const { isLoading, error, isSignUpSuccess, handleSignUp, clearError } = useAuthStore();
-	const [fields, setFields] = useState<FormFields>({
-		name: '',
-		email: '',
-		department: '',
-		password: '',
-		confirmPassword: '',
+
+	const { register, handleSubmit, formState: { errors }, reset } = useForm<SignUpFormData>({
+		resolver: zodResolver(signUpSchema),
 	});
-	const [fieldErrors, setFieldErrors] = useState<FormErrors>({});
-	const [showPassword, setShowPassword] = useState(false);
 
-	function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
-		const { name, value } = e.target;
-		setFields((prev) => ({ ...prev, [name]: value }));
-		setFieldErrors(prev => ({ ...prev, [name]: undefined }));
-		if (error) clearError();
-	}
-
-
-	async function handleSubmit(e: FormEvent) {
-		e.preventDefault();
-
-		const errors = validate(fields);
-		if (Object.keys(errors).length > 0) {
-			setFieldErrors(errors);
-			return;
-		}
-
+	const onSubmit = async (data: SignUpFormData) => {
 		await handleSignUp({
-			email: fields.email,
-			password: fields.password,
+			email: data.email,
+			password: data.password,
 			data: {
-				name: fields.name,
-				department: fields.department,
+				name: data.name,
+				department: data.department,
 			},
 		});
 	}
 
-	if (isSignUpSuccess) {
-		
-	}
+	return (
+		<form onSubmit={handleSubmit(onSubmit)}>
+			<input {...register("name")} placeholder="Name" />
+			{errors.name && <span>{errors.name.message}</span>}
+
+			<input {...register("email")} placeholder="Email" />
+			{errors.email && <span>{errors.email.message}</span>}
+
+			<input {...register("department")} placeholder="Department" />
+			{errors.department && <span>{errors.department.message}</span>}
+
+			<input type="password" {...register("password")} placeholder="Password" />
+			{errors.password && <span>{errors.password.message}</span>}
+
+			<input type="password" {...register("confirmPassword")} placeholder="Confirm Password" />
+			{errors.confirmPassword && <span>{errors.confirmPassword.message}</span>}
+
+			<button type="submit" disabled={isLoading}>Sign Up</button>
+			{error && <span>{error}</span>}
+		</form>
+	);
 }
