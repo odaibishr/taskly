@@ -69,4 +69,8 @@ export function SignUpForm() {
 			},
 		});
 	}
+
+	if (isSignUpSuccess) {
+		
+	}
 }
