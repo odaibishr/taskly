@@ -11,7 +11,7 @@ interface InputProps<T extends FieldValues> {
 
 export default function Input<T extends FieldValues>({ register, name, placeholder, type = "text", error, label }: InputProps<T>) {
     return (
-        <div className='flex flex-col gap-y-2'>
+        <div className='flex flex-col gap-y-2 mb-4'>
             {label && <label
                 className='text-[11px] uppercase font-bold text-slate-medium leading-4'
                 htmlFor={name}>{label}</label>}
