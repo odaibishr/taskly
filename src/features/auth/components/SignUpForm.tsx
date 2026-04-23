@@ -5,6 +5,7 @@ import type { z } from 'zod';
 import { useAuthStore } from '../store/auth.store';
 import FormContainer from '../../../shared/components/FormContainer';
 import HeaderSection from './HeaderSection';
+import Input from './Input';
 
 type SignUpFormData = z.infer<typeof signUpSchema>;
 
@@ -33,20 +34,47 @@ export const SignUpForm = () => {
 				description="Join the editorial approach to task management."
 			/>
 			<form onSubmit={handleSubmit(onSubmit)}>
-				<input {...register("name")} placeholder="Name" />
-				{errors.name && <span>{errors.name.message}</span>}
+				<Input
+					register={register}
+					name="name"
+					placeholder="Name"
+					label="Name"
+					error={errors.name}
+				/>
 
-				<input {...register("email")} placeholder="Email" />
-				{errors.email && <span>{errors.email.message}</span>}
+				<Input
+					register={register}
+					name="email"
+					placeholder="Email"
+					label="Email"
+					error={errors.email}
+				/>
 
-				<input {...register("department")} placeholder="Department" />
-				{errors.department && <span>{errors.department.message}</span>}
+				<Input
+					register={register}
+					name="department"
+					placeholder="Department"
+					label="Department"
+					error={errors.department}
+				/>
 
-				<input type="password" {...register("password")} placeholder="Password" />
-				{errors.password && <span>{errors.password.message}</span>}
+				<Input
+					register={register}
+					name="password"
+					placeholder="Password"
+					type="password"
+					label="Password"
+					error={errors.password}
+				/>
 
-				<input type="password" {...register("confirmPassword")} placeholder="Confirm Password" />
-				{errors.confirmPassword && <span>{errors.confirmPassword.message}</span>}
+				<Input
+					register={register}
+					name="confirmPassword"
+					placeholder="Confirm Password"
+					type="password"
+					label="Confirm Password"
+					error={errors.confirmPassword}
+				/>
 
 				<button type="submit" disabled={isLoading}>Sign Up</button>
 				{error && <span>{error}</span>}
