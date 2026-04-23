@@ -6,6 +6,7 @@ import { useAuthStore } from '../store/auth.store';
 import FormContainer from '../../../shared/components/FormContainer';
 import HeaderSection from './HeaderSection';
 import Input from './Input';
+import Button from '../../../shared/components/Button';
 
 type SignUpFormData = z.infer<typeof signUpSchema>;
 
@@ -76,7 +77,13 @@ export const SignUpForm = () => {
 					error={errors.confirmPassword}
 				/>
 
-				<button type="submit" disabled={isLoading}>Sign Up</button>
+				<Button
+					type="submit"
+					disabled={isLoading}
+				>
+					Sign Up
+				</Button>
+
 				{error && <span>{error}</span>}
 			</form>
 		</FormContainer>
