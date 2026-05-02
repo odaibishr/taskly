@@ -67,6 +67,13 @@ export default function LoginForm() {
 						{error}
 					</div>
 				)}
+
+				<hr className="mt-5 mb-8 border-slate-200" />
+
+				<div className="flex items-center justify-center">
+					<span className="text-sm text-slate-medium">Don't have an account?</span>
+					<Link to='/signup' className="text-blue-500 text-sm ml-2">Sign Up</Link>
+				</div>
 			</form>
 
 		</FormContainer>
