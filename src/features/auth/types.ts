@@ -27,3 +27,21 @@ export interface FormErrors {
 	password?: string;
 	confirmPassword?: string;
 }
+
+export interface LoginPayload {
+	email: string;
+	password: string;
+}
+
+export interface AuthResponse {
+	access_token: string;
+	refresh_token: string;
+	user: {
+		id: string;
+		email: string;
+		user_metadata: {
+			name: string;
+			department: string;
+		};
+	};
+}
