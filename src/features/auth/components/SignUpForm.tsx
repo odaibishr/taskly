@@ -7,6 +7,7 @@ import FormContainer from '../../../shared/components/FormContainer';
 import HeaderSection from './HeaderSection';
 import Input from './Input';
 import Button from '../../../shared/components/Button';
+import { Link } from 'react-router-dom';
 
 type SignUpFormData = z.infer<typeof signUpSchema>;
 
@@ -111,6 +112,13 @@ export const SignUpForm = () => {
 						{error}
 					</div>
 				)}
+
+				<hr className="mt-5 mb-8 border-slate-200" />
+
+				<div className="flex items-center justify-center">
+					<span className="text-sm text-slate-medium">Already have an account?</span>
+					<Link to='/login' className="text-blue-500 text-sm ml-2">Sign In</Link>
+				</div>
 			</form>
 		</FormContainer>
 	);
