@@ -20,8 +20,8 @@ export const useAuthStore = create<AuthState>((set) => ({
 		try {
 			await signUp(payload);
 			set({ isSignUpSuccess: true });
-		} catch (error: unknown) {
-			const message = (error as { response?: { data?: { msg?: string } } }).response?.data?.msg ?? 'Something went worng. Please try againg.';
+		} catch (error: any) {
+			const message = error.response?.data?.msg || error.message || 'Something went wrong. Please try again.';
 			set({ error: message });
 		} finally {
 			set({ isLoading: false });
