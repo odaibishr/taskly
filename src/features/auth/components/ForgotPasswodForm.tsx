@@ -10,6 +10,8 @@ import Input from "./Input";
 import Button from "../../../shared/components/Button";
 import { Link } from "react-router-dom";
 import ArrowLeftIcon from '../../../assets/ArrowLeft.svg';
+import CeckmarkIcon from '../../../assets/CheckIcon.svg';
+import ClockIcon from '../../../assets/ClockIcon.svg';
 
 
 
@@ -60,10 +62,26 @@ export default function ForgotPasswordForm() {
 					Send Reset Link
 				</Button>
 
-				<Link to="/login" className="text-blue-500 text-sm flex justify-center mt-10 gap-1">
+				<Link to="/login" className="text-blue-500 text-sm flex justify-center my-10 gap-1">
 					<img src={ArrowLeftIcon} alt="Back to login" />
 					<span>Back to login</span>
 				</Link>
+
+				{timer > 0 && (
+					<div className="w-full flex flex-col justify-center items-center gap-6">
+						<div className="w-full bg-success p-4 flex gap-3 rounded-lg">
+							<img className="w-6 h-6" src={CeckmarkIcon} alt="Checkmark" />
+							<span className="text-[#005235] text-sm">If an account exists with this email, we’ve sent a password reset link.</span>
+						</div>
+						<div className="w-full flex flex-col justify-center items-center gap-3">
+							<span className="text-[#434654] uppercase text-[11px] font-bold">Didn't receive the email?</span>
+							<div className="bg-surface-low w-full rounded-sm flex justify-center items-center p-4 gap-1.5">
+								<img className="w-6 h-6" src={ClockIcon} alt="Clock" />
+								<button className="text-[#155EEF] text-sm font-semibold">Resend in {timer} </button>
+							</div>
+						</div>
+					</div>
+				)}
 			</form>
 		</FormContainer>
 	);
