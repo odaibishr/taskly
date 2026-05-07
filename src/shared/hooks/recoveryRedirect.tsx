@@ -11,6 +11,7 @@ export function useRecoveryRedirect() {
             const token = params.get("access_token");
             if (token) {
                 navigate(`/reset-password?access_token=${token}`, { replace: true });
+                localStorage.setItem('access_token', token);
             }
         }
     }, [navigate]);
