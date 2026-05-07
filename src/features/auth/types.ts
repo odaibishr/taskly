@@ -18,7 +18,7 @@ export interface FormFields {
 	department: string;
 	password: string;
 	confirmPassword: string;
-}	
+}
 
 export interface FormErrors {
 	name?: string;
@@ -44,4 +44,12 @@ export interface AuthResponse {
 			department: string;
 		};
 	};
+}
+
+export interface SendResetLinkPayload {
+	email: string;
+}
+
+export interface ResetPasswordPayload {
+	password: string;
 }
