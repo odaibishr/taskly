@@ -19,7 +19,7 @@ type ForgotPasswordFormData = z.infer<typeof forgotPasswordSchema>;
 
 export default function ForgotPasswordForm() {
 	const [timer, setTimer] = useState<number>(0);
-	const { isLoading, error, handleForgotPassword, clearError } = useAuthStore();
+	const { isLoading, handleForgotPassword } = useAuthStore();
 	const { register, handleSubmit, formState: { errors } } = useForm<ForgotPasswordFormData>({
 		resolver: zodResolver(forgotPasswordSchema),
 	});
