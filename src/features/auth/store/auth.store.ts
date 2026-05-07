@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import { signIn, signUp } from "../api/auth.api";
-import type { LoginPayload, SignUpPayload } from "../types";
+import type { LoginPayload, SendResetLinkPayload, SignUpPayload, UpdatePasswordPayload } from "../types";
 
 interface AuthState {
 	user: any | null;
@@ -9,6 +9,8 @@ interface AuthState {
 	isSignUpSuccess: boolean;
 	handleSignUp: (payload: SignUpPayload) => Promise<void>;
 	handleSignIn: (payload: LoginPayload) => Promise<void>;
+	handleForgotPassword: (payload: SendResetLinkPayload) => Promise<void>;
+	handleUpdatePassword: (payload: UpdatePasswordPayload) => Promise<void>;
 	clearError: () => void;
 	reset: () => void;
 }
