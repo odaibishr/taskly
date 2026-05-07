@@ -50,6 +50,6 @@ export interface SendResetLinkPayload {
 	email: string;
 }
 
-export interface ResetPasswordPayload {
+export interface UpdatePasswordPayload {
 	password: string;
 }
