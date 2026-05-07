@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { signIn, signUp } from "../api/auth.api";
+import { sendResetLink, signIn, signUp, updatePassword } from "../api/auth.api";
 import type { LoginPayload, SendResetLinkPayload, SignUpPayload, UpdatePasswordPayload } from "../types";
 
 interface AuthState {
@@ -7,6 +7,7 @@ interface AuthState {
 	isLoading: boolean;
 	error: string | null;
 	isSignUpSuccess: boolean;
+	isForgotSuccess: boolean;
 	handleSignUp: (payload: SignUpPayload) => Promise<void>;
 	handleSignIn: (payload: LoginPayload) => Promise<void>;
 	handleForgotPassword: (payload: SendResetLinkPayload) => Promise<void>;
@@ -20,6 +21,7 @@ export const useAuthStore = create<AuthState>((set) => ({
 	isLoading: false,
 	error: null,
 	isSignUpSuccess: false,
+	isForgotSuccess: false,
 	handleSignUp: async (payload) => {
 		set({ isLoading: true, error: null, isSignUpSuccess: false });
 		try {
@@ -46,6 +48,41 @@ export const useAuthStore = create<AuthState>((set) => ({
 			window.location.href = '/'
 		} catch (error: any) {
 			const message = error.response?.data?.error_description || error.message || 'Login failed.';
+			set({ error: message });
+		} finally {
+			set({ isLoading: false });
+		}
+	},
+	handleForgotPassword: async (payload) => {
+		set({
+			isLoading: true,
+			error: null,
+			isForgotSuccess: false,
+		});
+		try {
+			await sendResetLink(payload);
+			set({
+				isForgotSuccess: true,
+			})
+		} catch (error) {
+			const message = error.response?.data?.error_description || error.message || 'Failed to send reset link.';
+			set({ error: message });
+		} finally {
+			set({ isLoading: false });
+		}
+	},
+	handleUpdatePassword: async (payload) => {
+		set({
+			isLoading: true,
+			error: null,
+		});
+
+		try {
+			await updatePassword(payload);
+			localStorage.clear();
+			window.location.href = '/login';
+		} catch (error: any) {
+			const message = error.response?.data?.error_description || error.message || 'Failed to update password.';
 			set({ error: message });
 		} finally {
 			set({ isLoading: false });
