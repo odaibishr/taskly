@@ -26,6 +26,7 @@ export default function ForgotPasswordForm() {
 
 	const onSubimt = async (data: ForgotPasswordFormData) => {
 		await handleForgotPassword(data);
+		setTimer(10);
 	}
 
 	useEffect(() => {
@@ -67,12 +68,13 @@ export default function ForgotPasswordForm() {
 					<span>Back to login</span>
 				</Link>
 
-				{timer > 0 && (
-					<div className="w-full flex flex-col justify-center items-center gap-6">
-						<div className="w-full bg-success p-4 flex gap-3 rounded-lg">
-							<img className="w-6 h-6" src={CeckmarkIcon} alt="Checkmark" />
-							<span className="text-[#005235] text-sm">If an account exists with this email, we’ve sent a password reset link.</span>
-						</div>
+
+				<div className="w-full flex flex-col justify-center items-center gap-6">
+					<div className="w-full bg-success p-4 flex gap-3 rounded-lg">
+						<img className="w-6 h-6" src={CeckmarkIcon} alt="Checkmark" />
+						<span className="text-[#005235] text-sm">If an account exists with this email, we’ve sent a password reset link.</span>
+					</div>
+					{timer > 0 && (
 						<div className="w-full flex flex-col justify-center items-center gap-3">
 							<span className="text-[#434654] uppercase text-[11px] font-bold">Didn't receive the email?</span>
 							<div className="bg-surface-low w-full rounded-sm flex justify-center items-center p-4 gap-1.5">
@@ -80,8 +82,9 @@ export default function ForgotPasswordForm() {
 								<button className="text-[#155EEF] text-sm font-semibold">Resend in {timer} </button>
 							</div>
 						</div>
-					</div>
-				)}
+					)}
+				</div>
+
 			</form>
 		</FormContainer>
 	);
