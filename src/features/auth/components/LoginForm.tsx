@@ -51,7 +51,7 @@ export default function LoginForm() {
 						<input type="checkbox" id="remember" />
 						<span>Remember me</span>
 					</label>
-					<Link to='/reset-password' className="text-blue-500 text-sm">Forgot password?</Link>
+					<Link to='/forget-password' className="text-blue-500 text-sm">Forgot password?</Link>
 				</div>
 
 				<Button
