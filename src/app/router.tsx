@@ -37,14 +37,13 @@ const router = createBrowserRouter([
 		children: [
 			{
 				path: "projects",
-				element: <ProjectsPage />,
 				children: [
 					{
 						index: true,
 						element: <ProjectsPage />,
 					},
 					{
-						path: "create-project",
+						path: "create",
 						element: <CreateProjectPage />,
 					},
 				]
