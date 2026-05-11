@@ -27,7 +27,7 @@ export default function Navbar() {
                     <div className="h-full flex justify-end items-center max-w-[1600px] mx-auto">
                         <div className="flex items-center gap-4">
                             <div className="text-right hidden sm:block">
-                                <h4 className="text-[#0F172A] font-bold text-sm leading-tight">
+                                <h4 className="text-[#0F172A] font-bold text-sm leading-tight capitalize">
                                     {userName}
                                 </h4>
                                 <p className="text-gray-400 text-[10px] uppercase tracking-wider font-semibold">
