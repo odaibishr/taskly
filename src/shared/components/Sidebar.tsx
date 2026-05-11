@@ -6,8 +6,43 @@ import Tasks from '../../assets/Tasks.svg';
 import Users from '../../assets/Users.svg';
 import Logout from '../../assets/Logout.svg';
 import Info from '../../assets/Info.svg';
+import type { MenuItem } from "../types/types";
 
+
+const menuItems: MenuItem[] = [
+	{
+		id: 1,
+		icon: Folder,
+		label: 'Projects',
+		herf: '/dashboard/projects',
+	},	
+	{
+		id: 2,
+		icon: Epics,
+		label: 'Project Epics',
+		herf: '/dashboard/project-epics',
+	},
+	
+	{
+		id: 3,
+		icon: Tasks,
+		label: 'Project Tasks',
+		herf: '/dashboard/project-tasks',
+	},
+	{
+		id: 4,
+		icon: Users,
+		label: 'Project Members',
+		herf: '/dashboard/project-members',
+	},
+	{
+		id: 5,
+		icon: Info,
+		label: 'Project Details',
+		herf: '/dashboard/project-details',
+	},
+];
 
 export default function Sidebar() {
-	
+
 }
