@@ -15,7 +15,7 @@ const EmptyProjects = () => {
 			</div>
 			<Button
 				className="cursor-pointer flex gap-3 items-center w-45 shadow-md"
-				onClick={() => navigate('/dashboard/projects/create')}
+				onClick={() => navigate('/dashboard/projects/create-project')}
 			>
 				<PlusCircle className="w-5 h-5" />
 				<span>Create Project</span>
