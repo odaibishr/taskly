@@ -7,6 +7,7 @@ import ForgetPassword from "../pages/ForgetPassword";
 import ResetPasswordPage from "../pages/ResetPasswordPage";
 import DashboardLayout from "../layouts/DashboardLayout";
 import Navbar from "../shared/components/Navbar";
+import ProjectsPage from "../pages/ProjectsPage";
 
 const router = createBrowserRouter([
 	{
@@ -34,8 +35,8 @@ const router = createBrowserRouter([
 		),
 		children: [
 			{
-				path: "projects", // سيصبح المسار /dashboard/projects
-				element: <div>Projects Page Content</div>, // استبدلها بمكون الصفحة الحقيقي لاحقاً
+				path: "projects",
+				element: <ProjectsPage />,
 			},
 			{
 				path: "project-epics",
