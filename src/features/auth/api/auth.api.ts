@@ -20,3 +20,8 @@ export async function updatePassword(payload: UpdatePasswordPayload) {
 	const response = await http.put('/auth/v1/user', payload);
 	return response.data;
 }
+
+export async function logout() {
+	const response = await http.post('/auth/v1/logout');
+	return response.data;
+}

@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { sendResetLink, signIn, signUp, updatePassword } from "../api/auth.api";
+import { sendResetLink, signIn, signUp, updatePassword, logout } from "../api/auth.api";
 import type { LoginPayload, SendResetLinkPayload, SignUpPayload, UpdatePasswordPayload } from "../types";
 
 interface AuthState {
@@ -12,6 +12,7 @@ interface AuthState {
 	handleSignIn: (payload: LoginPayload) => Promise<void>;
 	handleForgotPassword: (payload: SendResetLinkPayload) => Promise<void>;
 	handleUpdatePassword: (payload: UpdatePasswordPayload) => Promise<void>;
+	handleLogout: () => Promise<void>;
 	clearError: () => void;
 	reset: () => void;
 }
@@ -48,6 +49,21 @@ export const useAuthStore = create<AuthState>((set) => ({
 			window.location.href = '/dashboard'
 		} catch (error: any) {
 			const message = error.response?.data?.error_description || error.message || 'Login failed.';
+			set({ error: message });
+		} finally {
+			set({ isLoading: false });
+		}
+	},
+	handleLogout: async () => {
+		set({ isLoading: true, error: null });
+		try {
+			await logout();
+			localStorage.removeItem('access_token');
+			localStorage.removeItem('refresh_token');
+			localStorage.removeItem('user');
+			window.location.href = '/login';
+		} catch (error: any) {
+			const message = error.response?.data?.msg || error.message || 'Failed to logout.';
 			set({ error: message });
 		} finally {
 			set({ isLoading: false });
