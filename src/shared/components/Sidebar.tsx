@@ -100,6 +100,7 @@ export default function Sidebar({ isCollapsed, setIsCollapsed }: Props) {
 								isCollapsed ? "justify-center" : "justify-start",
 								pathname === item.herf && "bg-white text-primary-foreground",
 							)}
+							onClick={() => setIsMobileOpen(!isMobileOpen)}
 						>
 							<img src={item.icon} alt={item.label} className="h-5 w-5 group-hover:text-primary" />
 							{!isCollapsed && <span className="ml-3 font-medium group-hover:text-primary">{item.label}</span>}
