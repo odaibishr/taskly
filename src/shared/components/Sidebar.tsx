@@ -7,7 +7,7 @@ import Info from '../../assets/Info.svg';
 import Menu from '../../assets/MenuIcon.svg';
 import type { MenuItem } from "../types/types";
 import { useAuthStore } from "../../features/auth/store/auth.store";
-import { Link, useLocation, useNavigate } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { cn } from "../lib/utils";
 import Logo from "../../assets/Icon.svg";
 import { ChevronLeft, ChevronRight, LogOut } from "lucide-react";
@@ -54,13 +54,11 @@ interface Props {
 
 export default function Sidebar({ isCollapsed, setIsCollapsed }: Props) {
 	const [isMobileOpen, setIsMobileOpen] = useState(false);
-	const { reset } = useAuthStore();
-	const navigate = useNavigate();
+	const { handleLogout } = useAuthStore();
 	const { pathname } = useLocation();
 
-	const handleLogout = () => {
-		reset();
-		navigate('/login');
+	const handleLogoutClick = async () => {
+		await handleLogout();
 	}
 
 	return (
@@ -119,7 +117,7 @@ export default function Sidebar({ isCollapsed, setIsCollapsed }: Props) {
 					</button>
 					{/* Logout */}
 					<button
-						onClick={handleLogout}
+						onClick={handleLogoutClick}
 						className="flex items-center w-full p-3 rounded-lg hover:bg-red	 text-red-500 cursor-pointer"
 					>
 						<LogOut size={22} />
