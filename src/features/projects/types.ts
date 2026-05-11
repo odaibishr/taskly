@@ -5,3 +5,5 @@ export interface Project {
 	created_by: string;
 	created_at: string | null;
 }
+
+export interface CreateProjectPayload extends Pick<Project, "name" | "description"> { }
