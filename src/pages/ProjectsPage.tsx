@@ -1,7 +1,10 @@
+import EmptyProjects from "../features/projects/components/EmptyProjects"
 
 const ProjectsPage = () => {
 	return (
-		<div>ProjectsPage</div>
+		<main>
+			<EmptyProjects />
+		</main>
 	)
 }
 
