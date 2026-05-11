@@ -4,7 +4,7 @@ import { ChevronRight } from "lucide-react";
 const breadcrumbNameMap: Record<string, string> = {
 	dashboard: "Dashboard",
 	projects: "Projects",
-	create: "Create Project",
+	"create-project": "Create Project",
 	"edit-project": "Edit Project",
 	"project-details": "Project Details",
 	"project-tasks": "Tasks",
