@@ -91,7 +91,7 @@ export default function Sidebar({ isCollapsed, setIsCollapsed }: Props) {
 					)}
 				</div>
 
-				<nav className="flex-1 py-6 space-y-2">
+				<nav className="flex-1 mx-4 py-6 space-y-2">
 					{menuItems.map((item) => (
 						<Link key={item.id}
 							to={item.herf}
