@@ -6,27 +6,24 @@ import LogInPage from "../pages/LogInPage";
 import ForgetPassword from "../pages/ForgetPassword";
 import ResetPasswordPage from "../pages/ResetPasswordPage";
 import DashboardLayout from "../layouts/DashboardLayout";
+import Navbar from "../shared/components/Navbar";
 
 const router = createBrowserRouter([
 	{
 		path: "/",
-		element: <App />,
-	},
-	{
-		path: "/signup",
-		element: <SignUpPage />,
-	},
-	{
-		path: "/login",
-		element: <LogInPage />,
-	},
-	{
-		path: "/forget-password",
-		element: <ForgetPassword />
-	},
-	{
-		path: "/reset-password",
-		element: <ResetPasswordPage />
+		element: (
+			<>
+				<Navbar /> {/* سيظهر النافبار هنا لكل الصفحات العامة */}
+				<Outlet />
+			</>
+		),
+		children: [
+			{ path: "/", element: <App /> },
+			{ path: "/signup", element: <SignUpPage /> },
+			{ path: "/login", element: <LogInPage /> },
+			{ path: "/forget-password", element: <ForgetPassword /> },
+			{ path: "/reset-password", element: <ResetPasswordPage /> },
+		],
 	},
 	{
 		path: "/dashboard",
