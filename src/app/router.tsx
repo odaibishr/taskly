@@ -8,6 +8,7 @@ import ResetPasswordPage from "../pages/ResetPasswordPage";
 import DashboardLayout from "../layouts/DashboardLayout";
 import Navbar from "../shared/components/Navbar";
 import ProjectsPage from "../pages/ProjectsPage";
+import CreateProjectPage from "../pages/CreateProjectPage";
 
 const router = createBrowserRouter([
 	{
@@ -54,6 +55,10 @@ const router = createBrowserRouter([
 				path: "project-details",
 				element: <div>Details Page Content</div>,
 			},
+			{
+				path: "create-project",
+				element: <CreateProjectPage />,
+			}
 		]
 	}
 ]);
