@@ -38,6 +38,16 @@ const router = createBrowserRouter([
 			{
 				path: "projects",
 				element: <ProjectsPage />,
+				children: [
+					{
+						index: true,
+						element: <ProjectsPage />,
+					},
+					{
+						path: "create-project",
+						element: <CreateProjectPage />,
+					},
+				]
 			},
 			{
 				path: "project-epics",
@@ -55,10 +65,6 @@ const router = createBrowserRouter([
 				path: "project-details",
 				element: <div>Details Page Content</div>,
 			},
-			{
-				path: "create-project",
-				element: <CreateProjectPage />,
-			}
 		]
 	}
 ]);
