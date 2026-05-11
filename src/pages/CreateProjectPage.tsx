@@ -1,6 +1,15 @@
+import Button from "../shared/components/Button"
+import { HeaderSection } from "../shared/components/HeaderSection"
+
 const CreateProjectPage = () => {
   return (
-    <div>CreateProjectPage</div>
+    <main>
+      <HeaderSection />
+      <div className="flex justify-between items-center mb-6">
+        <h1 className="text-2xl font-bold">Create Project</h1>
+        <Button>Create Project</Button>
+      </div>
+    </main>
   )
 }
 
