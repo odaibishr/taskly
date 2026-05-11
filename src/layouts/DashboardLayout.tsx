@@ -1,13 +1,20 @@
+import { useState } from "react";
 import Navbar from "../shared/components/Navbar";
 import Sidebar from "../shared/components/Sidebar";
+import { cn } from "../shared/lib/utils";
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
+	const [isCollapsed, setIsCollapsed] = useState<boolean>(false);
+
 	return (
 		<div className="min-h-screen flex">
 
-			<Sidebar />
+			<Sidebar isCollapsed={isCollapsed} setIsCollapsed={setIsCollapsed} />
 
-			<div className="flex-1 flex flex-col transition-all duration-300 lg:ml-64 lg:has-[aside.w-20]:ml-20">
+			<div className={cn(
+				"flex-1 flex flex-col transition-all duration-300",
+				isCollapsed ? "lg:pl-20" : "lg:pl-64"
+			)}>
 				<Navbar />
 
 				<main className="p-6 lg:p-10 flex-1">
