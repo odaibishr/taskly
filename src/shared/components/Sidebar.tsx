@@ -68,11 +68,7 @@ export default function Sidebar({ isCollapsed, setIsCollapsed }: Props) {
 			{!isMobileOpen && (
 				<button
 					onClick={() => setIsMobileOpen(true)}
-					className={cn(
-						"lg:hidden fixed top-0 left-0 z-60",
-						"h-20 w-16 bg-white flex items-center justify-center", // نفس ارتفاع النافبار
-						"border-b border-r border-gray-100 shadow-sm" // ليتماشى مع خطوط النافبار
-					)}
+					className="lg:hidden fixed top-0 left-0 z-60 h-20 w-16 bg-white flex items-center cursor-pointer justify-center"
 				>
 					<img
 						src={Menu}
