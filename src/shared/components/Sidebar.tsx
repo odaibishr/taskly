@@ -7,6 +7,8 @@ import Users from '../../assets/Users.svg';
 import Logout from '../../assets/Logout.svg';
 import Info from '../../assets/Info.svg';
 import type { MenuItem } from "../types/types";
+import { useAuthStore } from "../../features/auth/store/auth.store";
+import { useNavigate } from "react-router-dom";
 
 
 const menuItems: MenuItem[] = [
@@ -44,5 +46,15 @@ const menuItems: MenuItem[] = [
 ];
 
 export default function Sidebar() {
+	const [isCollapsed, setIsCollapsed] = useState(false);
+	const [isMobileOpen, setIsMobileOpen] = useState(false);
+	const { reset } = useAuthStore();
+	const navigate = useNavigate();
 
+	const handleLogout = () => {
+		reset();
+		navigate('/login');
+	}
+
+	
 }
