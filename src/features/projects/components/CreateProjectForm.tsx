@@ -85,7 +85,11 @@ const CreateProjectForm = () => {
 						</Button>
 					</div>
 
-					
+					{error && (
+						<div className="p-3 bg-red-50 border border-red-200 text-red-600 text-sm rounded-md text-center">
+							{error}
+						</div>
+					)}
 
 				</form>
 
