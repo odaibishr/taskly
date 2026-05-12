@@ -14,7 +14,7 @@ const EmptyProjects = () => {
 					your first architectural workspace to begin tracking tasks and epics.</p>
 			</div>
 			<Button
-				className="cursor-pointer flex gap-3 items-center w-45 shadow-md"
+				className="cursor-pointer flex gap-3 items-center shadow-md"
 				onClick={() => navigate('/dashboard/projects/create-project')}
 			>
 				<PlusCircle className="w-5 h-5" />
