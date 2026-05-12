@@ -17,7 +17,8 @@ const CreateProjectForm = () => {
 	const navigate = useNavigate();
 	const {
 		createProject,
-		error
+		error,
+		isLoading
 	} = useProjecteStore();
 
 	const {
@@ -79,7 +80,8 @@ const CreateProjectForm = () => {
 						<Button
 							type="submit"
 							variant="primary"
-							className="w-full sm:min-w-[160px]"
+							className="sm:min-w-[160px]"
+							disabled={isLoading}
 						>
 							Create Project
 						</Button>
