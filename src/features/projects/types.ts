@@ -6,4 +6,6 @@ export interface Project {
 	created_at: string | null;
 }
 
-export interface CreateProjectPayload extends Pick<Project, "name" | "description"> { }
+export interface CreateProjectPayload extends Pick<Project, "name" | "description" | "created_by"> {
+}
+

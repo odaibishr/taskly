@@ -9,6 +9,7 @@ import { CheckCircle } from "lucide-react";
 import Input from "../../../shared/components/Input";
 import Textarea from "../../../shared/components/Texterea";
 import Button from "../../../shared/components/Button";
+import { useAuthStore } from "../../auth/store/auth.store";
 
 type CreateProjectFormData = z.infer<typeof createProjectSchema>;
 
@@ -29,7 +30,9 @@ const CreateProjectForm = () => {
 
 	const onSubmit = async (data: CreateProjectFormData) => {
 		try {
-			await createProject(data);
+			const user = useAuthStore.getState().user;
+			if (!user) throw new Error("User not authenticated");
+			await createProject({ ...data, created_by: user.id });
 			navigate('/dashboard/projects');
 		} catch (error: any) {
 			console.error(error.message);
@@ -81,6 +84,8 @@ const CreateProjectForm = () => {
 							Create Project
 						</Button>
 					</div>
+
+					
 
 				</form>
 

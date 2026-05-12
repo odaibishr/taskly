@@ -1,6 +1,8 @@
 import { create } from "zustand";
 import type { CreateProjectPayload, Project } from "../types";
 import { createProject } from "../api/projects.api";
+import { useAuthStore } from "../../auth/store/auth.store";
+
 
 
 interface ProjectsState {
@@ -20,7 +22,14 @@ export const useProjecteStore = create<ProjectsState>()((set) => ({
 	createProject: async (payload) => {
 		set({ isLoading: true, error: null });
 		try {
-			const newProject = await createProject(payload);
+			const user = useAuthStore.getState().user;
+			if (!user) throw new Error("User not authenticated");
+
+			const newProject = await createProject({
+				...payload,
+				created_by: user.id
+			});
+
 			set((state) => ({
 				projects: [...state.projects, newProject],
 				isLoading: false,
