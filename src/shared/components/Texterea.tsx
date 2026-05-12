@@ -8,8 +8,8 @@ interface TextareaProps<T extends FieldValues> {
 	error?: FieldError;
 	label?: string;
 	optional?: boolean;
-	maxLength?: number; // الحد الأقصى للأحرف
-	value?: string;     // القيمة الحالية (يتم تمريرها باستخدام watch من الأب)
+	maxLength?: number;
+	value?: string;
 }
 
 export default function Textarea<T extends FieldValues>({

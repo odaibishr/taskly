@@ -24,6 +24,7 @@ const CreateProjectForm = () => {
 	const {
 		register,
 		handleSubmit,
+		watch,
 		formState: { errors }
 	} = useForm<CreateProjectFormData>({
 		resolver: zodResolver(createProjectSchema),
@@ -66,6 +67,7 @@ const CreateProjectForm = () => {
 						label="Project Description"
 						maxLength={500}
 						optional
+						value={watch('description')}
 					/>
 
 					<div className="pt-6 flex flex-col-reverse sm:flex-row items-center justify-between gap-4">
