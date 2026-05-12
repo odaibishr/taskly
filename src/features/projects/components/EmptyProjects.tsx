@@ -1,8 +1,10 @@
 import Button from "../../../shared/components/Button"
 import NoProjects from "../../../assets/Abstract.svg"
 import { PlusCircle } from "lucide-react"
+import { useNavigate } from "react-router-dom"
 
 const EmptyProjects = () => {
+	const navigate = useNavigate()
 	return (
 		<section className="flex flex-col items-center justify-center mt-20 gap-11">
 			<img src={NoProjects} alt="No Projects" className="w-50 h-50" />
@@ -12,7 +14,8 @@ const EmptyProjects = () => {
 					your first architectural workspace to begin tracking tasks and epics.</p>
 			</div>
 			<Button
-				className="cursor-pointer flex gap-3 items-center w-45 shadow-md"
+				className="cursor-pointer flex gap-3 items-center shadow-md"
+				onClick={() => navigate('/dashboard/projects/create-project')}
 			>
 				<PlusCircle className="w-5 h-5" />
 				<span>Create Project</span>

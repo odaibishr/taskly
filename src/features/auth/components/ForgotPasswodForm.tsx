@@ -6,7 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useState } from "react";
 import FormContainer from "../../../shared/components/FormContainer";
 import HeaderSection from "./HeaderSection";
-import Input from "./Input";
+import Input from "../../../shared/components/Input";
 import Button from "../../../shared/components/Button";
 import { Link } from "react-router-dom";
 import ArrowLeftIcon from '../../../assets/ArrowLeft.svg';

@@ -5,7 +5,7 @@ import type { z } from 'zod';
 import { useAuthStore } from '../store/auth.store';
 import FormContainer from '../../../shared/components/FormContainer';
 import HeaderSection from './HeaderSection';
-import Input from './Input';
+import Input from '../../../shared/components/Input';
 import Button from '../../../shared/components/Button';
 import { Link } from 'react-router-dom';
 

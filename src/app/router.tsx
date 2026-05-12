@@ -8,6 +8,7 @@ import ResetPasswordPage from "../pages/ResetPasswordPage";
 import DashboardLayout from "../layouts/DashboardLayout";
 import Navbar from "../shared/components/Navbar";
 import ProjectsPage from "../pages/ProjectsPage";
+import CreateProjectPage from "../pages/CreateProjectPage";
 
 const router = createBrowserRouter([
 	{
@@ -36,7 +37,16 @@ const router = createBrowserRouter([
 		children: [
 			{
 				path: "projects",
-				element: <ProjectsPage />,
+				children: [
+					{
+						index: true,
+						element: <ProjectsPage />,
+					},
+					{
+						path: "create-project",
+						element: <CreateProjectPage />,
+					},
+				]
 			},
 			{
 				path: "project-epics",
