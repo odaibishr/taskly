@@ -64,29 +64,35 @@ const CreateProjectForm = () => {
 						optional
 					/>
 
-					<div className="pt-6 flex items-center justify-between gap-4">
+					<div className="pt-6 flex flex-col-reverse sm:flex-row items-center justify-between gap-4">
 						<Button
 							type="button"
 							variant="ghost"
 							onClick={() => navigate('/dashboard/projects')}
-							className="px-8"
+							className="w-full sm:w-fit px-8"
 						>
 							Back
 						</Button>
-
 						<Button
 							type="submit"
 							variant="primary"
-							className="min-w-[160px]"
+							className="w-full sm:min-w-[160px]"
 						>
 							Create Project
 						</Button>
 					</div>
 
 				</form>
+
+				<div className="bg-surface-low p-6 flex items-start gap-3 border-t border-blue-50">
+					<div className="text-blue-500 mt-0.5">
+						<svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5" /><path d="M9 18h6" /><path d="M10 22h4" /></svg>
+					</div>
+					<p className="text-[12px] text-slate-500 leading-relaxed">
+						<strong className="text-slate-700">Pro Tip:</strong> You can invite project members and assign epics immediately after the initial creation process.
+					</p>
+				</div>
 			</div>
-
-
 		</section>
 	)
 }
