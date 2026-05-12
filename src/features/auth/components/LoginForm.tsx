@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import FormContainer from "../../../shared/components/FormContainer";
 import HeaderSection from "./HeaderSection";
-import Input from "./Input";
+import Input from "../../../shared/components/Input";
 import Button from "../../../shared/components/Button";
 import { Link } from "react-router-dom";
 
