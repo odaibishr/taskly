@@ -46,7 +46,7 @@ export const useAuthStore = create<AuthState>((set) => ({
 			localStorage.setItem('refresh_token', data.refresh_token);
 			localStorage.setItem('user', JSON.stringify(data.user));
 			set({ user: data.user });
-			window.location.href = '/dashboard'
+			window.location.href = '/project'
 		} catch (error: any) {
 			const message = error.response?.data?.error_description || error.message || 'Login failed.';
 			set({ error: message });
