@@ -6,6 +6,7 @@ import { HeaderSection } from "../shared/components/HeaderSection";
 import { PlusCircle } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import ProjectCard from "../features/projects/components/ProjectCard";
+import ProjectSkeleton from "../features/projects/components/ProjectSkeleton";
 
 const ProjectsPage = () => {
 	const { projects, getProjects, isLoading, error } = useProjecteStore();
@@ -48,20 +49,24 @@ const ProjectsPage = () => {
 			</HeaderSection>
 
 			{/* Floating Action Button for mobile */}
-			<div className="fixed bottom-4 right-4 md:hidden">
-				<Button
-					className="rounded-full bg-white hover:bg-white w-14 h-14 p-0 flex items-center justify-center shadow-lg"
-					onClick={() => navigate('/dashboard/projects/create-project')}
-				>
-					<PlusCircle className="text-white" size={26} />
-				</Button>
-			</div>
+			{!isLoading && projects.length > 0 && (
+				<div className="fixed bottom-4 right-4 md:hidden">
+					<Button
+						className="rounded-full bg-white hover:bg-white w-14 h-14 p-0 flex items-center justify-center shadow-lg"
+						onClick={() => navigate('/dashboard/projects/create-project')}
+					>
+						<PlusCircle className="text-white" size={26} />
+					</Button>
+				</div>
+			)}
 
 			{/* Projects List */}
 			<section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-6">
-				{projects.map((project) => (
-					<ProjectCard key={project.id} project={project} />
-				))}
+				{isLoading
+					? Array.from({ length: 6 }, (_, index) => <ProjectSkeleton key={index} />)
+					: projects.map((project) => (
+						<ProjectCard key={project.id} project={project} />
+					))}
 			</section>
 		</main>
 	)
