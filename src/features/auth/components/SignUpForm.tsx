@@ -12,9 +12,9 @@ import { Link } from 'react-router-dom';
 type SignUpFormData = z.infer<typeof signUpSchema>;
 
 export const SignUpForm = () => {
-	const { isLoading, error, isSignUpSuccess, handleSignUp, clearError } = useAuthStore();
+	const { isLoading, error, isSignUpSuccess, handleSignUp } = useAuthStore();
 
-	const { register, handleSubmit, formState: { errors }, reset } = useForm<SignUpFormData>({
+	const { register, handleSubmit, formState: { errors } } = useForm<SignUpFormData>({
 		resolver: zodResolver(signUpSchema),
 	});
 
