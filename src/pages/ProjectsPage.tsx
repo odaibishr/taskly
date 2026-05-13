@@ -55,7 +55,10 @@ const ProjectsPage = () => {
 				{isLoading ? (
 					<div className="max-md:hidden w-50 h-12 bg-gray-200 rounded-lg animate-pulse" />
 				) : (
-					<Button className="max-md:hidden flex items-center gap-2">
+					<Button
+						className="max-md:hidden flex items-center gap-2"
+						onClick={() => navigate('/dashboard/projects/create-project')}
+					>
 						<PlusCircle />
 						Create Project
 					</Button>
