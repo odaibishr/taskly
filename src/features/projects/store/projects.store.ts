@@ -31,10 +31,14 @@ export const useProjecteStore = create<ProjectsState>()((set) => ({
 				created_by: user.id
 			});
 
-			set((state) => ({
-				projects: [...state.projects, newProject],
-				isLoading: false,
-			}))
+			if (newProject) {
+				set((state) => ({
+					projects: [...state.projects, newProject],
+					isLoading: false,
+				}));
+			} else {
+				await useProjecteStore.getState().getProjects();
+			}
 
 		} catch (error: any) {
 			const message = error.response?.data?.message
