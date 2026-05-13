@@ -4,9 +4,11 @@ import { useProjecteStore } from "../features/projects/store/projects.store"
 import Button from "../shared/components/Button";
 import { HeaderSection } from "../shared/components/HeaderSection";
 import { PlusCircle } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 const ProjectsPage = () => {
 	const { projects, getProjects, isLoading, error } = useProjecteStore();
+	const navigate = useNavigate();
 
 	useEffect(() => {
 		getProjects();
@@ -32,6 +34,7 @@ const ProjectsPage = () => {
 
 	return (
 		<main>
+			{/* Header Section */}
 			<HeaderSection
 				title="Projects"
 				description="Manage and curate your projects"
@@ -42,6 +45,16 @@ const ProjectsPage = () => {
 					Create Project
 				</Button>
 			</HeaderSection>
+
+			{/* Floating Action Button for mobile */}
+			<div className="fixed bottom-4 right-4 md:hidden">
+				<Button
+					className="rounded-full bg-white hover:bg-white w-14 h-14 p-0 flex items-center justify-center shadow-lg"
+					onClick={() => navigate('/dashboard/projects/create-project')}
+				>
+					<PlusCircle className="text-white" size={26} />
+				</Button>
+			</div>
 		</main>
 	)
 }
