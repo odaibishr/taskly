@@ -9,3 +9,8 @@ export interface Project {
 export interface CreateProjectPayload extends Pick<Project, "name" | "description" | "created_by"> {
 }
 
+export interface GetProjectsParams {
+	limit: number;
+	offset: number;
+}
+
