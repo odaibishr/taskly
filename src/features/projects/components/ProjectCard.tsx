@@ -6,7 +6,7 @@ interface CardProjectProps {
 
 const ProjectCard = ({ project }: CardProjectProps) => {
 	return (
-		<div className="bg-white min-h-[220px] rounded-lg flex flex-col justify-between p-6">
+		<div className="bg-white hover:shadow-sm/10 transition-all duration-300 min-h-[220px] rounded-lg flex flex-col justify-between p-6">
 			<div className="space-y-2">
 				<h2 className="text-lg font-bold text-slate-dark leading-7">{project.name}</h2>
 				<p className="text-slate-medium line-clamp-4">{project.description}</p>
