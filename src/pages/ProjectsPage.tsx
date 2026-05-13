@@ -5,6 +5,7 @@ import Button from "../shared/components/Button";
 import { HeaderSection } from "../shared/components/HeaderSection";
 import { PlusCircle } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import ProjectCard from "../features/projects/components/ProjectCard";
 
 const ProjectsPage = () => {
 	const { projects, getProjects, isLoading, error } = useProjecteStore();
@@ -55,6 +56,13 @@ const ProjectsPage = () => {
 					<PlusCircle className="text-white" size={26} />
 				</Button>
 			</div>
+
+			{/* Projects List */}
+			<section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-6">
+				{projects.map((project) => (
+					<ProjectCard key={project.id} project={project} />
+				))}
+			</section>
 		</main>
 	)
 }
