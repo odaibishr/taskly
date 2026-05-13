@@ -2,7 +2,7 @@ import { useState } from "react";
 import Navbar from "../shared/components/Navbar";
 import Sidebar from "../shared/components/Sidebar";
 import { cn } from "../shared/lib/utils";
-import { useAuthStore } from "../features/auth/store/auth.store";
+import { useAuthStore } from "../features/auth";
 import { Navigate } from "react-router-dom";
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {

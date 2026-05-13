@@ -1,14 +1,15 @@
 import { useEffect, useRef } from "react";
-import EmptyProjects from "../features/projects/components/EmptyProjects"
-import { useProjecteStore } from "../features/projects/store/projects.store"
-import Button from "../shared/components/Button";
-import { HeaderSection } from "../shared/components/HeaderSection";
-import { PlusCircle } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import ProjectCard from "../features/projects/components/ProjectCard";
-import ProjectSkeleton from "../features/projects/components/ProjectSkeleton";
-import Pagination from "../features/projects/components/Pagination";
-import { CloudOff } from "lucide-react";
+import { PlusCircle, CloudOff } from "lucide-react";
+import {
+	useProjecteStore,
+	ProjectCard,
+	ProjectSkeleton,
+	Pagination,
+	EmptyProjects
+} from "../features/projects";
+import { HeaderSection } from "../shared/components/HeaderSection";
+import Button from "../shared/components/Button";
 
 const ProjectsPage = () => {
 	const { projects, getProjects, isLoading, error, pagination } = useProjecteStore();

@@ -9,7 +9,7 @@ import { CheckCircle } from "lucide-react";
 import Input from "../../../shared/components/Input";
 import Textarea from "../../../shared/components/Texterea";
 import Button from "../../../shared/components/Button";
-import { useAuthStore } from "../../auth/store/auth.store";
+import { useAuthStore } from "../../auth";
 
 type CreateProjectFormData = z.infer<typeof createProjectSchema>;
 

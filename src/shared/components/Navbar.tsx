@@ -1,6 +1,6 @@
 import Logo from "../../assets/Logo.svg";
 import { getInitials } from "../lib/utils";
-import { useAuthStore } from "../../features/auth/store/auth.store";
+import { useAuthStore } from "../../features/auth";
 import { useLocation } from "react-router-dom";
 
 export default function Navbar() {

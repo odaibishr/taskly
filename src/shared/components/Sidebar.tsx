@@ -5,7 +5,7 @@ import Tasks from '../../assets/Tasks.svg';
 import Users from '../../assets/Users.svg';
 import Info from '../../assets/Info.svg';
 import Menu from '../../assets/MenuIcon.svg';
-import { useAuthStore } from "../../features/auth/store/auth.store";
+import { useAuthStore } from "../../features/auth";
 import { Link, useLocation, useParams } from "react-router-dom";
 import { cn } from "../lib/utils";
 import Logo from "../../assets/Icon.svg";
