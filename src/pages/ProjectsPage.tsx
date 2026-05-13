@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import EmptyProjects from "../features/projects/components/EmptyProjects"
 import { useProjecteStore } from "../features/projects/store/projects.store"
 import Button from "../shared/components/Button";
@@ -11,12 +11,32 @@ import Pagination from "../features/projects/components/Pagination";
 import { CloudOff } from "lucide-react";
 
 const ProjectsPage = () => {
-	const { projects, getProjects, isLoading, error } = useProjecteStore();
+	const { projects, getProjects, isLoading, error, pagination } = useProjecteStore();
 	const navigate = useNavigate();
+	const observerTarget = useRef<HTMLDivElement>(null);
 
 	useEffect(() => {
 		getProjects();
 	}, [getProjects]);
+
+	useEffect(() => {
+		const observer = new IntersectionObserver(
+			(entries) => {
+				if (entries[0].isIntersecting && !isLoading) {
+					const { totalCount } = pagination;
+					if (projects.length < totalCount) {
+						useProjecteStore.setState((s) => ({
+							pagination: { ...s.pagination, currentPage: s.pagination.currentPage + 1 }
+						}));
+						getProjects(true);
+					}
+				}
+			},
+			{ threshold: 1.0 }
+		);
+		if (observerTarget.current) observer.observe(observerTarget.current);
+		return () => observer.disconnect();
+	}, [projects.length, isLoading]);
 
 	if (error) {
 		return (
@@ -89,9 +109,12 @@ const ProjectsPage = () => {
 			</section>
 
 			{/* Pagination UI */}
-			{!isLoading && projects.length > 0 && (
-				< Pagination />
-			)}
+			{/* Infinite Scroll (Mobile Only) */}
+			<div ref={observerTarget} className="h-10 md:hidden" />
+			{/* Pagination UI (Desktop Only) */}
+			<div className="max-md:hidden">
+				<Pagination />
+			</div>
 		</main >
 	)
 }

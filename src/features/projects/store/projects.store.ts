@@ -9,17 +9,29 @@ interface ProjectsState {
 	projects: Project[];
 	isLoading: boolean;
 	error: string | null;
+	pagination: {
+		currentPage: number;
+		limit: number;
+		totalCount: number;
+	}
 
 	// actions
 	createProject: (payload: CreateProjectPayload) => Promise<void>;
-	getProjects: () => Promise<void>;
+	getProjects: (isAppend?: boolean) => Promise<void>;
+	setPage: (page: number) => void;
 	clearError: () => void;
 }
 
-export const useProjecteStore = create<ProjectsState>()((set) => ({
+export const useProjecteStore = create<ProjectsState>()((set, get) => ({
 	projects: [],
 	isLoading: false,
 	error: null,
+	pagination: {
+		currentPage: 1,
+		limit: 6,
+		totalCount: 0
+	},
+
 	createProject: async (payload) => {
 		set({ isLoading: true, error: null });
 		try {
@@ -51,24 +63,28 @@ export const useProjecteStore = create<ProjectsState>()((set) => ({
 			throw new Error(message);
 		}
 	},
-	getProjects: async () => {
-		set({
-			isLoading: true,
-			error: null,
-		});
+	getProjects: async (isAppend = false) => {
+		const { currentPage, limit } = get().pagination;
+		const offset = (currentPage - 1) * limit;
+		set({ isLoading: true, error: null });
 		try {
-			const data = await getProjects();
-			set({
-				projects: data,
+			const { data, totalCount } = await getProjects({ limit, offset });
+
+			set((state) => ({
+				projects: isAppend ? [...state.projects, ...data] : data,
+				pagination: { ...state.pagination, totalCount },
 				isLoading: false
-			});
+			}));
 		} catch (error: any) {
-			const message = error.response?.data?.message || error.message || "Failed to fetch projects";
-			set({
-				error: message,
-				isLoading: false
-			});
+			set({ error: error.message, isLoading: false });
 		}
+	},
+
+	setPage: (page: number) => {
+		set((state) => ({
+			pagination: { ...state.pagination, currentPage: page }
+		}));
+		get().getProjects(false);
 	},
 	clearError: () => set({ error: null })
 }));

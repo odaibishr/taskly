@@ -12,7 +12,7 @@ export interface ButtonProps {
 const variants = {
     primary: "bg-linear-to-r from-[#003D9B] to-[#0052CC] text-white hover:from-[#002A75] hover:to-[#003D9B] shadow-md",
     secondary: "bg-surface-highest text-primary hover:bg-surface-highest/80",
-    outline: "border border-primary text-primary hover:bg-primary/5",
+    outline: "border-1 border-primary text-primary hover:bg-primary/5",
     ghost: "text-slate-medium hover:bg-slate-light/10 hover:text-slate-dark",
 };
 
@@ -23,7 +23,7 @@ export default function Button({ children, onClick, type = "button", disabled = 
             type={type}
             disabled={disabled}
             className={cn(
-                "inline-flex items-center justify-center border-none cursor-pointer text-[16px] font-bold rounded-sm transition-all duration-200 h-12 px-6",
+                "inline-flex items-center justify-center cursor-pointer text-[16px] font-bold rounded-sm transition-all duration-200 h-12 px-6",
                 variants[variant],
                 disabled && "opacity-50 cursor-not-allowed grayscale",
                 className

@@ -1,34 +1,50 @@
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useProjecteStore } from "../store/projects.store";
+import Button from "../../../shared/components/Button";
 
-export const Pagination = () => {
+const Pagination = () => {
+	const { pagination, setPage, isLoading } = useProjecteStore();
+	const { currentPage, limit, totalCount } = pagination;
+
+	const totalPages = Math.ceil(totalCount / limit);
+	if (totalPages <= 1) return null;
 	return (
-		<div className="flex items-center justify-between px-2 py-6 mt-8 border-t border-gray-100">
+		<div className="flex items-center justify-between py-6 mt-8 border-t border-gray-100">
 			<div className="hidden sm:block">
-				<p className="text-sm text-slate-medium">
-					Showing <span className="font-semibold text-slate-dark">1</span> to <span className="font-semibold text-slate-dark">6</span> of <span className="font-semibold text-slate-dark">24</span> projects
+				<p className="text-sm text-gray-500">
+					Showing page <span className="font-bold text-black">{currentPage}</span> of {totalPages}
 				</p>
 			</div>
-
-			<div className="flex flex-1 justify-between sm:justify-end gap-2">
-				<button className="flex items-center justify-center w-10 h-10 rounded-lg border border-gray-200 text-slate-medium hover:bg-gray-50 transition-colors disabled:opacity-50">
-					<ChevronLeft size={20} />
-				</button>
+			<div className="flex gap-2">
+				<Button
+					disabled={currentPage === 1 || isLoading}
+					onClick={() => setPage(currentPage - 1)}
+					variant="outline"
+					className="w-10 h-12 p-2"
+				>
+					<ChevronLeft className="size-5" />
+				</Button>
 
 				<div className="flex gap-1">
-					<button className="w-10 h-10 rounded-lg bg-blue-600 text-white font-bold text-sm">
-						1
-					</button>
-					<button className="w-10 h-10 rounded-lg text-slate-medium font-bold text-sm hover:bg-gray-50 transition-colors">
-						2
-					</button>
-					<button className="w-10 h-10 rounded-lg text-slate-medium font-bold text-sm hover:bg-gray-50 transition-colors">
-						3
-					</button>
+					{Array.from({ length: totalPages }, (_, i) => (
+						<Button
+							key={i + 1}
+							onClick={() => setPage(i + 1)}
+							variant={currentPage === i + 1 ? "primary" : "outline"}
+							className="w-10 h-12 p-2"
+						>
+							{i + 1}
+						</Button>
+					))}
 				</div>
-
-				<button className="flex items-center justify-center w-10 h-10 rounded-lg border border-gray-200 text-slate-medium hover:bg-gray-50 transition-colors">
-					<ChevronRight size={20} />
-				</button>
+				<Button
+					disabled={currentPage === totalPages || isLoading}
+					onClick={() => setPage(currentPage + 1)}
+					variant="outline"
+					className="w-10 h-12 p-2"
+				>
+					<ChevronRight className="size-5" />
+				</Button>
 			</div>
 		</div>
 	);
