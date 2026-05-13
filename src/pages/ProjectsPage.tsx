@@ -7,6 +7,7 @@ import { PlusCircle } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import ProjectCard from "../features/projects/components/ProjectCard";
 import ProjectSkeleton from "../features/projects/components/ProjectSkeleton";
+import { CloudOff } from "lucide-react";
 
 const ProjectsPage = () => {
 	const { projects, getProjects, isLoading, error } = useProjecteStore();
@@ -18,13 +19,21 @@ const ProjectsPage = () => {
 
 	if (error) {
 		return (
-			<div className="flex flex-col items-center justify-center min-h-[400px] text-center gap-4">
-				<div className="p-4 bg-red-50 border border-red-100 rounded-2xl text-red-600 max-w-md">
-					<h3 className="font-bold text-lg mb-1">Error Loading Projects</h3>
-					<p>{error}</p>
+			<div className="flex flex-col items-center justify-center min-h-[60vh] text-center p-6 animate-in fade-in zoom-in duration-300">
+				<div className="w-16 h-16 bg-red-100 rounded-2xl flex items-center justify-center mb-6">
+					<CloudOff className="text-red-500" size={32} />
 				</div>
-				<Button variant="secondary" onClick={() => getProjects()}>
-					Try Again
+				<h2 className="text-xl font-bold text-[#0F172A] mb-2">
+					Something went wrong
+				</h2>
+				<p className="text-[#64748B] max-w-[320px] mb-8 leading-relaxed">
+					We're having trouble retrieving your projects right now. Please try again in a moment.
+				</p>
+				<Button
+					className="bg-[#0052CC] hover:bg-[#003D9B] px-10 py-3 rounded-md shadow-lg shadow-blue-100 transition-all active:scale-95"
+					onClick={() => getProjects()}
+				>
+					Retry Connection
 				</Button>
 			</div>
 		);
@@ -42,23 +51,29 @@ const ProjectsPage = () => {
 				description="Manage and curate your projects"
 				isBreadcrumbVisible={false}
 			>
-				<Button className="max-md:hidden flex items-center gap-2">
-					<PlusCircle />
-					Create Project
-				</Button>
+				{isLoading ? (
+					<div className="max-md:hidden w-50 h-12 bg-gray-200 rounded-lg animate-pulse" />
+				) : (
+					<Button className="max-md:hidden flex items-center gap-2">
+						<PlusCircle />
+						Create Project
+					</Button>
+				)}
 			</HeaderSection>
 
 			{/* Floating Action Button for mobile */}
-			{!isLoading && projects.length > 0 && (
-				<div className="fixed bottom-4 right-4 md:hidden">
-					<Button
-						className="rounded-full bg-white hover:bg-white w-14 h-14 p-0 flex items-center justify-center shadow-lg"
-						onClick={() => navigate('/dashboard/projects/create-project')}
-					>
-						<PlusCircle className="text-white" size={26} />
-					</Button>
-				</div>
-			)}
+			{
+				!isLoading && projects.length > 0 && (
+					<div className="fixed bottom-4 right-4 md:hidden">
+						<Button
+							className="rounded-full bg-white hover:bg-white w-14 h-14 p-0 flex items-center justify-center shadow-lg"
+							onClick={() => navigate('/dashboard/projects/create-project')}
+						>
+							<PlusCircle className="text-white" size={26} />
+						</Button>
+					</div>
+				)
+			}
 
 			{/* Projects List */}
 			<section className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 mt-6">
@@ -68,7 +83,7 @@ const ProjectsPage = () => {
 						<ProjectCard key={project.id} project={project} />
 					))}
 			</section>
-		</main>
+		</main >
 	)
 }
 
