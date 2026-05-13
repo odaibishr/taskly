@@ -5,47 +5,12 @@ import Tasks from '../../assets/Tasks.svg';
 import Users from '../../assets/Users.svg';
 import Info from '../../assets/Info.svg';
 import Menu from '../../assets/MenuIcon.svg';
-import type { MenuItem } from "../types/types";
 import { useAuthStore } from "../../features/auth/store/auth.store";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useParams } from "react-router-dom";
 import { cn } from "../lib/utils";
 import Logo from "../../assets/Icon.svg";
 import { ChevronLeft, ChevronRight, LogOut } from "lucide-react";
 
-
-const menuItems: MenuItem[] = [
-	{
-		id: 1,
-		icon: Folder,
-		label: 'Projects',
-		herf: '/dashboard/projects',
-	},
-	{
-		id: 2,
-		icon: Epics,
-		label: 'Project Epics',
-		herf: '/dashboard/project-epics',
-	},
-
-	{
-		id: 3,
-		icon: Tasks,
-		label: 'Project Tasks',
-		herf: '/dashboard/project-tasks',
-	},
-	{
-		id: 4,
-		icon: Users,
-		label: 'Project Members',
-		herf: '/dashboard/project-members',
-	},
-	{
-		id: 5,
-		icon: Info,
-		label: 'Project Details',
-		herf: '/dashboard/project-details',
-	},
-];
 
 interface Props {
 	isCollapsed: boolean;
@@ -56,6 +21,17 @@ export default function Sidebar({ isCollapsed, setIsCollapsed }: Props) {
 	const [isMobileOpen, setIsMobileOpen] = useState(false);
 	const { handleLogout } = useAuthStore();
 	const { pathname } = useLocation();
+	const { projectId } = useParams();
+
+	const menuItems = projectId ? [
+		{ id: 1, icon: Folder, label: 'All Projects', herf: '/project' },
+		{ id: 2, icon: Epics, label: 'Epics', herf: `/project/${projectId}/epics` },
+		{ id: 3, icon: Tasks, label: 'Tasks', herf: `/project/${projectId}/tasks` },
+		{ id: 4, icon: Users, label: 'Members', herf: `/project/${projectId}/members` },
+		{ id: 5, icon: Info, label: 'Project Details', herf: `/project/${projectId}/edit` },
+	] : [
+		{ id: 1, icon: Folder, label: 'Projects', herf: '/project' },
+	];
 
 	const handleLogoutClick = async () => {
 		await handleLogout();
