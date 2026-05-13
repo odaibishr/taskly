@@ -37,7 +37,7 @@ const ProjectsPage = () => {
 				description="Manage and curate your projects"
 				isBreadcrumbVisible={false}
 			>
-				<Button className="flex items-center gap-2">
+				<Button className="max-md:hidden flex items-center gap-2">
 					<PlusCircle />
 					Create Project
 				</Button>
