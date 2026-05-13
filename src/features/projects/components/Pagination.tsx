@@ -1,4 +1,6 @@
+import { ChevronLeft, ChevronRight } from "lucide-react";
 import { useProjecteStore } from "../store/projects.store";
+import Button from "../../../shared/components/Button";
 
 const Pagination = () => {
 	const { pagination, setPage, isLoading } = useProjecteStore();
@@ -14,33 +16,35 @@ const Pagination = () => {
 				</p>
 			</div>
 			<div className="flex gap-2">
-				<button
+				<Button
 					disabled={currentPage === 1 || isLoading}
 					onClick={() => setPage(currentPage - 1)}
-					className="p-2 border rounded-lg disabled:opacity-50"
+					variant="outline"
+					className="w-10 h-12 p-2"
 				>
-					Previous
-				</button>
+					<ChevronLeft className="size-5" />
+				</Button>
 
-				{/* عرض أرقام الصفحات */}
 				<div className="flex gap-1">
 					{Array.from({ length: totalPages }, (_, i) => (
-						<button
+						<Button
 							key={i + 1}
 							onClick={() => setPage(i + 1)}
-							className={`w-10 h-10 rounded-lg font-bold ${currentPage === i + 1 ? 'bg-blue-600 text-white' : 'hover:bg-gray-100'}`}
+							variant={currentPage === i + 1 ? "primary" : "outline"}
+							className="w-10 h-12 p-2"
 						>
 							{i + 1}
-						</button>
+						</Button>
 					))}
 				</div>
-				<button
+				<Button
 					disabled={currentPage === totalPages || isLoading}
 					onClick={() => setPage(currentPage + 1)}
-					className="p-2 border rounded-lg disabled:opacity-50"
+					variant="outline"
+					className="w-10 h-12 p-2"
 				>
-					Next
-				</button>
+					<ChevronRight className="size-5" />
+				</Button>
 			</div>
 		</div>
 	);
