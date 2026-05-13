@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import type { CreateProjectPayload, Project } from "../types";
-import { createProject } from "../api/projects.api";
+import { createProject, getProjects } from "../api/projects.api";
 import { useAuthStore } from "../../auth/store/auth.store";
 
 
@@ -12,6 +12,7 @@ interface ProjectsState {
 
 	// actions
 	createProject: (payload: CreateProjectPayload) => Promise<void>;
+	getProjects: () => Promise<void>;
 	clearError: () => void;
 }
 
@@ -46,5 +47,24 @@ export const useProjecteStore = create<ProjectsState>()((set) => ({
 			throw new Error(message);
 		}
 	},
+	getProjects: async () => {
+		set({
+			isLoading: true,
+			error: null,
+		});
+		try {
+			const data = await getProjects();
+			set({
+				projects: data,
+				isLoading: false
+			});
+		} catch (error: any) {
+			const message = error.response?.data?.message || error.message || "Failed to fetch projects";
+			set({
+				error: message,
+				isLoading: false
+			});
+		}
+	},
 	clearError: () => set({ error: null })
-}))
+}));
