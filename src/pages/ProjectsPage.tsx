@@ -7,6 +7,7 @@ import { PlusCircle } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import ProjectCard from "../features/projects/components/ProjectCard";
 import ProjectSkeleton from "../features/projects/components/ProjectSkeleton";
+import Pagination from "../features/projects/components/Pagination";
 import { CloudOff } from "lucide-react";
 
 const ProjectsPage = () => {
@@ -83,6 +84,11 @@ const ProjectsPage = () => {
 						<ProjectCard key={project.id} project={project} />
 					))}
 			</section>
+
+			{/* Pagination UI */}
+			{!isLoading && projects.length > 0 && (
+				< Pagination />
+			)}
 		</main >
 	)
 }
