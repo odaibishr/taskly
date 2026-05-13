@@ -2,6 +2,8 @@ import { useEffect } from "react";
 import EmptyProjects from "../features/projects/components/EmptyProjects"
 import { useProjecteStore } from "../features/projects/store/projects.store"
 import Button from "../shared/components/Button";
+import { HeaderSection } from "../shared/components/HeaderSection";
+import { PlusCircle } from "lucide-react";
 
 const ProjectsPage = () => {
 	const { projects, getProjects, isLoading, error } = useProjecteStore();
@@ -30,9 +32,18 @@ const ProjectsPage = () => {
 
 	return (
 		<main>
-
+			<HeaderSection
+				title="Projects"
+				description="Manage and curate your projects"
+				isBreadcrumbVisible={false}
+			>
+				<Button className="flex items-center gap-2">
+					<PlusCircle />
+					Create Project
+				</Button>
+			</HeaderSection>
 		</main>
 	)
 }
 
-export default ProjectsPage 
+export default ProjectsPage
