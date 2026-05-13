@@ -28,45 +28,51 @@ const router = createBrowserRouter([
 		],
 	},
 	{
-		path: "/dashboard",
+		path: "/project",
 		element: (
 			<DashboardLayout>
 				<Outlet />
 			</DashboardLayout>
 		),
+
 		children: [
 			{
-				path: "projects",
+				index: true,
+				element: <ProjectsPage />,
+			},
+			{
+				path: "create-project",
+				element: <CreateProjectPage />,
+			},
+			{
+				path: ":projectId",
 				children: [
-					{
-						index: true,
-						element: <ProjectsPage />,
-					},
-					{
-						path: "create-project",
-						element: <CreateProjectPage />,
-					},
+					{ path: "epics", element: <div>Epics Page Content</div> },
+					{ path: "tasks", element: <div>Tasks Page Content</div> },
+					{ path: "members", element: <div>Members Page Content</div> },
+					{ path: "edit", element: <div>Edit Project Content</div> },
 				]
-			},
-			{
-				path: "project-epics",
-				element: <div>Epics Page Content</div>,
-			},
-			{
-				path: "project-tasks",
-				element: <div>Tasks Page Content</div>,
-			},
-			{
-				path: "project-members",
-				element: <div>Members Page Content</div>,
-			},
-			{
-				path: "project-details",
-				element: <div>Details Page Content</div>,
-			},
+			}
 		]
-	}
-]);
+	},
+	{
+		path: "project-epics",
+		element: <div>Epics Page Content</div>,
+	},
+	{
+		path: "project-tasks",
+		element: <div>Tasks Page Content</div>,
+	},
+	{
+		path: "project-members",
+		element: <div>Members Page Content</div>,
+	},
+	{
+		path: "project-details",
+		element: <div>Details Page Content</div>,
+	},
+]
+);
 
 export function AppRouter() {
 	return <RouterProvider router={router} />

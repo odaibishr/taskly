@@ -38,6 +38,10 @@ const ProjectsPage = () => {
 		return () => observer.disconnect();
 	}, [projects.length, isLoading]);
 
+	const handleProjectClick = (projectId: string) => {
+		navigate(`/project/${projectId}/epics`);
+	}
+
 	if (error) {
 		return (
 			<div className="flex flex-col items-center justify-center min-h-[60vh] text-center p-6 animate-in fade-in zoom-in duration-300">
@@ -104,7 +108,9 @@ const ProjectsPage = () => {
 				{isLoading
 					? Array.from({ length: 6 }, (_, index) => <ProjectSkeleton key={index} />)
 					: projects.map((project) => (
-						<ProjectCard key={project.id} project={project} />
+						<div className="cursor-pointer" onClick={() => handleProjectClick(project.id)}>
+							<ProjectCard key={project.id} project={project} />
+						</div>
 					))}
 			</section>
 
