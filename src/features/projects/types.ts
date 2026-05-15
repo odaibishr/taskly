@@ -14,3 +14,7 @@ export interface GetProjectsParams {
 	offset: number;
 }
 
+export interface GetProjectByIdParams {
+	projectId: string;
+}
+
