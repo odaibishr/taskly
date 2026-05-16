@@ -23,3 +23,8 @@ export async function getProjects(params: GetProjectsParams) {
 		totalCount
 	}
 }
+
+export async function getProjectById(id: string) {
+	const response = await http.get(`/rest/v1/projects?id=eq.${id}`);
+	return response.data[0];
+}
