@@ -21,7 +21,7 @@ interface ProjectsState {
 	getProjects: (isAppend?: boolean) => Promise<void>;
 	setPage: (page: number) => void;
 	getProjectById: (projectId: string) => Promise<void>;
-	updateProject: (projectId: string, payload: UpdateProjectPayload);
+	updateProject: (projectId: string, payload: UpdateProjectPayload) => Promise<void>;
 	clearError: () => void;
 }
 
