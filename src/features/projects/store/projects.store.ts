@@ -1,6 +1,6 @@
 import { create } from "zustand";
-import type { CreateProjectPayload, Project } from "../types";
-import { createProject, getProjectById, getProjects } from "../api/projects.api";
+import type { CreateProjectPayload, Project, UpdateProjectPayload } from "../types";
+import { createProject, getProjectById, getProjects, updateProject } from "../api/projects.api";
 import { useAuthStore } from "../../auth/store/auth.store";
 
 
@@ -21,6 +21,7 @@ interface ProjectsState {
 	getProjects: (isAppend?: boolean) => Promise<void>;
 	setPage: (page: number) => void;
 	getProjectById: (projectId: string) => Promise<void>;
+	updateProject: (projectId: string, payload: UpdateProjectPayload);
 	clearError: () => void;
 }
 
@@ -111,5 +112,34 @@ export const useProjecteStore = create<ProjectsState>()((set, get) => ({
 			});
 		}
 	},
+
+	updateProject: async (projectId: string, payload: UpdateProjectPayload) => {
+		set({
+			isLoading: true,
+			error: null
+		});
+
+		try {
+			await updateProject(projectId, payload);
+			set((state) => ({
+				projects: state.projects.map((project) => {
+					if (project.id === projectId) {
+						return { ...project, ...payload };
+					}
+					return project;
+				}),
+				isLoading: false,
+			}));
+		} catch (error: any) {
+			const message = error.response?.data?.message
+				|| error.message || "Failed to update project";
+			set({
+				isLoading: false,
+				error: message
+			});
+		}
+
+	},
+
 	clearError: () => set({ error: null })
 }));
