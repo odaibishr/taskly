@@ -9,7 +9,7 @@ import DashboardLayout from "../layouts/DashboardLayout";
 import Navbar from "../shared/components/Navbar";
 import ProjectsPage from "../pages/ProjectsPage";
 import CreateProjectPage from "../pages/CreateProjectPage";
-import { EditProjectForm } from "../features/projects";
+import EditProjectPage from "../pages/EditProjectPage";
 
 const router = createBrowserRouter([
 	{
@@ -51,7 +51,7 @@ const router = createBrowserRouter([
 					{ path: "epics", element: <div>Epics Page Content</div> },
 					{ path: "tasks", element: <div>Tasks Page Content</div> },
 					{ path: "members", element: <div>Members Page Content</div> },
-					{ path: "edit", element: <EditProjectForm /> },
+					{ path: "edit", element: <EditProjectPage /> },
 				]
 			}
 		]
