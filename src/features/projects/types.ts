@@ -18,3 +18,5 @@ export interface GetProjectByIdParams {
 	projectId: string;
 }
 
+export interface UpdateProjectPayload extends Pick<Project, "name" | "description"> { }
+
