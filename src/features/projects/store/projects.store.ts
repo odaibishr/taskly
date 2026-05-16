@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import type { CreateProjectPayload, Project } from "../types";
-import { createProject, getProjects } from "../api/projects.api";
+import { createProject, getProjectById, getProjects } from "../api/projects.api";
 import { useAuthStore } from "../../auth/store/auth.store";
 
 
@@ -26,6 +26,7 @@ interface ProjectsState {
 
 export const useProjecteStore = create<ProjectsState>()((set, get) => ({
 	projects: [],
+	currentProject: null,
 	isLoading: false,
 	error: null,
 	pagination: {
@@ -87,6 +88,28 @@ export const useProjecteStore = create<ProjectsState>()((set, get) => ({
 			pagination: { ...state.pagination, currentPage: page }
 		}));
 		get().getProjects(false);
+	},
+
+	getProjectById: async (projectId: string) => {
+		set({
+			isLoading: true,
+			error: null
+		});
+
+		try {
+			const project = await getProjectById(projectId);
+			set({
+				isLoading: false,
+				currentProject: project
+			})
+		} catch (error: any) {
+			const message = error.response?.data?.message
+				|| error.message || "Failed to fetch project";
+			set({
+				isLoading: false,
+				error: message
+			});
+		}
 	},
 	clearError: () => set({ error: null })
 }));
