@@ -7,6 +7,7 @@ import { useAuthStore } from "../../auth/store/auth.store";
 
 interface ProjectsState {
 	projects: Project[];
+	currentProject: Project | null;
 	isLoading: boolean;
 	error: string | null;
 	pagination: {
@@ -19,6 +20,7 @@ interface ProjectsState {
 	createProject: (payload: CreateProjectPayload) => Promise<void>;
 	getProjects: (isAppend?: boolean) => Promise<void>;
 	setPage: (page: number) => void;
+	getProjectById: (projectId: string) => Promise<void>;
 	clearError: () => void;
 }
 
