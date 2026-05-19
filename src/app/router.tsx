@@ -16,7 +16,7 @@ const router = createBrowserRouter([
 		path: "/",
 		element: (
 			<>
-				<Navbar /> {/* سيظهر النافبار هنا لكل الصفحات العامة */}
+				<Navbar />
 				<Outlet />
 			</>
 		),
