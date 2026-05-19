@@ -24,7 +24,7 @@ export default function Navbar() {
             ) : (
 
                 <header className="h-20 bg-white border-b border-gray-100 sticky top-0 z-30 px-6 lg:px-10">
-                    <div className="h-full flex justify-end items-center max-w-[1600px] mx-auto">
+                    <div className="h-full flex justify-end items-center max-w-400 mx-auto">
                         <div className="flex items-center gap-4">
                             <div className="text-right hidden sm:block">
                                 <h4 className="text-[#0F172A] font-bold text-sm leading-tight capitalize">

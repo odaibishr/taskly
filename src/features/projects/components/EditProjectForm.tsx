@@ -55,8 +55,8 @@ const EditProjectForm = () => {
 			if (!projectId) return;
 			await updateProject(projectId, data);
 			navigate('/project'); // الرجوع إلى قائمة المشاريع
-		} catch (error: any) {
-			console.error(error.message);
+		} catch (error: unknown) {
+			console.error(error instanceof Error ? error.message : String(error));
 		}
 	};
 	if (isLoading && !currentProject) {
@@ -87,6 +87,7 @@ const EditProjectForm = () => {
 						label="Project Description"
 						maxLength={500}
 						optional
+						// eslint-disable-next-line react-hooks/incompatible-library
 						value={watch('description')}
 					/>
 					<div className="pt-6 flex flex-col-reverse sm:flex-row items-center justify-between gap-4">

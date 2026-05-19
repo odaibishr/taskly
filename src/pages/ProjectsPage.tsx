@@ -38,7 +38,7 @@ const ProjectsPage = () => {
 		);
 		if (observerTarget.current) observer.observe(observerTarget.current);
 		return () => observer.disconnect();
-	}, [projects.length, isLoading]);
+	}, [projects.length, isLoading, pagination, getProjects]);
 
 	const handleProjectClick = (projectId: string) => {
 		navigate(`/project/${projectId}/epics`);

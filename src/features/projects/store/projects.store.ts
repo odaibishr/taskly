@@ -56,9 +56,8 @@ export const useProjecteStore = create<ProjectsState>()((set, get) => ({
 				await useProjecteStore.getState().getProjects();
 			}
 
-		} catch (error: any) {
-			const message = error.response?.data?.message
-				|| error.message || "Failed to create project";
+		} catch (error: unknown) {
+			const message = error instanceof Error ? error.message : "Failed to create project";
 			set({
 				isLoading: false,
 				error: message,
@@ -79,8 +78,9 @@ export const useProjecteStore = create<ProjectsState>()((set, get) => ({
 				pagination: { ...state.pagination, totalCount },
 				isLoading: false
 			}));
-		} catch (error: any) {
-			set({ error: error.message, isLoading: false });
+		} catch (error: unknown) {
+			const message = error instanceof Error ? error.message : "Failed to fetch projects";
+			set({ error: message, isLoading: false });
 		}
 	},
 
@@ -103,9 +103,8 @@ export const useProjecteStore = create<ProjectsState>()((set, get) => ({
 				isLoading: false,
 				currentProject: project
 			})
-		} catch (error: any) {
-			const message = error.response?.data?.message
-				|| error.message || "Failed to fetch project";
+		} catch (error: unknown) {
+			const message = error instanceof Error ? error.message : "Failed to fetch project";
 			set({
 				isLoading: false,
 				error: message
@@ -130,9 +129,8 @@ export const useProjecteStore = create<ProjectsState>()((set, get) => ({
 				}),
 				isLoading: false,
 			}));
-		} catch (error: any) {
-			const message = error.response?.data?.message
-				|| error.message || "Failed to update project";
+		} catch (error: unknown) {
+			const message = error instanceof Error ? error.message : "Failed to update project";
 			set({
 				isLoading: false,
 				error: message
