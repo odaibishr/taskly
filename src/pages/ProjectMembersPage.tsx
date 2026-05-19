@@ -1,6 +1,7 @@
 import { UserPlusIcon } from "lucide-react"
 import Button from "../shared/components/Button"
 import { HeaderSection } from "../shared/components/HeaderSection"
+import MembersTable from "../features/members/components/MembersTable"
 
 const ProjectMembersPage = () => {
     return (
@@ -14,6 +15,8 @@ const ProjectMembersPage = () => {
                     Invite Members
                 </Button>
             </HeaderSection>
+
+            <MembersTable />
         </main>
     )
 }
