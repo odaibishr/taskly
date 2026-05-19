@@ -1,9 +1,9 @@
 import { create } from "zustand";
 import { sendResetLink, signIn, signUp, updatePassword, logout } from "../api/auth.api";
-import type { LoginPayload, SendResetLinkPayload, SignUpPayload, UpdatePasswordPayload } from "../types";
+import type { LoginPayload, SendResetLinkPayload, SignUpPayload, UpdatePasswordPayload, User } from "../types";
 
 interface AuthState {
-	user: any | null;
+	user: User | null;
 	isLoading: boolean;
 	error: string | null;
 	isSignUpSuccess: boolean;
