@@ -28,8 +28,8 @@ export const useAuthStore = create<AuthState>((set) => ({
 		try {
 			await signUp(payload);
 			set({ isSignUpSuccess: true });
-		} catch (error: any) {
-			const message = error.response?.data?.msg || error.message || 'Something went wrong. Please try again.';
+		} catch (error: unknown) {
+			const message = error instanceof Error ? error.message : 'Something went wrong. Please try again.';
 			set({ error: message });
 		} finally {
 			set({ isLoading: false });
@@ -47,8 +47,8 @@ export const useAuthStore = create<AuthState>((set) => ({
 			localStorage.setItem('user', JSON.stringify(data.user));
 			set({ user: data.user });
 			window.location.href = '/project'
-		} catch (error: any) {
-			const message = error.response?.data?.error_description || error.message || 'Login failed.';
+		} catch (error: unknown) {
+			const message = error instanceof Error ? error.message : 'Login failed.';
 			set({ error: message });
 		} finally {
 			set({ isLoading: false });
@@ -62,8 +62,8 @@ export const useAuthStore = create<AuthState>((set) => ({
 			localStorage.removeItem('refresh_token');
 			localStorage.removeItem('user');
 			window.location.href = '/login';
-		} catch (error: any) {
-			const message = error.response?.data?.msg || error.message || 'Failed to logout.';
+		} catch (error: unknown) {
+			const message = error instanceof Error ? error.message : 'Failed to logout.';
 			set({ error: message });
 		} finally {
 			set({ isLoading: false });
@@ -80,8 +80,8 @@ export const useAuthStore = create<AuthState>((set) => ({
 			set({
 				isForgotSuccess: true,
 			})
-		} catch (error) {
-			const message = error.response?.data?.error_description || error.message || 'Failed to send reset link.';
+		} catch (error: unknown) {
+			const message = error instanceof Error ? error.message : 'Failed to send reset link.';
 			set({ error: message });
 		} finally {
 			set({ isLoading: false });
@@ -97,8 +97,8 @@ export const useAuthStore = create<AuthState>((set) => ({
 			await updatePassword(payload);
 			localStorage.clear();
 			window.location.href = '/login';
-		} catch (error: any) {
-			const message = error.response?.data?.error_description || error.message || 'Failed to update password.';
+		} catch (error: unknown) {
+			const message = error instanceof Error ? error.message : 'Failed to update password.';
 			set({ error: message });
 		} finally {
 			set({ isLoading: false });
