@@ -6,8 +6,7 @@ export interface Project {
 	created_at: string | null;
 }
 
-export interface CreateProjectPayload extends Pick<Project, "name" | "description" | "created_by"> {
-}
+export type CreateProjectPayload = Pick<Project, "name" | "description" | "created_by">;
 
 export interface GetProjectsParams {
 	limit: number;
@@ -18,5 +17,5 @@ export interface GetProjectByIdParams {
 	projectId: string;
 }
 
-export interface UpdateProjectPayload extends Pick<Project, "name" | "description"> { }
+export type UpdateProjectPayload = Pick<Project, "name" | "description">;
 
