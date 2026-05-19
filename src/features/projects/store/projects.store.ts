@@ -1,12 +1,13 @@
 import { create } from "zustand";
-import type { CreateProjectPayload, Project } from "../types";
-import { createProject, getProjects } from "../api/projects.api";
+import type { CreateProjectPayload, Project, UpdateProjectPayload } from "../types";
+import { createProject, getProjectById, getProjects, updateProject } from "../api/projects.api";
 import { useAuthStore } from "../../auth/store/auth.store";
 
 
 
 interface ProjectsState {
 	projects: Project[];
+	currentProject: Project | null;
 	isLoading: boolean;
 	error: string | null;
 	pagination: {
@@ -19,11 +20,14 @@ interface ProjectsState {
 	createProject: (payload: CreateProjectPayload) => Promise<void>;
 	getProjects: (isAppend?: boolean) => Promise<void>;
 	setPage: (page: number) => void;
+	getProjectById: (projectId: string) => Promise<void>;
+	updateProject: (projectId: string, payload: UpdateProjectPayload) => Promise<void>;
 	clearError: () => void;
 }
 
 export const useProjecteStore = create<ProjectsState>()((set, get) => ({
 	projects: [],
+	currentProject: null,
 	isLoading: false,
 	error: null,
 	pagination: {
@@ -86,5 +90,56 @@ export const useProjecteStore = create<ProjectsState>()((set, get) => ({
 		}));
 		get().getProjects(false);
 	},
+
+	getProjectById: async (projectId: string) => {
+		set({
+			isLoading: true,
+			error: null
+		});
+
+		try {
+			const project = await getProjectById(projectId);
+			set({
+				isLoading: false,
+				currentProject: project
+			})
+		} catch (error: any) {
+			const message = error.response?.data?.message
+				|| error.message || "Failed to fetch project";
+			set({
+				isLoading: false,
+				error: message
+			});
+		}
+	},
+
+	updateProject: async (projectId: string, payload: UpdateProjectPayload) => {
+		set({
+			isLoading: true,
+			error: null
+		});
+
+		try {
+			await updateProject(projectId, payload);
+			set((state) => ({
+				projects: state.projects.map((project) => {
+					if (project.id === projectId) {
+						return { ...project, ...payload };
+					}
+					return project;
+				}),
+				isLoading: false,
+			}));
+		} catch (error: any) {
+			const message = error.response?.data?.message
+				|| error.message || "Failed to update project";
+			set({
+				isLoading: false,
+				error: message
+			});
+		}
+
+	},
+
 	clearError: () => set({ error: null })
 }));

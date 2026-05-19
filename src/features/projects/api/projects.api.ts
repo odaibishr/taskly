@@ -1,5 +1,5 @@
 import { http } from "../../../shared/lib/http";
-import type { CreateProjectPayload, GetProjectsParams } from "../types";
+import type { CreateProjectPayload, GetProjectsParams, UpdateProjectPayload } from "../types";
 
 export async function createProject(payload: CreateProjectPayload) {
 	const response = await http.post('/rest/v1/projects', payload);
@@ -22,4 +22,14 @@ export async function getProjects(params: GetProjectsParams) {
 		data: response.data,
 		totalCount
 	}
+}
+
+export async function getProjectById(id: string) {
+	const response = await http.get(`/rest/v1/projects?id=eq.${id}`);
+	return response.data[0];
+}
+
+export async function updateProject(projectId: string, payload: UpdateProjectPayload) {
+	const response = await http.patch(`/rest/v1/projects?id=eq.${projectId}`, payload);
+	return response.data;
 }

@@ -9,13 +9,14 @@ import DashboardLayout from "../layouts/DashboardLayout";
 import Navbar from "../shared/components/Navbar";
 import ProjectsPage from "../pages/ProjectsPage";
 import CreateProjectPage from "../pages/CreateProjectPage";
+import EditProjectPage from "../pages/EditProjectPage";
 
 const router = createBrowserRouter([
 	{
 		path: "/",
 		element: (
 			<>
-				<Navbar /> {/* سيظهر النافبار هنا لكل الصفحات العامة */}
+				<Navbar />
 				<Outlet />
 			</>
 		),
@@ -50,7 +51,7 @@ const router = createBrowserRouter([
 					{ path: "epics", element: <div>Epics Page Content</div> },
 					{ path: "tasks", element: <div>Tasks Page Content</div> },
 					{ path: "members", element: <div>Members Page Content</div> },
-					{ path: "edit", element: <div>Edit Project Content</div> },
+					{ path: "edit", element: <EditProjectPage /> },
 				]
 			}
 		]
