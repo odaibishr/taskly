@@ -36,8 +36,8 @@ const CreateProjectForm = () => {
 			if (!user) throw new Error("User not authenticated");
 			await createProject({ ...data, created_by: user.id });
 			navigate('/dashboard/projects');
-		} catch (error: any) {
-			console.error(error.message);
+		} catch (error: unknown) {
+			console.error(error);
 		}
 	};
 
@@ -67,6 +67,7 @@ const CreateProjectForm = () => {
 						label="Project Description"
 						maxLength={500}
 						optional
+						// eslint-disable-next-line react-hooks/incompatible-library
 						value={watch('description')}
 					/>
 
@@ -82,7 +83,7 @@ const CreateProjectForm = () => {
 						<Button
 							type="submit"
 							variant="primary"
-							className="sm:min-w-[160px]"
+							className="sm:min-w-40"
 							disabled={isLoading}
 						>
 							Create Project
