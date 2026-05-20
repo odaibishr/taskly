@@ -25,7 +25,9 @@ export const HeaderSection = ({ title, description, children, isBreadcrumbVisibl
 					</h1>
 					{description && <p className="text-gray-500">{description}</p>}
 				</div>
-				{children}
+				<div className="hidden md:flex">
+					{children}
+				</div>
 			</div>
 		</section>
 	);
