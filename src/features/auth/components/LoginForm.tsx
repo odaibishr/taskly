@@ -17,7 +17,7 @@ export default function LoginForm() {
 		resolver: zodResolver(loginSchema),
 	});
 
-	const onSubimt = async (data: LoginFormData) => {
+	const onSubmit = async (data: LoginFormData) => {
 		await handleSignIn(data);
 	}
 
@@ -27,7 +27,7 @@ export default function LoginForm() {
 				title="Welcome Back"
 				description="Please enter your details to access your workspace" />
 
-			<form onSubmit={handleSubmit(onSubimt)} className="space-y-4">
+			<form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
 				<Input
 					register={register}
 					name="email"

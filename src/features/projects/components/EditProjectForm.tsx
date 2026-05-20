@@ -4,7 +4,7 @@ import { createProjectSchema } from "../validation";
 import { useNavigate, useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useProjecteStore } from "../store/projects.store";
+import { useProjectStore } from "../store/projects.store";
 import FormHeader from "./FormHeader";
 import { Edit } from "lucide-react";
 import Input from "../../../shared/components/Input";
@@ -24,7 +24,7 @@ const EditProjectForm = () => {
 		updateProject,
 		error,
 		isLoading
-	} = useProjecteStore();
+	} = useProjectStore();
 	const {
 		register,
 		handleSubmit,

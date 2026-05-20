@@ -2,7 +2,11 @@ import { http } from "../../../shared/lib/http";
 import type { CreateProjectPayload, GetProjectsParams, UpdateProjectPayload } from "../types";
 
 export async function createProject(payload: CreateProjectPayload) {
-	const response = await http.post('/rest/v1/projects', payload);
+	const response = await http.post('/rest/v1/projects', payload, {
+		headers: {
+			'Prefer': 'return=representation'
+		}
+	});
 	return response.data[0];
 }
 
