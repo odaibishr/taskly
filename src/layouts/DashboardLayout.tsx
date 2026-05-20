@@ -20,13 +20,13 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 			<Sidebar isCollapsed={isCollapsed} setIsCollapsed={setIsCollapsed} />
 
 			<div className={cn(
-				"flex-1 flex flex-col transition-all duration-300",
+				"flex-1 min-w-0 flex flex-col transition-all duration-300",
 				isCollapsed ? "lg:pl-20" : "lg:pl-64"
 			)}>
 				<Navbar />
 
 				<main className="p-6 lg:p-10 flex-1">
-					<div className="max-w-[1600px] mx-auto">
+					<div className="max-w-400 mx-auto">
 						{children}
 					</div>
 				</main>

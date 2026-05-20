@@ -10,6 +10,7 @@ import Navbar from "../shared/components/Navbar";
 import ProjectsPage from "../pages/ProjectsPage";
 import CreateProjectPage from "../pages/CreateProjectPage";
 import EditProjectPage from "../pages/EditProjectPage";
+import ProjectMembersPage from "../pages/ProjectMembersPage";
 
 const router = createBrowserRouter([
 	{
@@ -50,7 +51,7 @@ const router = createBrowserRouter([
 				children: [
 					{ path: "epics", element: <div>Epics Page Content</div> },
 					{ path: "tasks", element: <div>Tasks Page Content</div> },
-					{ path: "members", element: <div>Members Page Content</div> },
+					{ path: "members", element: <ProjectMembersPage /> },
 					{ path: "edit", element: <EditProjectPage /> },
 				]
 			}

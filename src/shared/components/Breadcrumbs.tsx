@@ -16,7 +16,7 @@ const Breadcrumbs = () => {
 	const displayPathnames = pathnames.filter(x => x !== 'dashboard');
 
 	return (
-		<nav className="flex items-center text-sm text-slate-400">
+		<nav className=" items-center text-sm text-slate-400 hidden md:flex" aria-label="Breadcrumb">
 			<ol className="flex items-center space-x-1">
 
 				{displayPathnames.map((value, index) => {
