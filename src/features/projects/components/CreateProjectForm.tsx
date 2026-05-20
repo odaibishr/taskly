@@ -75,7 +75,7 @@ const CreateProjectForm = () => {
 						<Button
 							type="button"
 							variant="ghost"
-							onClick={() => navigate('/dashboard/projects')}
+							onClick={() => navigate('/project')}
 							className="w-full sm:w-fit px-8"
 						>
 							Back
