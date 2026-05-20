@@ -16,7 +16,7 @@ const ProjectMembersPage = () => {
                 </Button>
             </HeaderSection>
 
-            <MembersTable />
+            <MembersTable members={[]} />
         </main>
     )
 }
