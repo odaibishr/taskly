@@ -4,7 +4,7 @@ import { createProjectSchema } from "../validation";
 import { useNavigate, useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useProjecteStore } from "../store/projects.store";
+import { useProjecteStore } from '../../projects';
 import FormHeader from "./FormHeader";
 import { Edit } from "lucide-react";
 import Input from "../../../shared/components/Input";
@@ -102,7 +102,7 @@ const EditProjectForm = () => {
 						<Button
 							type="submit"
 							variant="primary"
-							className="sm:min-w-[160px]"
+							className="sm:min-w-40"
 							disabled={isLoading}
 						>
 							Save Changes
