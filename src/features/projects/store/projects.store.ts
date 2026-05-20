@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import type { CreateProjectPayload, Project, UpdateProjectPayload } from "../types";
 import { createProject, getProjectById, getProjects, updateProject } from "../api/projects.api";
-import { useAuthStore } from "../../auth/store/auth.store";
+import { useAuthStore } from "../../auth/";
 
 
 
