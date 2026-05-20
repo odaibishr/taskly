@@ -1,6 +1,7 @@
 import { create } from "zustand";
 import { sendResetLink, signIn, signUp, updatePassword, logout } from "../api/auth.api";
 import type { LoginPayload, SendResetLinkPayload, SignUpPayload, UpdatePasswordPayload, User } from "../types";
+import { router } from "../../../app/router";
 
 interface AuthState {
 	user: User | null;
@@ -46,7 +47,7 @@ export const useAuthStore = create<AuthState>((set) => ({
 			localStorage.setItem('refresh_token', data.refresh_token);
 			localStorage.setItem('user', JSON.stringify(data.user));
 			set({ user: data.user });
-			window.location.href = '/project'
+			router.navigate('/project');
 		} catch (error: unknown) {
 			const message = error instanceof Error ? error.message : 'Login failed.';
 			set({ error: message });
@@ -61,7 +62,7 @@ export const useAuthStore = create<AuthState>((set) => ({
 			localStorage.removeItem('access_token');
 			localStorage.removeItem('refresh_token');
 			localStorage.removeItem('user');
-			window.location.href = '/login';
+			router.navigate('/login');
 		} catch (error: unknown) {
 			const message = error instanceof Error ? error.message : 'Failed to logout.';
 			set({ error: message });
@@ -96,7 +97,7 @@ export const useAuthStore = create<AuthState>((set) => ({
 		try {
 			await updatePassword(payload);
 			localStorage.clear();
-			window.location.href = '/login';
+			router.navigate('/login');
 		} catch (error: unknown) {
 			const message = error instanceof Error ? error.message : 'Failed to update password.';
 			set({ error: message });
