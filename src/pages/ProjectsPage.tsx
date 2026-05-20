@@ -2,7 +2,7 @@ import { useEffect, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import { PlusCircle } from "lucide-react";
 import {
-	useProjecteStore,
+	useProjectStore,
 	ProjectCard,
 	ProjectSkeleton,
 	Pagination,
@@ -13,7 +13,7 @@ import Button from "../shared/components/Button";
 import ErrorCard from "../shared/components/ErrorCard";
 
 const ProjectsPage = () => {
-	const { projects, getProjects, isLoading, error, pagination } = useProjecteStore();
+	const { projects, getProjects, isLoading, error, pagination } = useProjectStore();
 	const navigate = useNavigate();
 	const observerTarget = useRef<HTMLDivElement>(null);
 
@@ -27,7 +27,7 @@ const ProjectsPage = () => {
 				if (entries[0].isIntersecting && !isLoading) {
 					const { totalCount } = pagination;
 					if (projects.length < totalCount) {
-						useProjecteStore.setState((s) => ({
+						useProjectStore.setState((s) => ({
 							pagination: { ...s.pagination, currentPage: s.pagination.currentPage + 1 }
 						}));
 						getProjects(true);
@@ -83,7 +83,7 @@ const ProjectsPage = () => {
 					<div className="fixed bottom-4 right-4 md:hidden">
 						<Button
 							className="rounded-full bg-white hover:bg-white w-14 h-14 p-0 flex items-center justify-center shadow-lg"
-							onClick={() => navigate('/dashboard/projects/create-project')}
+							onClick={() => navigate('/project/create-project')}
 						>
 							<PlusCircle className="text-white" size={26} />
 						</Button>

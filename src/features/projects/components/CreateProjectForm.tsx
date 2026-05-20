@@ -3,7 +3,7 @@ import { createProjectSchema } from "../validation"
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useProjecteStore } from "../store/projects.store";
+import { useProjectStore } from "../store/projects.store";
 import FormHeader from "./FormHeader";
 import { CheckCircle } from "lucide-react";
 import Input from "../../../shared/components/Input";
@@ -19,7 +19,8 @@ const CreateProjectForm = () => {
 		createProject,
 		error,
 		isLoading
-	} = useProjecteStore();
+	} = useProjectStore();
+	const user = useAuthStore((state) => state.user);
 
 	const {
 		register,
@@ -32,7 +33,6 @@ const CreateProjectForm = () => {
 
 	const onSubmit = async (data: CreateProjectFormData) => {
 		try {
-			const user = useAuthStore.getState().user;
 			if (!user) throw new Error("User not authenticated");
 			await createProject({ ...data, created_by: user.id });
 			navigate('/project');

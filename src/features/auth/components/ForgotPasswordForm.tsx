@@ -19,12 +19,12 @@ type ForgotPasswordFormData = z.infer<typeof forgotPasswordSchema>;
 
 export default function ForgotPasswordForm() {
 	const [timer, setTimer] = useState<number>(0);
-	const { isLoading, handleForgotPassword } = useAuthStore();
+	const { isLoading, isForgotSuccess, handleForgotPassword } = useAuthStore();
 	const { register, handleSubmit, formState: { errors } } = useForm<ForgotPasswordFormData>({
 		resolver: zodResolver(forgotPasswordSchema),
 	});
 
-	const onSubimt = async (data: ForgotPasswordFormData) => {
+	const onSubmit = async (data: ForgotPasswordFormData) => {
 		await handleForgotPassword(data);
 		setTimer(10);
 	}
@@ -47,7 +47,7 @@ export default function ForgotPasswordForm() {
 				description="No worries, we'll send you reset instructions."
 			/>
 
-			<form onSubmit={handleSubmit(onSubimt)}>
+			<form onSubmit={handleSubmit(onSubmit)}>
 				<Input
 					register={register}
 					name="email"
@@ -69,21 +69,23 @@ export default function ForgotPasswordForm() {
 				</Link>
 
 
-				<div className="w-full flex flex-col justify-center items-center gap-6">
-					<div className="w-full bg-success p-4 flex gap-3 rounded-lg">
-						<img className="w-6 h-6" src={CeckmarkIcon} alt="Checkmark" />
-						<span className="text-[#005235] text-sm">If an account exists with this email, we’ve sent a password reset link.</span>
-					</div>
-					{timer > 0 && (
-						<div className="w-full flex flex-col justify-center items-center gap-3">
-							<span className="text-[#434654] uppercase text-[11px] font-bold">Didn't receive the email?</span>
-							<div className="bg-surface-low w-full rounded-sm flex justify-center items-center p-4 gap-1.5">
-								<img className="w-6 h-6" src={ClockIcon} alt="Clock" />
-								<button className="text-[#155EEF] text-sm font-semibold">Resend in {timer} </button>
-							</div>
+				{isForgotSuccess && (
+					<div className="w-full flex flex-col justify-center items-center gap-6">
+						<div className="w-full bg-success p-4 flex gap-3 rounded-lg">
+							<img className="w-6 h-6" src={CeckmarkIcon} alt="Checkmark" />
+							<span className="text-[#005235] text-sm">If an account exists with this email, we’ve sent a password reset link.</span>
 						</div>
-					)}
-				</div>
+						{timer > 0 && (
+							<div className="w-full flex flex-col justify-center items-center gap-3">
+								<span className="text-[#434654] uppercase text-[11px] font-bold">Didn't receive the email?</span>
+								<div className="bg-surface-low w-full rounded-sm flex justify-center items-center p-4 gap-1.5">
+									<img className="w-6 h-6" src={ClockIcon} alt="Clock" />
+									<button className="text-[#155EEF] text-sm font-semibold">Resend in {timer} </button>
+								</div>
+							</div>
+						)}
+					</div>
+				)}
 
 			</form>
 		</FormContainer>

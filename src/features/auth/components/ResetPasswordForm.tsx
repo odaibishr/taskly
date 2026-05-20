@@ -12,14 +12,13 @@ import { Link } from "react-router-dom";
 type ResetPasswordFormData = z.infer<typeof resetPasswordSchema>;
 
 export default function ResetPasswordForm() {
-	const { isLoading, error, clearError, handleUpdatePassword } = useAuthStore();
+	const { isLoading, error, handleUpdatePassword } = useAuthStore();
 	const { register, handleSubmit, formState: { errors } } = useForm<ResetPasswordFormData>({
 		resolver: zodResolver(resetPasswordSchema)
 	});
 
-	const onSubimt = async (data: ResetPasswordFormData) => {
+	const onSubmit = async (data: ResetPasswordFormData) => {
 		await handleUpdatePassword({ password: data.password });
-		clearError();
 	}
 
 	return (
@@ -29,7 +28,7 @@ export default function ResetPasswordForm() {
 				description="Create a new, strong password to secure your workstation access."
 			/>
 
-			<form onSubmit={handleSubmit(onSubimt)}>
+			<form onSubmit={handleSubmit(onSubmit)}>
 				<Input
 					register={register}
 					name="password"

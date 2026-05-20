@@ -25,7 +25,7 @@ interface ProjectsState {
 	clearError: () => void;
 }
 
-export const useProjecteStore = create<ProjectsState>()((set, get) => ({
+export const useProjectStore = create<ProjectsState>()((set, get) => ({
 	projects: [],
 	currentProject: null,
 	isLoading: false,
@@ -53,7 +53,7 @@ export const useProjecteStore = create<ProjectsState>()((set, get) => ({
 					isLoading: false,
 				}));
 			} else {
-				await useProjecteStore.getState().getProjects();
+				await useProjectStore.getState().getProjects();
 			}
 
 		} catch (error: unknown) {
