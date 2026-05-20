@@ -3,9 +3,11 @@ import { useParams } from "react-router-dom"
 import { UserPlusIcon } from "lucide-react"
 import Button from "../shared/components/Button"
 import { HeaderSection } from "../shared/components/HeaderSection"
-import MembersTable from "../features/members/components/MembersTable"
-import MembersTableSkeleton from "../features/members/components/MembersTableSkeleton"
-import { useMembersStore } from "../features/members/store/members.store"
+import {
+    MembersTable,
+    MembersTableSkeleton,
+    useMembersStore
+} from "../features/members"
 import ErrorCard from "../shared/components/ErrorCard"
 
 const ProjectMembersPage = () => {
