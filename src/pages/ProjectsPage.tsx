@@ -69,7 +69,7 @@ const ProjectsPage = () => {
 				) : (
 					<Button
 						className="max-md:hidden flex items-center gap-2"
-						onClick={() => navigate('/dashboard/projects/create-project')}
+						onClick={() => navigate('/project/create-project')}
 					>
 						<PlusCircle />
 						Create Project
