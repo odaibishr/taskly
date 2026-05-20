@@ -35,7 +35,7 @@ const CreateProjectForm = () => {
 			const user = useAuthStore.getState().user;
 			if (!user) throw new Error("User not authenticated");
 			await createProject({ ...data, created_by: user.id });
-			navigate('/dashboard/projects');
+			navigate('/project');
 		} catch (error: unknown) {
 			console.error(error);
 		}
