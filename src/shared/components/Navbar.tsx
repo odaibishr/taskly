@@ -5,17 +5,17 @@ import { useLocation } from "react-router-dom";
 
 export default function Navbar() {
     const { user } = useAuthStore();
-    const navigate = useLocation();
+    const location = useLocation();
 
     const userName = user?.user_metadata?.name || "User";
-    const userRole = user?.user_metadata?.department || "Memmber";
+    const userRole = user?.user_metadata?.department || "Member";
     const userAvatar = getInitials(userName);
 
 
     return (
 
         <>
-            {!navigate.pathname.includes('project') ? (
+            {!location.pathname.includes('project') ? (
                 <nav className="w-full bg-white mb-15">
                     <div className="max-w-7xl mx-auto px-4 flex justify-between items-center h-20">
                         <img src={Logo} alt="Taskly Logo" className="h-7 mr-2" />
