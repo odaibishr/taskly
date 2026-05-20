@@ -7,11 +7,12 @@ import FormContainer from '../../../shared/components/FormContainer';
 import HeaderSection from './HeaderSection';
 import Input from '../../../shared/components/Input';
 import Button from '../../../shared/components/Button';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 type SignUpFormData = z.infer<typeof signUpSchema>;
 
 export const SignUpForm = () => {
+	const navigate = useNavigate();
 	const { isLoading, error, isSignUpSuccess, handleSignUp } = useAuthStore();
 
 	const { register, handleSubmit, formState: { errors } } = useForm<SignUpFormData>({
@@ -42,7 +43,7 @@ export const SignUpForm = () => {
 					<p className="text-gray-600 mb-6">
 						We've sent a confirmation link to your email address. Please click it to activate your account.
 					</p>
-					<Button onClick={() => window.location.href = '/login'}>
+					<Button onClick={() => navigate('/login')}>
 						Go to Login
 					</Button>
 				</div>
