@@ -22,15 +22,15 @@ const MembersTable = ({ members }: MembersTableProps) => {
     }
 
     return (
-        <div className="max-w-full lg:w-255 rounded-xl overflow-hidden animate-in fade-in duration-300 mx-auto">
-            <div className="overflow-x-auto">
+        <div className="w-full max-w-full lg:w-255 rounded-xl overflow-hidden animate-in fade-in duration-300 mx-auto">
+            <div className="overflow-x-auto w-full">
                 <table className="w-full min-w-150 text-left border-collapse p-1 bg-surface-low rounded-lg">
                     <thead className="bg-[#E0E8FF4D] h-1/3">
                         <tr className="border-b border-gray-100 bg-[#E0E8FF4D]/30">
                             <th className="px-8 py-5 text-xs font-bold text-slate-medium uppercase tracking-wider">
                                 Member
                             </th>
-                            <th className="px-8 py-5 text-xs font-bold text-slate-medium uppercase tracking-wider hidden md:table-cell">
+                            <th className="px-8 py-5 text-xs font-bold text-slate-medium uppercase tracking-wider">
                                 Role
                             </th>
                             <th className="px-8 py-5 text-xs font-bold text-slate-medium uppercase tracking-wider text-right md:text-left">
