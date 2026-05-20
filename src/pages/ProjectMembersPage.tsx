@@ -1,24 +1,56 @@
+import { useEffect } from "react"
+import { useParams } from "react-router-dom"
 import { UserPlusIcon } from "lucide-react"
 import Button from "../shared/components/Button"
 import { HeaderSection } from "../shared/components/HeaderSection"
 import MembersTable from "../features/members/components/MembersTable"
+import MembersTableSkeleton from "../features/members/components/MembersTableSkeleton"
+import { useMembersStore } from "../features/members/store/members.store"
+import ErrorCard from "../shared/components/ErrorCard"
 
 const ProjectMembersPage = () => {
+    const { projectId } = useParams<{ projectId: string }>()
+    const { members, isLoading, error, getMembers } = useMembersStore()
+
+    useEffect(() => {
+        if (projectId) {
+            getMembers(projectId)
+        }
+    }, [projectId, getMembers])
+
+    if (error) {
+        return (
+            <main>
+                <HeaderSection title="Project Members" isBreadcrumbVisible={true} />
+                <ErrorCard
+                    retryAction={() => projectId && getMembers(projectId)}
+                    description="We're having trouble retrieving the members for this project. Please try again in a moment."
+                />
+            </main>
+        )
+    }
+
     return (
         <main>
             <HeaderSection title="Project Members" isBreadcrumbVisible={true} >
-                <Button
-                    variant="primary"
-                    className="flex items-center gap-2"
-                >
-                    <UserPlusIcon size={20} />
-                    Invite Members
-                </Button>
+                {isLoading ? (
+                    <div className="max-md:hidden w-40 h-10 bg-gray-200 rounded-lg animate-pulse" />
+                ) : (
+                    <Button
+                        variant="primary"
+                        className="flex items-center gap-2"
+                    >
+                        <UserPlusIcon size={20} />
+                        Invite Members
+                    </Button>
+                )}
             </HeaderSection>
 
-            <MembersTable members={[
-                { id: "1", name: "John Doe", email: "john.doe@example.com", role: "member" }
-            ]} />
+            {isLoading ? (
+                <MembersTableSkeleton />
+            ) : (
+                <MembersTable members={members} />
+            )}
         </main>
     )
 }

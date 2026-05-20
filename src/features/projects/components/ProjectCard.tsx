@@ -11,7 +11,7 @@ const ProjectCard = ({ project }: CardProjectProps) => {
 	const navigate = useNavigate();
 
 	return (
-		<div className="bg-white hover:shadow-sm/10 transition-all duration-300 min-h-[220px] rounded-lg flex flex-col justify-between p-6">
+		<div className="bg-white hover:shadow-sm/10 transition-all duration-300 min-h-55 rounded-lg flex flex-col justify-between p-6">
 			<div className="space-y-2">
 				<div className="flex items-center justify-between">
 					<h2 className="text-lg font-bold text-slate-dark leading-7">{project.name}</h2>
