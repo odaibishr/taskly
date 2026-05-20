@@ -3,3 +3,4 @@ export { default as MembersTable } from "./components/MembersTable";
 export { default as MembersTableSkeleton } from "./components/MembersTableSkeleton";
 export * from "./store/members.store";
 export * from "./types";
+export * from "./api/members.api";
