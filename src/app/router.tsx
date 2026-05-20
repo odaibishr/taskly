@@ -12,7 +12,7 @@ import CreateProjectPage from "../pages/CreateProjectPage";
 import EditProjectPage from "../pages/EditProjectPage";
 import ProjectMembersPage from "../pages/ProjectMembersPage";
 
-const router = createBrowserRouter([
+export const router = createBrowserRouter([
 	{
 		path: "/",
 		element: (
