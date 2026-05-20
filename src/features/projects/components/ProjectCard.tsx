@@ -30,7 +30,7 @@ const ProjectCard = ({ project }: CardProjectProps) => {
 
 			<div className="flex justify-between items-center gap-4">
 				<span className="uppercase text-[#737685] text-[11px] font-bold">Created At</span>
-				<p className="text-[#041B3C] text-[12px] font-medium">{new Date(project.created_at).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' })}</p>
+				<p className="text-[#041B3C] text-[12px] font-medium">{project.created_at ? new Date(project.created_at).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }) : "N/A"}</p>
 			</div>
 		</div>
 	)
