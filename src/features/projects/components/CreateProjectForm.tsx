@@ -1,15 +1,15 @@
 import z from "zod";
-import { createProjectSchema } from "../validation"
+import { createProjectSchema } from "@/features/projects/validation"
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useProjecteStore } from '../../projects';
-import FormHeader from "./FormHeader";
+import { useProjectsStore } from "@/features/projects/store/projects.store";
+import FormHeader from "@/features/projects/components/FormHeader";
 import { CheckCircle } from "lucide-react";
-import Input from "../../../shared/components/Input";
-import Textarea from "../../../shared/components/Texterea";
-import Button from "../../../shared/components/Button";
-import { useAuthStore } from "../../auth";
+import Input from "@/shared/components/Input";
+import Textarea from "@/shared/components/Textarea";
+import Button from "@/shared/components/Button";
+import { ROUTES } from "@/shared/lib/routes";
 
 type CreateProjectFormData = z.infer<typeof createProjectSchema>;
 
@@ -19,7 +19,7 @@ const CreateProjectForm = () => {
 		createProject,
 		error,
 		isLoading
-	} = useProjecteStore();
+	} = useProjectsStore();
 
 	const {
 		register,
@@ -31,14 +31,8 @@ const CreateProjectForm = () => {
 	});
 
 	const onSubmit = async (data: CreateProjectFormData) => {
-		try {
-			const user = useAuthStore.getState().user;
-			if (!user) throw new Error("User not authenticated");
-			await createProject({ ...data, created_by: user.id });
-			navigate('/dashboard/projects');
-		} catch (error: unknown) {
-			console.error(error);
-		}
+		await createProject(data);
+		navigate(ROUTES.PROJECTS);
 	};
 
 	return (
@@ -75,7 +69,7 @@ const CreateProjectForm = () => {
 						<Button
 							type="button"
 							variant="ghost"
-							onClick={() => navigate('/dashboard/projects')}
+							onClick={() => navigate(ROUTES.PROJECTS)}
 							className="w-full sm:w-fit px-8"
 						>
 							Back

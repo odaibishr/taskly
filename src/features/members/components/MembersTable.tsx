@@ -1,6 +1,6 @@
 import { Users } from "lucide-react"
-import type { ProjectMember } from "../types"
-import MemberRow from "./MemberRow"
+import type { ProjectMember } from "@/features/members/types"
+import MemberRow from "@/features/members/components/MemberRow"
 
 interface MembersTableProps {
     members: ProjectMember[],

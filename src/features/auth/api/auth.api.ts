@@ -1,5 +1,5 @@
-import { http } from "../../../shared/lib/http";
-import type { LoginPayload, SendResetLinkPayload, SignUpPayload, UpdatePasswordPayload } from "../types";
+import { http } from "@/shared/lib/http";
+import type { LoginPayload, SendResetLinkPayload, SignUpPayload, UpdatePasswordPayload } from "@/features/auth/types";
 
 export async function signUp(payload: SignUpPayload) {
 	const response = await http.post('/auth/v1/signup', payload);

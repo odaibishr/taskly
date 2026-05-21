@@ -1,9 +1,7 @@
 import { create } from "zustand";
-import type { CreateProjectPayload, Project, UpdateProjectPayload } from "../types";
-import { createProject, getProjectById, getProjects, updateProject } from "../api/projects.api";
-import { useAuthStore } from "../../auth/";
-
-
+import type { CreateProjectInput, Project, UpdateProjectPayload } from "@/features/projects/types";
+import { createProject, getProjectById, getProjects, updateProject } from "@/features/projects/api/projects.api";
+import { useAuthStore } from "@/features/auth";
 
 interface ProjectsState {
 	projects: Project[];
@@ -17,15 +15,16 @@ interface ProjectsState {
 	}
 
 	// actions
-	createProject: (payload: CreateProjectPayload) => Promise<void>;
+	createProject: (payload: CreateProjectInput) => Promise<void>;
 	getProjects: (isAppend?: boolean) => Promise<void>;
 	setPage: (page: number) => void;
+	loadNextPage: () => void;
 	getProjectById: (projectId: string) => Promise<void>;
 	updateProject: (projectId: string, payload: UpdateProjectPayload) => Promise<void>;
 	clearError: () => void;
 }
 
-export const useProjecteStore = create<ProjectsState>()((set, get) => ({
+export const useProjectsStore = create<ProjectsState>()((set, get) => ({
 	projects: [],
 	currentProject: null,
 	isLoading: false,
@@ -36,7 +35,7 @@ export const useProjecteStore = create<ProjectsState>()((set, get) => ({
 		totalCount: 0
 	},
 
-	createProject: async (payload) => {
+	createProject: async (payload: CreateProjectInput) => {
 		set({ isLoading: true, error: null });
 		try {
 			const user = useAuthStore.getState().user;
@@ -53,7 +52,7 @@ export const useProjecteStore = create<ProjectsState>()((set, get) => ({
 					isLoading: false,
 				}));
 			} else {
-				await useProjecteStore.getState().getProjects();
+				await useProjectsStore.getState().getProjects();
 			}
 
 		} catch (error: unknown) {
@@ -91,6 +90,16 @@ export const useProjecteStore = create<ProjectsState>()((set, get) => ({
 		get().getProjects(false);
 	},
 
+	loadNextPage: () => {
+		const { currentPage, totalCount, limit } = get().pagination;
+		if (currentPage * limit < totalCount) {
+			set((state) => ({
+				pagination: { ...state.pagination, currentPage: state.pagination.currentPage + 1 }
+			}));
+			get().getProjects(true);
+		}
+	},
+
 	getProjectById: async (projectId: string) => {
 		set({
 			isLoading: true,
@@ -102,7 +111,7 @@ export const useProjecteStore = create<ProjectsState>()((set, get) => ({
 			set({
 				isLoading: false,
 				currentProject: project
-			})
+			});
 		} catch (error: unknown) {
 			const message = error instanceof Error ? error.message : "Failed to fetch project";
 			set({
@@ -140,4 +149,4 @@ export const useProjecteStore = create<ProjectsState>()((set, get) => ({
 	},
 
 	clearError: () => set({ error: null })
-}));
+}));

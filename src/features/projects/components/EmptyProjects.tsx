@@ -1,7 +1,8 @@
-import Button from "../../../shared/components/Button"
-import NoProjects from "../../../assets/Abstract.svg"
+import Button from "@/shared/components/Button"
+import NoProjects from "@/assets/Abstract.svg"
 import { PlusCircle } from "lucide-react"
 import { useNavigate } from "react-router-dom"
+import { ROUTES } from "@/shared/lib/routes"
 
 const EmptyProjects = () => {
 	const navigate = useNavigate()
@@ -15,7 +16,7 @@ const EmptyProjects = () => {
 			</div>
 			<Button
 				className="cursor-pointer flex gap-3 items-center shadow-md"
-				onClick={() => navigate('/dashboard/projects/create-project')}
+				onClick={() => navigate(ROUTES.CREATE_PROJECT)}
 			>
 				<PlusCircle className="w-5 h-5" />
 				<span>Create Project</span>

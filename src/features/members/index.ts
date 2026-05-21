@@ -1,6 +1,6 @@
-export { default as MemberRow } from "./components/MemberRow";
-export { default as MembersTable } from "./components/MembersTable";
-export { default as MembersTableSkeleton } from "./components/MembersTableSkeleton";
-export * from "./store/members.store";
-export * from "./types";
-export * from "./api/members.api";
+export { default as MemberRow } from "@/features/members/components/MemberRow";
+export { default as MembersTable } from "@/features/members/components/MembersTable";
+export { default as MembersTableSkeleton } from "@/features/members/components/MembersTableSkeleton";
+export * from "@/features/members/store/members.store";
+export * from "@/features/members/types";
+export * from "@/features/members/api/members.api";

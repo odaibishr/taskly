@@ -1,12 +1,12 @@
 import type z from "zod";
-import { loginSchema } from "../validation";
-import { useAuthStore } from "../store/auth.store";
+import { loginSchema } from "@/features/auth/validation";
+import { useAuthStore } from "@/features/auth/store/auth.store";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import FormContainer from "../../../shared/components/FormContainer";
-import HeaderSection from "./HeaderSection";
-import Input from "../../../shared/components/Input";
-import Button from "../../../shared/components/Button";
+import FormContainer from "@/shared/components/FormContainer";
+import HeaderSection from "@/features/auth/components/HeaderSection";
+import Input from "@/shared/components/Input";
+import Button from "@/shared/components/Button";
 import { Link } from "react-router-dom";
 
 type LoginFormData = z.infer<typeof loginSchema>;

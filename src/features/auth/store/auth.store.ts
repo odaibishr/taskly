@@ -1,7 +1,7 @@
 import { create } from "zustand";
-import { sendResetLink, signIn, signUp, updatePassword, logout } from "../api/auth.api";
-import type { LoginPayload, SendResetLinkPayload, SignUpPayload, UpdatePasswordPayload, User } from "../types";
-import { router } from "../../../app/router";
+import { sendResetLink, signIn, signUp, updatePassword, logout } from "@/features/auth/api/auth.api";
+import type { LoginPayload, SendResetLinkPayload, SignUpPayload, UpdatePasswordPayload, User } from "@/features/auth/types";
+import { ROUTES } from "@/shared/lib/routes";
 
 interface AuthState {
 	user: User | null;
@@ -47,7 +47,7 @@ export const useAuthStore = create<AuthState>((set) => ({
 			localStorage.setItem('refresh_token', data.refresh_token);
 			localStorage.setItem('user', JSON.stringify(data.user));
 			set({ user: data.user });
-			router.navigate('/project');
+			window.location.href = ROUTES.PROJECTS;
 		} catch (error: unknown) {
 			const message = error instanceof Error ? error.message : 'Login failed.';
 			set({ error: message });
@@ -62,7 +62,7 @@ export const useAuthStore = create<AuthState>((set) => ({
 			localStorage.removeItem('access_token');
 			localStorage.removeItem('refresh_token');
 			localStorage.removeItem('user');
-			router.navigate('/login');
+			window.location.href = ROUTES.LOGIN;
 		} catch (error: unknown) {
 			const message = error instanceof Error ? error.message : 'Failed to logout.';
 			set({ error: message });
@@ -80,7 +80,7 @@ export const useAuthStore = create<AuthState>((set) => ({
 			await sendResetLink(payload);
 			set({
 				isForgotSuccess: true,
-			})
+			});
 		} catch (error: unknown) {
 			const message = error instanceof Error ? error.message : 'Failed to send reset link.';
 			set({ error: message });
@@ -97,7 +97,7 @@ export const useAuthStore = create<AuthState>((set) => ({
 		try {
 			await updatePassword(payload);
 			localStorage.clear();
-			router.navigate('/login');
+			window.location.href = ROUTES.LOGIN;
 		} catch (error: unknown) {
 			const message = error instanceof Error ? error.message : 'Failed to update password.';
 			set({ error: message });

@@ -7,6 +7,7 @@ export interface Project {
 }
 
 export type CreateProjectPayload = Pick<Project, "name" | "description" | "created_by">;
+export type CreateProjectInput = Pick<Project, "name" | "description">;
 
 export interface GetProjectsParams {
 	limit: number;

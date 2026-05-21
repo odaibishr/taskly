@@ -1,15 +1,16 @@
 import z from "zod";
 import { useEffect } from "react";
-import { createProjectSchema } from "../validation";
+import { createProjectSchema } from "@/features/projects/validation";
 import { useNavigate, useParams } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useProjecteStore } from '../../projects';
-import FormHeader from "./FormHeader";
+import { useProjectsStore } from "@/features/projects/store/projects.store";
+import FormHeader from "@/features/projects/components/FormHeader";
 import { Edit } from "lucide-react";
-import Input from "../../../shared/components/Input";
-import Textarea from "../../../shared/components/Texterea";
-import Button from "../../../shared/components/Button";
+import Input from "@/shared/components/Input";
+import Textarea from "@/shared/components/Textarea";
+import Button from "@/shared/components/Button";
+import { ROUTES } from "@/shared/lib/routes";
 
 
 type EditProjectFormData = z.infer<typeof createProjectSchema>;
@@ -24,7 +25,7 @@ const EditProjectForm = () => {
 		updateProject,
 		error,
 		isLoading
-	} = useProjecteStore();
+	} = useProjectsStore();
 	const {
 		register,
 		handleSubmit,
@@ -51,13 +52,9 @@ const EditProjectForm = () => {
 	}, [projectId, getProjectById]);
 
 	const onSubmit = async (data: EditProjectFormData) => {
-		try {
-			if (!projectId) return;
-			await updateProject(projectId, data);
-			navigate('/project'); // الرجوع إلى قائمة المشاريع
-		} catch (error: unknown) {
-			console.error(error instanceof Error ? error.message : String(error));
-		}
+		if (!projectId) return;
+		await updateProject(projectId, data);
+		navigate(ROUTES.PROJECTS);
 	};
 	if (isLoading && !currentProject) {
 		return <div className="text-center mt-20">Loading project details...</div>;

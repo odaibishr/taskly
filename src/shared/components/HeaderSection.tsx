@@ -1,4 +1,4 @@
-import Breadcrumbs from "./Breadcrumbs";
+import Breadcrumbs from "@/shared/components/Breadcrumbs";
 import { useLocation } from "react-router-dom";
 
 interface Props {

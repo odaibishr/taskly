@@ -1,9 +1,9 @@
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { useProjecteStore } from "../store/projects.store";
-import Button from "../../../shared/components/Button";
+import { useProjectsStore } from "@/features/projects/store/projects.store";
+import Button from "@/shared/components/Button";
 
 const Pagination = () => {
-	const { pagination, setPage, isLoading } = useProjecteStore();
+	const { pagination, setPage, isLoading } = useProjectsStore();
 	const { currentPage, limit, totalCount } = pagination;
 
 	const totalPages = Math.ceil(totalCount / limit);
