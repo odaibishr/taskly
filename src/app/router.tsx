@@ -11,6 +11,7 @@ import ProjectsPage from "@/pages/ProjectsPage";
 import CreateProjectPage from "@/pages/CreateProjectPage";
 import EditProjectPage from "@/pages/EditProjectPage";
 import ProjectMembersPage from "@/pages/ProjectMembersPage";
+import CreateEpicPage from "@/pages/CreateEpicPage";
 
 function RootLayout() {
 	useRecoveryRedirect();
@@ -22,6 +23,7 @@ function RootLayout() {
 	);
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const router = createBrowserRouter([
 	{
 		path: "/",
@@ -55,6 +57,7 @@ export const router = createBrowserRouter([
 				path: ":projectId",
 				children: [
 					{ path: "epics", element: <div>Epics Page Content</div> },
+					{ path: "epics/new", element: <CreateEpicPage /> },
 					{ path: "tasks", element: <div>Tasks Page Content</div> },
 					{ path: "members", element: <ProjectMembersPage /> },
 					{ path: "edit", element: <EditProjectPage /> },
