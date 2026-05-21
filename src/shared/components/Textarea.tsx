@@ -51,7 +51,7 @@ export default function Textarea<T extends FieldValues>({
 					} border`}
 			/>
 
-			<div className='flex justify-between items-start min-h-[20px]'>
+			<div className='flex justify-between items-start min-h-5'>
 				{error ? (
 					<span className='text-[11px] text-red-500 font-medium leading-4'>
 						{error.message}
