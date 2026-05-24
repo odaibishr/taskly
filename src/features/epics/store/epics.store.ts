@@ -1,8 +1,9 @@
 import { create } from "zustand";
-import type { CreateEpicPayload } from "@/features/epics/types";
+import type { CreateEpicPayload, Epic } from "@/features/epics/types";
 import { createEpic } from "@/features/epics/api/epics.api";
 
 interface EpicsState {
+	epics: Epic[];
 	isLoading: boolean;
 	error: string | null;
 	createEpic: (payload: CreateEpicPayload) => Promise<void>;
@@ -10,6 +11,7 @@ interface EpicsState {
 }
 
 export const useEpicsStore = create<EpicsState>()((set) => ({
+	epics: [],
 	isLoading: false,
 	error: null,
 	createEpic: async (payload: CreateEpicPayload) => {
