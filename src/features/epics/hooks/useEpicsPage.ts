@@ -1,10 +1,9 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import { useEpicsStore } from "@/features/epics";
 
-export function useEpicsPage() {
+export function useEpicsPage({ projectId }: { projectId?: string }) {
     const navigate = useNavigate();
-    const { projectId } = useParams<{ projectId: string }>();
     const { epics, isLoading, error, getEpicsByProjectId } = useEpicsStore();
 
     useEffect(() => {
@@ -19,5 +18,5 @@ export function useEpicsPage() {
         }
     };
 
-    return { epics, isLoading, error, handleCreateRedirect };
+    return { epics, isLoading, error, getEpicsByProjectId, handleCreateRedirect };
 }
