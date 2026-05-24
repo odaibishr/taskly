@@ -12,6 +12,7 @@ import CreateProjectPage from "@/pages/CreateProjectPage";
 import EditProjectPage from "@/pages/EditProjectPage";
 import ProjectMembersPage from "@/pages/ProjectMembersPage";
 import CreateEpicPage from "@/pages/CreateEpicPage";
+import EpicsPage from "@/pages/EpicsPage";
 
 function RootLayout() {
 	useRecoveryRedirect();
@@ -56,7 +57,7 @@ export const router = createBrowserRouter([
 			{
 				path: ":projectId",
 				children: [
-					{ path: "epics", element: <div>Epics Page Content</div> },
+					{ path: "epics", element: <EpicsPage /> },
 					{ path: "epics/new", element: <CreateEpicPage /> },
 					{ path: "tasks", element: <div>Tasks Page Content</div> },
 					{ path: "members", element: <ProjectMembersPage /> },
