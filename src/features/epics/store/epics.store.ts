@@ -1,12 +1,13 @@
 import { create } from "zustand";
-import type { CreateEpicPayload, Epic } from "@/features/epics/types";
-import { createEpic } from "@/features/epics/api/epics.api";
+import type { CreateEpicPayload, ProjectEpic } from "@/features/epics/types";
+import { createEpic, getEpicsByProjectId } from "@/features/epics/api/epics.api";
 
 interface EpicsState {
-	epics: Epic[];
+	epics: ProjectEpic[];
 	isLoading: boolean;
 	error: string | null;
 	createEpic: (payload: CreateEpicPayload) => Promise<void>;
+	getEpicsByProjectId: (projectId: string) => Promise<void>;
 	clearError: () => void;
 }
 
@@ -22,6 +23,18 @@ export const useEpicsStore = create<EpicsState>()((set) => ({
 			const message = error instanceof Error ? error.message : "Failed to create epic";
 			set({ error: message });
 			throw new Error(message);
+		} finally {
+			set({ isLoading: false });
+		}
+	},
+	getEpicsByProjectId: async (projectId: string) => {
+		set({ isLoading: true, error: null });
+		try {
+			const data = await getEpicsByProjectId(projectId);
+			set({ epics: data });
+		} catch (error: unknown) {
+			const message = error instanceof Error ? error.message : "Failed to fetch epics";
+			set({ error: message });
 		} finally {
 			set({ isLoading: false });
 		}
