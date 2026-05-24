@@ -16,6 +16,7 @@ dist-ssr
 .agents
 /docs
 CLAUDE.md
+.antigravitycli
 
 # Editor directories and files
 .vscode/*

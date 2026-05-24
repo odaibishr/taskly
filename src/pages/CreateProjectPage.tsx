@@ -1,7 +1,7 @@
 import { UserPlus } from "lucide-react"
-import { CreateProjectForm } from "../features/projects"
-import Button from "../shared/components/Button"
-import { HeaderSection } from "../shared/components/HeaderSection"
+import { CreateProjectForm } from "@/features/projects"
+import Button from "@/shared/components/Button"
+import { HeaderSection } from "@/shared/components/HeaderSection"
 
 const CreateProjectPage = () => {
   return (

@@ -1,17 +1,17 @@
 import type z from "zod";
-import { forgotPasswordSchema } from "../validation";
-import { useAuthStore } from "../store/auth.store";
+import { forgotPasswordSchema } from "@/features/auth/validation";
+import { useAuthStore } from "@/features/auth/store/auth.store";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect, useState } from "react";
-import FormContainer from "../../../shared/components/FormContainer";
-import HeaderSection from "./HeaderSection";
-import Input from "../../../shared/components/Input";
-import Button from "../../../shared/components/Button";
+import FormContainer from "@/shared/components/FormContainer";
+import HeaderSection from "@/features/auth/components/HeaderSection";
+import Input from "@/shared/components/Input";
+import Button from "@/shared/components/Button";
 import { Link } from "react-router-dom";
-import ArrowLeftIcon from '../../../assets/ArrowLeft.svg';
-import CeckmarkIcon from '../../../assets/CheckIcon.svg';
-import ClockIcon from '../../../assets/ClockIcon.svg';
+import ArrowLeftIcon from "@/assets/ArrowLeft.svg";
+import CeckmarkIcon from "@/assets/CheckIcon.svg";
+import ClockIcon from "@/assets/ClockIcon.svg";
 
 
 

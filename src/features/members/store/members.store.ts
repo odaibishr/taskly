@@ -1,6 +1,6 @@
 import { create } from "zustand";
-import type { ProjectMember } from "../types";
-import { getProjectMembers } from "../api/members.api";
+import type { ProjectMember } from "@/features/members/types";
+import { getProjectMembers } from "@/features/members/api/members.api";
 
 interface MembersState {
     members: ProjectMember[];

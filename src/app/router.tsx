@@ -1,31 +1,38 @@
-import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom";
-import App from "../App";
+import { createBrowserRouter, Navigate, Outlet, RouterProvider } from "react-router-dom";
+import { useRecoveryRedirect } from "@/shared/hooks/recoveryRedirect";
+import Navbar from "@/layouts/Navbar";
 
-import SignUpPage from "../pages/SignUpPage";
-import LogInPage from "../pages/LogInPage";
-import ForgetPassword from "../pages/ForgetPassword";
-import ResetPasswordPage from "../pages/ResetPasswordPage";
-import DashboardLayout from "../layouts/DashboardLayout";
-import Navbar from "../shared/components/Navbar";
-import ProjectsPage from "../pages/ProjectsPage";
-import CreateProjectPage from "../pages/CreateProjectPage";
-import EditProjectPage from "../pages/EditProjectPage";
-import ProjectMembersPage from "../pages/ProjectMembersPage";
+import SignUpPage from "@/pages/SignUpPage";
+import LogInPage from "@/pages/LogInPage";
+import ForgotPasswordPage from "@/pages/ForgotPasswordPage";
+import ResetPasswordPage from "@/pages/ResetPasswordPage";
+import DashboardLayout from "@/layouts/DashboardLayout";
+import ProjectsPage from "@/pages/ProjectsPage";
+import CreateProjectPage from "@/pages/CreateProjectPage";
+import EditProjectPage from "@/pages/EditProjectPage";
+import ProjectMembersPage from "@/pages/ProjectMembersPage";
+import CreateEpicPage from "@/pages/CreateEpicPage";
 
-const router = createBrowserRouter([
+function RootLayout() {
+	useRecoveryRedirect();
+	return (
+		<>
+			<Navbar />
+			<Outlet />
+		</>
+	);
+}
+
+// eslint-disable-next-line react-refresh/only-export-components
+export const router = createBrowserRouter([
 	{
 		path: "/",
-		element: (
-			<>
-				<Navbar />
-				<Outlet />
-			</>
-		),
+		element: <RootLayout />,
 		children: [
-			{ path: "/", element: <App /> },
+			{ index: true, element: <Navigate to="/login" replace /> },
 			{ path: "/signup", element: <SignUpPage /> },
 			{ path: "/login", element: <LogInPage /> },
-			{ path: "/forget-password", element: <ForgetPassword /> },
+			{ path: "/forget-password", element: <ForgotPasswordPage /> },
 			{ path: "/reset-password", element: <ResetPasswordPage /> },
 		],
 	},
@@ -50,6 +57,7 @@ const router = createBrowserRouter([
 				path: ":projectId",
 				children: [
 					{ path: "epics", element: <div>Epics Page Content</div> },
+					{ path: "epics/new", element: <CreateEpicPage /> },
 					{ path: "tasks", element: <div>Tasks Page Content</div> },
 					{ path: "members", element: <ProjectMembersPage /> },
 					{ path: "edit", element: <EditProjectPage /> },
@@ -57,25 +65,8 @@ const router = createBrowserRouter([
 			}
 		]
 	},
-	{
-		path: "project-epics",
-		element: <div>Epics Page Content</div>,
-	},
-	{
-		path: "project-tasks",
-		element: <div>Tasks Page Content</div>,
-	},
-	{
-		path: "project-members",
-		element: <div>Members Page Content</div>,
-	},
-	{
-		path: "project-details",
-		element: <div>Details Page Content</div>,
-	},
-]
-);
+]);
 
 export function AppRouter() {
-	return <RouterProvider router={router} />
-}
+	return <RouterProvider router={router} />;
+}

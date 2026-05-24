@@ -1,5 +1,5 @@
 import { CloudOff } from "lucide-react"
-import Button from "./Button"
+import Button from "@/shared/components/Button"
 
 interface ErrorCardProps {
 	retryAction: () => void;

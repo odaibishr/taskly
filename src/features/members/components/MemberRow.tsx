@@ -1,10 +1,9 @@
 import { EllipsisVertical } from "lucide-react"
-import Button from "../../../shared/components/Button"
-import type { ProjectMember } from "../types"
-import { cn, getInitials } from "../../../shared/lib/utils"
+import Button from "@/shared/components/Button"
+import type { ProjectMember } from "@/features/members/types"
+import { cn, getInitials } from "@/shared/lib/utils"
 
 const MemberRow = ({ member }: { member: ProjectMember }) => {
-    console.log("Member raw data object:", member);
     const displayName = member.name || (member as ProjectMember & { full_name?: string }).full_name || member.email.split('@')[0];
 
     return (

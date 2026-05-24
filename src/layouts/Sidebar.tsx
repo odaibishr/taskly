@@ -1,16 +1,15 @@
 import { useState } from "react";
-import Epics from '../../assets/Epics.svg';
-import Folder from '../../assets/Folder.svg';
-import Tasks from '../../assets/Tasks.svg';
-import Users from '../../assets/Users.svg';
-import Info from '../../assets/Info.svg';
-import Menu from '../../assets/MenuIcon.svg';
-import { useAuthStore } from "../../features/auth";
+import Epics from "@/assets/Epics.svg";
+import Folder from "@/assets/Folder.svg";
+import Tasks from "@/assets/Tasks.svg";
+import Users from "@/assets/Users.svg";
+import Info from "@/assets/Info.svg";
+import Menu from "@/assets/MenuIcon.svg";
+import { useAuthStore } from "@/features/auth";
 import { Link, useLocation, useParams } from "react-router-dom";
-import { cn } from "../lib/utils";
-import Logo from "../../assets/Icon.svg";
+import { cn } from "@/shared/lib/utils";
+import Logo from "@/assets/Icon.svg";
 import { ChevronLeft, ChevronRight, LogOut } from "lucide-react";
-
 
 interface Props {
 	isCollapsed: boolean;
@@ -35,7 +34,7 @@ export default function Sidebar({ isCollapsed, setIsCollapsed }: Props) {
 
 	const handleLogoutClick = async () => {
 		await handleLogout();
-	}
+	};
 
 	return (
 		<>
@@ -83,7 +82,6 @@ export default function Sidebar({ isCollapsed, setIsCollapsed }: Props) {
 				</nav>
 
 				<div className="p-4 border-t border-gray-100 space-y-2">
-					{/* Collapse Toggle */}
 					<button
 						onClick={() => setIsCollapsed(!isCollapsed)}
 						className="hidden lg:flex items-center w-full p-3 rounded-lg hover:bg-white transition-all text-gray-600 cursor-pointer"
@@ -91,7 +89,6 @@ export default function Sidebar({ isCollapsed, setIsCollapsed }: Props) {
 						{isCollapsed ? <ChevronRight size={22} /> : <ChevronLeft size={22} />}
 						{!isCollapsed && <span className="ml-3 font-medium">Collapse</span>}
 					</button>
-					{/* Logout */}
 					<button
 						onClick={handleLogoutClick}
 						className="flex items-center w-full p-3 rounded-lg hover:bg-red	 text-red-500 cursor-pointer"
@@ -109,8 +106,5 @@ export default function Sidebar({ isCollapsed, setIsCollapsed }: Props) {
 				/>
 			)}
 		</>
-
 	);
-
-
 }
