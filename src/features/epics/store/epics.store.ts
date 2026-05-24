@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import type { CreateEpicPayload, ProjectEpic } from "@/features/epics/types";
-import { createEpic, getEpicsByProjectId } from "@/features/epics/api/epics.api";
+import { createEpic, fetchEpicsByProjectId } from "@/features/epics/api/epics.api";
 
 interface EpicsState {
 	epics: ProjectEpic[];
@@ -30,7 +30,7 @@ export const useEpicsStore = create<EpicsState>()((set) => ({
 	getEpicsByProjectId: async (projectId: string) => {
 		set({ isLoading: true, error: null });
 		try {
-			const data = await getEpicsByProjectId(projectId);
+			const data = await fetchEpicsByProjectId(projectId);
 			set({ epics: data });
 		} catch (error: unknown) {
 			const message = error instanceof Error ? error.message : "Failed to fetch epics";

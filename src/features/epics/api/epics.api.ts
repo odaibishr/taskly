@@ -10,7 +10,7 @@ export async function createEpic(payload: CreateEpicPayload): Promise<Epic> {
 	return response.data[0];
 }
 
-export async function getEpicsByProjectId(projectId: string): Promise<ProjectEpic[]> {
+export async function fetchEpicsByProjectId(projectId: string): Promise<ProjectEpic[]> {
 	const response = await http.get<ProjectEpic[]>(`/rest/v1/project_epics?project_id=eq.${projectId}`);
 	return response.data;
 }
