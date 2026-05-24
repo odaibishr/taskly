@@ -9,7 +9,7 @@ export interface Epic {
 	created_by: string;
 }
 
-export type CreateEpicPayload = Omit<Epic, "id" | "created_at">;
+export type CreateEpicPayload = Omit<Epic, "id" | "created_at" | "created_by">;
 
 export interface EpicUser {
 	sub: string;
