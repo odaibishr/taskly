@@ -1,5 +1,5 @@
-import type { UseFormRegister, Path, FieldError, FieldValues } from 'react-hook-form';
 import { ChevronDown } from 'lucide-react';
+import type { UseFormRegister, Path, FieldError, FieldValues } from 'react-hook-form';
 
 interface SelectProps<T extends FieldValues> {
 	register: UseFormRegister<T>;

@@ -1,6 +1,7 @@
 import { PlusCircle } from "lucide-react";
-import Button from "@/shared/components/Button";
+
 import EpicsIcon from "@/assets/Epics.svg";
+import Button from "@/shared/components/Button";
 
 interface EmptyEpicsProps {
 	onCreateEpic: () => void;

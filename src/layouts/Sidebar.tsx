@@ -1,15 +1,16 @@
+import { ChevronLeft, ChevronRight, LogOut } from "lucide-react";
 import { useState } from "react";
+import { Link, useLocation, useParams } from "react-router-dom";
+
 import Epics from "@/assets/Epics.svg";
 import Folder from "@/assets/Folder.svg";
-import Tasks from "@/assets/Tasks.svg";
-import Users from "@/assets/Users.svg";
+import Logo from "@/assets/Icon.svg";
 import Info from "@/assets/Info.svg";
 import Menu from "@/assets/MenuIcon.svg";
+import Tasks from "@/assets/Tasks.svg";
+import Users from "@/assets/Users.svg";
 import { useAuthStore } from "@/features/auth";
-import { Link, useLocation, useParams } from "react-router-dom";
 import { cn } from "@/shared/lib/utils";
-import Logo from "@/assets/Icon.svg";
-import { ChevronLeft, ChevronRight, LogOut } from "lucide-react";
 
 interface Props {
 	isCollapsed: boolean;

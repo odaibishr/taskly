@@ -1,4 +1,5 @@
 import { CloudOff } from "lucide-react"
+
 import Button from "@/shared/components/Button"
 
 interface ErrorCardProps {

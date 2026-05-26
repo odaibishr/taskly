@@ -1,5 +1,6 @@
-import Breadcrumbs from "@/shared/components/Breadcrumbs";
 import { useLocation } from "react-router-dom";
+
+import Breadcrumbs from "@/shared/components/Breadcrumbs";
 
 interface Props {
 	title?: string;

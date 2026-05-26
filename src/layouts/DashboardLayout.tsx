@@ -1,9 +1,10 @@
 import { useState } from "react";
+import { Navigate } from "react-router-dom";
+
+import { useAuthStore } from "@/features/auth";
 import Navbar from "@/layouts/Navbar";
 import Sidebar from "@/layouts/Sidebar";
 import { cn } from "@/shared/lib/utils";
-import { useAuthStore } from "@/features/auth";
-import { Navigate } from "react-router-dom";
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
 	const [isCollapsed, setIsCollapsed] = useState<boolean>(false);

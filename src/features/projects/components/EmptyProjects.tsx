@@ -1,7 +1,8 @@
-import Button from "@/shared/components/Button"
-import NoProjects from "@/assets/Abstract.svg"
 import { PlusCircle } from "lucide-react"
 import { useNavigate } from "react-router-dom"
+
+import NoProjects from "@/assets/Abstract.svg"
+import Button from "@/shared/components/Button"
 import { ROUTES } from "@/shared/lib/routes"
 
 const EmptyProjects = () => {

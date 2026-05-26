@@ -1,13 +1,15 @@
-import { useForm } from 'react-hook-form';
 import { zodResolver } from "@hookform/resolvers/zod";
-import { signUpSchema } from "@/features/auth/validation";
-import type { z } from 'zod';
-import { useAuthStore } from "@/features/auth/store/auth.store";
-import FormContainer from "@/shared/components/FormContainer";
-import HeaderSection from "@/features/auth/components/HeaderSection";
-import Input from "@/shared/components/Input";
-import Button from "@/shared/components/Button";
+import { useForm } from 'react-hook-form';
 import { Link, useNavigate } from 'react-router-dom';
+import type { z } from 'zod';
+
+import HeaderSection from "@/features/auth/components/HeaderSection";
+import { useAuthStore } from "@/features/auth/store/auth.store";
+import { signUpSchema } from "@/features/auth/validation";
+import Button from "@/shared/components/Button";
+import FormContainer from "@/shared/components/FormContainer";
+import Input from "@/shared/components/Input";
+
 
 type SignUpFormData = z.infer<typeof signUpSchema>;
 

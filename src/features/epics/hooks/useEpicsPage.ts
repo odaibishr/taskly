@@ -1,6 +1,7 @@
-import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useShallow } from "zustand/react/shallow";
+
 import { useEpicsStore } from "@/features/epics";
 
 export function useEpicsPage({ projectId }: { projectId?: string }) {

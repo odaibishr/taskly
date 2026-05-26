@@ -1,7 +1,8 @@
 import { create } from "zustand";
-import type { CreateProjectInput, Project, UpdateProjectPayload } from "@/features/projects/types";
-import { createProject, getProjectById, getProjects, updateProject } from "@/features/projects/api/projects.api";
+
 import { useAuthStore } from "@/features/auth";
+import { createProject, getProjectById, getProjects, updateProject } from "@/features/projects/api/projects.api";
+import type { CreateProjectInput, Project, UpdateProjectPayload } from "@/features/projects/types";
 
 interface ProjectsState {
 	projects: Project[];

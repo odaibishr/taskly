@@ -1,4 +1,5 @@
 import { ChevronLeft, ChevronRight } from "lucide-react";
+
 import { useProjectsStore } from "@/features/projects/store/projects.store";
 import Button from "@/shared/components/Button";
 

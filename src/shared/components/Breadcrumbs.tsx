@@ -1,5 +1,5 @@
-import { Link, useLocation } from "react-router-dom";
 import { ChevronRight } from "lucide-react";
+import { Link, useLocation } from "react-router-dom";
 
 const breadcrumbNameMap: Record<string, string> = {
 	dashboard: "Dashboard",

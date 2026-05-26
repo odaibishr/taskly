@@ -1,6 +1,7 @@
 import { EllipsisVertical } from "lucide-react"
-import Button from "@/shared/components/Button"
+
 import type { ProjectMember } from "@/features/members/types"
+import Button from "@/shared/components/Button"
 import { cn, getInitials } from "@/shared/lib/utils"
 
 const MemberRow = ({ member }: { member: ProjectMember }) => {

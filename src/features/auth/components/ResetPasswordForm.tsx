@@ -1,13 +1,15 @@
-import type z from "zod";
-import { resetPasswordSchema } from "@/features/auth/validation";
-import { useAuthStore } from "@/features/auth/store/auth.store";
-import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import FormContainer from "@/shared/components/FormContainer";
-import HeaderSection from "@/features/auth/components/HeaderSection";
-import Input from "@/shared/components/Input";
-import Button from "@/shared/components/Button";
+import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
+import type z from "zod";
+
+import HeaderSection from "@/features/auth/components/HeaderSection";
+import { useAuthStore } from "@/features/auth/store/auth.store";
+import { resetPasswordSchema } from "@/features/auth/validation";
+import Button from "@/shared/components/Button";
+import FormContainer from "@/shared/components/FormContainer";
+import Input from "@/shared/components/Input";
+
 
 type ResetPasswordFormData = z.infer<typeof resetPasswordSchema>;
 

@@ -1,5 +1,6 @@
 import { PlusCircle } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+
 import {
 	useProjectsStore,
 	ProjectCard,
@@ -7,10 +8,10 @@ import {
 	Pagination,
 	EmptyProjects
 } from "@/features/projects";
-import { HeaderSection } from "@/shared/components/HeaderSection";
+import { useProjectsPage } from "@/features/projects/hooks/useProjectsPage";
 import Button from "@/shared/components/Button";
 import ErrorCard from "@/shared/components/ErrorCard";
-import { useProjectsPage } from "@/features/projects/hooks/useProjectsPage";
+import { HeaderSection } from "@/shared/components/HeaderSection";
 import { ROUTES } from "@/shared/lib/routes";
 
 const ProjectsPage = () => {

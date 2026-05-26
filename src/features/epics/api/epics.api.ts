@@ -1,5 +1,5 @@
-import { http } from "@/shared/lib/http";
 import type { CreateEpicPayload, Epic, ProjectEpic } from "@/features/epics/types";
+import { http } from "@/shared/lib/http";
 
 export async function createEpic(payload: CreateEpicPayload): Promise<Epic> {
 	const response = await http.post<Epic[]>('/rest/v1/epics', payload, {

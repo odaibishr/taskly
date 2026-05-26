@@ -1,4 +1,5 @@
 import { create } from "zustand";
+
 import { sendResetLink, signIn, signUp, updatePassword, logout } from "@/features/auth/api/auth.api";
 import type { LoginPayload, SendResetLinkPayload, SignUpPayload, UpdatePasswordPayload, User } from "@/features/auth/types";
 import { ROUTES } from "@/shared/lib/routes";

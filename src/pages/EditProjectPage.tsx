@@ -1,5 +1,5 @@
-import { HeaderSection } from "@/shared/components/HeaderSection";
 import { EditProjectForm } from "@/features/projects";
+import { HeaderSection } from "@/shared/components/HeaderSection";
 
 const EditProjectPage = () => {
 	return (

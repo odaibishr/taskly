@@ -1,6 +1,7 @@
 import { create } from "zustand";
-import type { CreateEpicPayload, ProjectEpic } from "@/features/epics/types";
+
 import { createEpic, fetchEpicDetails, fetchEpicsByProjectId } from "@/features/epics/api/epics.api";
+import type { CreateEpicPayload, ProjectEpic } from "@/features/epics/types";
 
 interface EpicsState {
 	epics: ProjectEpic[];

@@ -1,8 +1,10 @@
 import { ChevronLeft, ChevronRight } from "lucide-react";
+
+import { EmptyEpics } from "./EmptyEpics";
+
+import type { ProjectEpic } from "@/features/epics/types";
 import Button from "@/shared/components/Button";
 import { getInitials } from "@/shared/lib/utils";
-import type { ProjectEpic } from "@/features/epics/types";
-import { EmptyEpics } from "./EmptyEpics";
 
 export { EmptyEpics } from "./EmptyEpics";
 export { EpicsSkeleton } from "./EpicsSkeleton";

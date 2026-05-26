@@ -1,7 +1,8 @@
 import { Edit } from "lucide-react";
-import Button from "@/shared/components/Button";
-import type { Project } from "@/features/projects/types";
 import { useNavigate } from "react-router-dom";
+
+import type { Project } from "@/features/projects/types";
+import Button from "@/shared/components/Button";
 
 interface CardProjectProps {
 	project: Project;

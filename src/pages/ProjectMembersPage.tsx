@@ -1,12 +1,13 @@
 import { UserPlusIcon } from "lucide-react";
-import Button from "@/shared/components/Button";
-import { HeaderSection } from "@/shared/components/HeaderSection";
+
 import {
 	MembersTable,
 	MembersTableSkeleton,
 } from "@/features/members";
-import ErrorCard from "@/shared/components/ErrorCard";
 import { useProjectMembers } from "@/features/members/hooks/useProjectMembers";
+import Button from "@/shared/components/Button";
+import ErrorCard from "@/shared/components/ErrorCard";
+import { HeaderSection } from "@/shared/components/HeaderSection";
 
 const ProjectMembersPage = () => {
 	const { projectId, members, isLoading, error, getMembers } = useProjectMembers();

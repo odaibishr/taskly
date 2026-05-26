@@ -1,17 +1,18 @@
-import z from "zod";
-import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Layers } from "lucide-react";
+import { useForm } from "react-hook-form";
 import { useNavigate, useParams } from "react-router-dom";
+import z from "zod";
+
 import { useEpicsStore } from "@/features/epics/store/epics.store";
 import { createEpicSchema } from "@/features/epics/validation";
-import { useProjectMembers } from "@/features/members/hooks/useProjectMembers";
 import type { ProjectMember } from "@/features/members";
+import { useProjectMembers } from "@/features/members/hooks/useProjectMembers";
 import FormHeader from "@/features/projects/components/FormHeader";
-import { Layers } from "lucide-react";
-import Input from "@/shared/components/Input";
-import Textarea from "@/shared/components/Textarea";
-import Select from "@/shared/components/Select";
 import Button from "@/shared/components/Button";
+import Input from "@/shared/components/Input";
+import Select from "@/shared/components/Select";
+import Textarea from "@/shared/components/Textarea";
 
 type CreateEpicFormData = z.infer<typeof createEpicSchema>;
 

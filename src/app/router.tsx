@@ -1,18 +1,19 @@
 import { createBrowserRouter, Navigate, Outlet, RouterProvider } from "react-router-dom";
-import { useRecoveryRedirect } from "@/shared/hooks/recoveryRedirect";
-import Navbar from "@/layouts/Navbar";
 
-import SignUpPage from "@/pages/SignUpPage";
-import LogInPage from "@/pages/LogInPage";
-import ForgotPasswordPage from "@/pages/ForgotPasswordPage";
-import ResetPasswordPage from "@/pages/ResetPasswordPage";
+
 import DashboardLayout from "@/layouts/DashboardLayout";
-import ProjectsPage from "@/pages/ProjectsPage";
+import Navbar from "@/layouts/Navbar";
+import CreateEpicPage from "@/pages/CreateEpicPage";
 import CreateProjectPage from "@/pages/CreateProjectPage";
 import EditProjectPage from "@/pages/EditProjectPage";
-import ProjectMembersPage from "@/pages/ProjectMembersPage";
-import CreateEpicPage from "@/pages/CreateEpicPage";
 import EpicsPage from "@/pages/EpicsPage";
+import ForgotPasswordPage from "@/pages/ForgotPasswordPage";
+import LogInPage from "@/pages/LogInPage";
+import ProjectMembersPage from "@/pages/ProjectMembersPage";
+import ProjectsPage from "@/pages/ProjectsPage";
+import ResetPasswordPage from "@/pages/ResetPasswordPage";
+import SignUpPage from "@/pages/SignUpPage";
+import { useRecoveryRedirect } from "@/shared/hooks/recoveryRedirect";
 
 function RootLayout() {
 	useRecoveryRedirect();

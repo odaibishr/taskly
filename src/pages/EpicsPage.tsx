@@ -1,10 +1,11 @@
-import { useParams } from "react-router-dom";
 import { PlusCircle } from "lucide-react";
+import { useParams } from "react-router-dom";
+
 import { EpicsList, EpicsSkeleton, EmptyEpics, EpicDetailsModal } from "@/features/epics";
-import { HeaderSection } from "@/shared/components/HeaderSection";
+import { useEpicsPage } from "@/features/epics";
 import Button from "@/shared/components/Button";
 import ErrorCard from "@/shared/components/ErrorCard";
-import { useEpicsPage } from "@/features/epics";
+import { HeaderSection } from "@/shared/components/HeaderSection";
 
 const EpicsPage = () => {
     const { projectId } = useParams<{ projectId: string }>();

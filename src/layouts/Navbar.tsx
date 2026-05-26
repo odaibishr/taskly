@@ -1,7 +1,8 @@
-import Logo from "@/assets/Logo.svg";
-import { getInitials } from "@/shared/lib/utils";
-import { useAuthStore } from "@/features/auth";
 import { useLocation } from "react-router-dom";
+
+import Logo from "@/assets/Logo.svg";
+import { useAuthStore } from "@/features/auth";
+import { getInitials } from "@/shared/lib/utils";
 
 export default function Navbar() {
 	const { user } = useAuthStore();
