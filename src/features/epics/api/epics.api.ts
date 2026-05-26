@@ -14,3 +14,8 @@ export async function fetchEpicsByProjectId(projectId: string): Promise<ProjectE
 	const response = await http.get<ProjectEpic[]>(`/rest/v1/project_epics?project_id=eq.${projectId}`);
 	return response.data;
 }
+
+export async function fetchEpicDetails(projectId: string, epicId: string): Promise<ProjectEpic> {
+	const response = await http.get(`/rest/v1/project_epics?project_id=eq.${projectId}&id=eq.${epicId}`);
+	return response.data[0];
+}
