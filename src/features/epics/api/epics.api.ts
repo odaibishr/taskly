@@ -19,3 +19,7 @@ export async function fetchEpicDetails(projectId: string, epicId: string): Promi
 	const response = await http.get(`/rest/v1/project_epics?project_id=eq.${projectId}&id=eq.${epicId}`);
 	return response.data[0];
 }
+
+export async function updateEpic(epicId: string, payload: Partial<Epic>): Promise<void> {
+	await http.patch(`/rest/v1/epics?id=eq.${epicId}`, payload);
+}
