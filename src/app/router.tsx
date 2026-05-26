@@ -1,6 +1,5 @@
 import { createBrowserRouter, Navigate, Outlet, RouterProvider } from "react-router-dom";
 
-
 import DashboardLayout from "@/layouts/DashboardLayout";
 import Navbar from "@/layouts/Navbar";
 import CreateEpicPage from "@/pages/CreateEpicPage";
@@ -13,6 +12,7 @@ import ProjectMembersPage from "@/pages/ProjectMembersPage";
 import ProjectsPage from "@/pages/ProjectsPage";
 import ResetPasswordPage from "@/pages/ResetPasswordPage";
 import SignUpPage from "@/pages/SignUpPage";
+import { ToastContainer } from "@/shared/components/ToastContainer";
 import { useRecoveryRedirect } from "@/shared/hooks/recoveryRedirect";
 
 function RootLayout() {
@@ -70,5 +70,10 @@ export const router = createBrowserRouter([
 ]);
 
 export function AppRouter() {
-	return <RouterProvider router={router} />;
-}
+	return (
+		<>
+			<RouterProvider router={router} />
+			<ToastContainer />
+		</>
+	);
+}
