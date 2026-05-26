@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { X, Calendar, User, Plus, Loader2, List } from "lucide-react";
+import { useShallow } from "zustand/react/shallow";
 import { useEpicsStore } from "@/features/epics/store/epics.store";
 import { getInitials } from "@/shared/lib/utils";
 import EpicDetail from "@/assets/EpicDetail.svg";
@@ -24,7 +25,15 @@ export const EpicDetailsModal: React.FC<EpicDetailsModalProps> = ({
         selectedEpicError,
         getEpicDetails,
         setSelectedEpic,
-    } = useEpicsStore();
+    } = useEpicsStore(
+        useShallow((state) => ({
+            selectedEpic: state.selectedEpic,
+            isSelectedEpicLoading: state.isSelectedEpicLoading,
+            selectedEpicError: state.selectedEpicError,
+            getEpicDetails: state.getEpicDetails,
+            setSelectedEpic: state.setSelectedEpic,
+        }))
+    );
 
     useEffect(() => {
         if (isOpen && projectId && epicId) {
@@ -55,7 +64,7 @@ export const EpicDetailsModal: React.FC<EpicDetailsModalProps> = ({
         if (e.target === e.currentTarget) onClose();
     };
 
-    const formatDate = (dateString?: string) => {
+    const formatDate = (dateString?: string | null) => {
         if (!dateString) return "";
         return new Date(dateString).toLocaleDateString("en-US", {
             year: "numeric",
@@ -105,7 +114,7 @@ export const EpicDetailsModal: React.FC<EpicDetailsModalProps> = ({
 
                 {!isSelectedEpicLoading && !selectedEpicError && selectedEpic && (
                     <>
-                        {/* الجزء العلوي (Header) */}
+                        {/* Modal Header */}
                         <div className="flex items-start justify-between p-6">
                             <div className="space-y-1.5 pr-8">
                                 <span className="flex items-center gap-1.5 text-xs font-bold text-primary">
@@ -193,7 +202,7 @@ export const EpicDetailsModal: React.FC<EpicDetailsModalProps> = ({
                                 </div>
 
                                 <div className="space-y-2">
-                                    <h4 className="text[10px] font-medium text-slate-medium">
+                                    <h4 className="text-[10px] font-bold uppercase tracking-wider text-slate-medium">
                                         Deadline
                                     </h4>
                                     <div className="flex items-center gap-2.5 text-slate-dark">
@@ -240,7 +249,7 @@ export const EpicDetailsModal: React.FC<EpicDetailsModalProps> = ({
                                     <div className="w-12 h-12 bg-[#D7E2FF] rounded-lg flex items-center justify-center shadow-sm">
                                         <List className="w-6 h-6 text-slate-medium" />
                                     </div>
-                                    <p className="text-md font-mdium text-slate-dark">
+                                    <p className="text-sm font-medium text-slate-dark">
                                         No tasks have been added to this epic yet
                                     </p>
                                     <Button variant="primary">
