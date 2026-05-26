@@ -1,10 +1,18 @@
 import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { useShallow } from "zustand/react/shallow";
 import { useEpicsStore } from "@/features/epics";
 
 export function useEpicsPage({ projectId }: { projectId?: string }) {
     const navigate = useNavigate();
-    const { epics, isLoading, error, getEpicsByProjectId } = useEpicsStore();
+    const { epics, isLoading, error, getEpicsByProjectId } = useEpicsStore(
+        useShallow((state) => ({
+            epics: state.epics,
+            isLoading: state.isLoading,
+            error: state.error,
+            getEpicsByProjectId: state.getEpicsByProjectId,
+        }))
+    );
 
     const [selectedEpicId, setSelectedEpicId] = useState<string | null>(null);
     const [isModalOpen, setIsModalOpen] = useState(false);
