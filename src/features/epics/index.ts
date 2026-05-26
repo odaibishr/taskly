@@ -5,3 +5,4 @@ export * from "@/features/epics/validation";
 export * from "@/features/epics/components/EpicsList";
 export * from "@/features/epics/api/epics.api";
 export * from "@/features/epics/hooks/useEpicsPage";
+export * from "@/features/epics/components/EpicDetailsModal";
