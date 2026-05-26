@@ -54,6 +54,9 @@ export const useEpicsStore = create<EpicsState>()((set) => ({
 		});
 		try {
 			const data = await fetchEpicDetails(projectId, epicId);
+			if (!data) {
+				throw new Error("Epic details not found.");
+			}
 			set({ selectedEpic: data });
 		} catch (error: unknown) {
 			const message = error instanceof Error ? error.message : "Failed to fetch epic details";

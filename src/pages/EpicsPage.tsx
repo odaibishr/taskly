@@ -88,11 +88,6 @@ const EpicsPage = () => {
                 onEpicClick={handleOpenModal}
             />
 
-            <EpicsList
-                epics={epics}
-                onCreateEpic={handleCreateRedirect}
-                onEpicClick={handleOpenModal}
-            />
             {projectId && selectedEpicId && (
                 <EpicDetailsModal
                     isOpen={isModalOpen}
