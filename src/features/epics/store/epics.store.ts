@@ -1,7 +1,7 @@
 import { create } from "zustand";
 
-import { createEpic, fetchEpicDetails, fetchEpicsByProjectId } from "@/features/epics/api/epics.api";
-import type { CreateEpicPayload, ProjectEpic } from "@/features/epics/types";
+import { createEpic, fetchEpicDetails, fetchEpicsByProjectId, updateEpic } from "@/features/epics/api/epics.api";
+import type { CreateEpicPayload, Epic, ProjectEpic } from "@/features/epics/types";
 
 interface EpicsState {
 	epics: ProjectEpic[];
@@ -13,6 +13,7 @@ interface EpicsState {
 	createEpic: (payload: CreateEpicPayload) => Promise<void>;
 	getEpicsByProjectId: (projectId: string) => Promise<void>;
 	getEpicDetails: (projectId: string, epicId: string) => Promise<void>;
+	updateEpicDetails: (epicId: string, payload: Partial<Epic>) => Promise<void>;
 	setSelectedEpic: (epic: ProjectEpic | null) => void;
 	clearError: () => void;
 }
@@ -64,6 +65,14 @@ export const useEpicsStore = create<EpicsState>()((set) => ({
 			set({ selectedEpicError: message });
 		} finally {
 			set({ isSelectedEpicLoading: false });
+		}
+	},
+	updateEpicDetails: async (epicId: string, payload: Partial<Epic>) => {
+		try {
+			await updateEpic(epicId, payload);
+		} catch (error: unknown) {
+			const message = error instanceof Error ? error.message : "Failed to update epic";
+			throw new Error(message);
 		}
 	},
 	setSelectedEpic: (epic: ProjectEpic | null) => set({ selectedEpic: epic }),
