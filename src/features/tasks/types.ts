@@ -18,3 +18,5 @@ export interface Task {
     due_date: string | null;
     status: TaskStatus;
 }
+
+export type CreateTaskPayload = Omit<Task, "id">;
