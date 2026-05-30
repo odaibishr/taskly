@@ -7,3 +7,14 @@ export type TaskStatus =
     | "REOPENED"
     | "READY_FOR_PRODUCTION"
     | "DONE";
+
+export interface Task {
+    id: string;
+    project_id: string;
+    epic_id: string | null;
+    title: string;
+    description: string | null;
+    assingee_id: string | null;
+    due_date: string | null;
+    status: TaskStatus;
+}
