@@ -1,12 +1,12 @@
-import { X, Calendar, User, Plus, Loader2, List } from "lucide-react";
+import { Calendar, List, Loader2, Plus, User, X } from "lucide-react";
 import React, { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { useShallow } from "zustand/react/shallow";
 
 import EpicDetail from "@/assets/EpicDetail.svg";
 import { useEpicsStore } from "@/features/epics/store/epics.store";
 import Button from "@/shared/components/Button";
 import { getInitials } from "@/shared/lib/utils";
-import { useNavigate } from "react-router-dom";
 
 interface EpicDetailsModalProps {
     isOpen: boolean;

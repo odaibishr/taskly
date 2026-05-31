@@ -82,7 +82,9 @@ const CreateTaskForm = () => {
                 status: data.status,
             });
             navigate(`/project/${projectId}/epics`);
-        } catch {}
+        } catch {
+            // Note: The error is automatically caught by useTasksStore and handled gracefully in the UI.
+        }
     };
 
     const epicOptions = useMemo(() => {
@@ -164,6 +166,7 @@ const CreateTaskForm = () => {
                     label="Task Description"
                     maxLength={500}
                     optional
+                    // eslint-disable-next-line react-hooks/incompatible-library
                     value={watch("description")}
                 />
 
