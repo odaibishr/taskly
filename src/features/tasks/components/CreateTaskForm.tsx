@@ -1,18 +1,19 @@
-import z from "zod";
-import { createTaskSchema } from "@/features/tasks/validation";
-import { useNavigate, useParams, useSearchParams } from "react-router-dom";
-import { useTasksStore } from "@/features/tasks/store/tasks.store";
-import { useEpicsStore } from "@/features/epics";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
+import z from "zod";
+
+import { useEpicsStore } from "@/features/epics";
 import type { ProjectMember } from "@/features/members";
-import FormContainer from "@/shared/components/FormContainer";
 import { useProjectMembers } from "@/features/members/hooks/useProjectMembers";
+import { useTasksStore } from "@/features/tasks/store/tasks.store";
+import { createTaskSchema } from "@/features/tasks/validation";
+import Button from "@/shared/components/Button";
+import FormContainer from "@/shared/components/FormContainer";
 import Input from "@/shared/components/Input";
 import Select from "@/shared/components/Select";
 import Textarea from "@/shared/components/Textarea";
-import Button from "@/shared/components/Button";
 
 type CreateTaskFormData = z.infer<typeof createTaskSchema>;
 

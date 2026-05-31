@@ -4,6 +4,7 @@ import DashboardLayout from "@/layouts/DashboardLayout";
 import Navbar from "@/layouts/Navbar";
 import CreateEpicPage from "@/pages/CreateEpicPage";
 import CreateProjectPage from "@/pages/CreateProjectPage";
+import CreateTaskPage from "@/pages/CreateTaskPage";
 import EditProjectPage from "@/pages/EditProjectPage";
 import EpicsPage from "@/pages/EpicsPage";
 import ForgotPasswordPage from "@/pages/ForgotPasswordPage";
@@ -13,7 +14,6 @@ import ProjectsPage from "@/pages/ProjectsPage";
 import ResetPasswordPage from "@/pages/ResetPasswordPage";
 import SignUpPage from "@/pages/SignUpPage";
 import { useRecoveryRedirect } from "@/shared/hooks/recoveryRedirect";
-import CreateTaskPage from "@/pages/CreateTaskPage";
 
 function RootLayout() {
     useRecoveryRedirect();

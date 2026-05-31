@@ -1,6 +1,7 @@
 import { create } from "zustand";
-import type { CreateTaskPayload, Task } from "@/features/tasks/types";
+
 import { createTask } from "@/features/tasks/api/tasks.api";
+import type { CreateTaskPayload, Task } from "@/features/tasks/types";
 
 
 
