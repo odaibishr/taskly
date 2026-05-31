@@ -1,5 +1,5 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import z from "zod";
@@ -85,23 +85,27 @@ const CreateTaskForm = () => {
         } catch {}
     };
 
-    const epicOptions = epics.map((epic) => {
-        const truncatedTitle =
-            epic.title.length > 100 ? epic.title.substring(0, 100) + "..." : epic.title;
-        return {
-            value: epic.id,
-            label: `${epic.epic_id} ${truncatedTitle}`,
-        };
-    });
+    const epicOptions = useMemo(() => {
+        return epics.map((epic) => {
+            const truncatedTitle =
+                epic.title.length > 100 ? epic.title.substring(0, 100) + "..." : epic.title;
+            return {
+                value: epic.id,
+                label: `${epic.epic_id} ${truncatedTitle}`,
+            };
+        });
+    }, [epics]);
 
-    const memberOptions = members.map((member) => {
-        const m = member as ProjectMember & { full_name?: string };
-        const name = m.name || m.full_name || m.email.split("@")[0];
-        return {
-            value: member.id,
-            label: `${name} (${member.role})`,
-        };
-    });
+    const memberOptions = useMemo(() => {
+        return members.map((member) => {
+            const m = member as ProjectMember & { full_name?: string };
+            const name = m.name || m.full_name || m.email.split("@")[0];
+            return {
+                value: member.id,
+                label: `${name} (${member.role})`,
+            };
+        });
+    }, [members]);
 
     return (
         <FormContainer className="max-w-full">
