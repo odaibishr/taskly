@@ -6,6 +6,7 @@ import EpicDetail from "@/assets/EpicDetail.svg";
 import { useEpicsStore } from "@/features/epics/store/epics.store";
 import Button from "@/shared/components/Button";
 import { getInitials } from "@/shared/lib/utils";
+import { useNavigate } from "react-router-dom";
 
 interface EpicDetailsModalProps {
     isOpen: boolean;
@@ -20,6 +21,7 @@ export const EpicDetailsModal: React.FC<EpicDetailsModalProps> = ({
     projectId,
     epicId,
 }) => {
+    const navigate = useNavigate();
     const {
         selectedEpic,
         isSelectedEpicLoading,
@@ -33,7 +35,7 @@ export const EpicDetailsModal: React.FC<EpicDetailsModalProps> = ({
             selectedEpicError: state.selectedEpicError,
             getEpicDetails: state.getEpicDetails,
             setSelectedEpic: state.setSelectedEpic,
-        }))
+        })),
     );
 
     useEffect(() => {
@@ -240,6 +242,11 @@ export const EpicDetailsModal: React.FC<EpicDetailsModalProps> = ({
                                     <Button
                                         variant="ghost"
                                         className="flex items-center gap-0.5 text-primary"
+                                        onClick={() =>
+                                            navigate(
+                                                `/project/${projectId}/tasks/new?epicId=${epicId}`,
+                                            )
+                                        }
                                     >
                                         <Plus size={18} />
                                         <span className="text-sm font-semibold">Add Task</span>
@@ -253,7 +260,14 @@ export const EpicDetailsModal: React.FC<EpicDetailsModalProps> = ({
                                     <p className="text-sm font-medium text-slate-dark">
                                         No tasks have been added to this epic yet
                                     </p>
-                                    <Button variant="primary">
+                                    <Button
+                                        variant="primary"
+                                        onClick={() =>
+                                            navigate(
+                                                `/project/${projectId}/tasks/new?epicId=${epicId}`,
+                                            )
+                                        }
+                                    >
                                         <Plus size={18} />
                                         <span className="text-sm font-semibold">Add Task</span>
                                     </Button>
