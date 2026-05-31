@@ -24,5 +24,5 @@ export const createTaskSchema = z.object({
         "REOPENED",
         "READY_FOR_PRODUCTION",
         "DONE"
-    ]).default("TO_DO")
+    ])
 })
