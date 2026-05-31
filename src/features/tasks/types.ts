@@ -14,7 +14,7 @@ export interface Task {
     epic_id: string | null;
     title: string;
     description: string | null;
-    assingee_id: string | null;
+    assignee_id: string | null;
     due_date: string | null;
     status: TaskStatus;
 }
