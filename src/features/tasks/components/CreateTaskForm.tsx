@@ -5,7 +5,6 @@ import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import z from "zod";
 
 import { useEpicsStore } from "@/features/epics";
-import type { ProjectMember } from "@/features/members";
 import { useProjectMembers } from "@/features/members/hooks/useProjectMembers";
 import { useTasksStore } from "@/features/tasks/store/tasks.store";
 import { createTaskSchema } from "@/features/tasks/validation";
@@ -100,8 +99,7 @@ const CreateTaskForm = () => {
 
     const memberOptions = useMemo(() => {
         return members.map((member) => {
-            const m = member as ProjectMember & { full_name?: string };
-            const name = m.name || m.full_name || m.email.split("@")[0];
+            const name = member.name || member.email.split("@")[0];
             return {
                 value: member.id,
                 label: `${name} (${member.role})`,
