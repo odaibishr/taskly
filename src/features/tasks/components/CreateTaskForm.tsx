@@ -103,7 +103,7 @@ const CreateTaskForm = () => {
     });
 
     return (
-        <FormContainer>
+        <FormContainer className="max-w-full">
             <form onSubmit={handleSubmit(onSubmit)}>
                 <Input
                     register={register}
@@ -167,14 +167,14 @@ const CreateTaskForm = () => {
                         type="button"
                         variant="ghost"
                         onClick={() => navigate(`/project/${projectId}/epics`)}
-                        className="w-full sm:w-fit px-8"
+                        className="sm:w-fit w-full"
                     >
                         Cancel
                     </Button>
                     <Button
                         type="submit"
                         variant="primary"
-                        className="sm:min-w-40"
+                        className="sm:w-fit w-full"
                         disabled={isLoading}
                     >
                         Create
