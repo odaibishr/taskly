@@ -19,4 +19,17 @@ export interface Task {
     status: TaskStatus;
 }
 
+export interface ProjectTask {
+    id: string;
+    project_id: string;
+    epic_id: string | null;
+    title: string;
+    description: string | null;
+    assignee_id: string | null;
+    assignee_name: string | null;
+    assignee_avatar: string | null;
+    due_date: string | null;
+    status: TaskStatus;
+}
+
 export type CreateTaskPayload = Omit<Task, "id">;

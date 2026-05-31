@@ -1,10 +1,11 @@
-import { Calendar, List, Loader2, Plus, User, X } from "lucide-react";
+import { Calendar, Loader2, Plus, User, X } from "lucide-react";
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useShallow } from "zustand/react/shallow";
 
 import EpicDetail from "@/assets/EpicDetail.svg";
 import { useEpicsStore } from "@/features/epics/store/epics.store";
+import { TaskList, useTasksStore } from "@/features/tasks";
 import Button from "@/shared/components/Button";
 import { getInitials } from "@/shared/lib/utils";
 
@@ -37,6 +38,30 @@ export const EpicDetailsModal: React.FC<EpicDetailsModalProps> = ({
             setSelectedEpic: state.setSelectedEpic,
         })),
     );
+
+    const {
+        tasks,
+        isTasksLoading,
+        tasksError,
+        getEpicTasks,
+        clearEpicTasks,
+    } = useTasksStore(
+        useShallow((state) => ({
+            tasks: state.epicTasks,
+            isTasksLoading: state.isEpicTasksLoading,
+            tasksError: state.epicTasksError,
+            getEpicTasks: state.getEpicTasks,
+            clearEpicTasks: state.clearEpicTasks,
+        })),
+    );
+
+    useEffect(() => {
+        if (isOpen && epicId) {
+            getEpicTasks(epicId);
+        } else {
+            clearEpicTasks();
+        }
+    }, [isOpen, epicId, getEpicTasks, clearEpicTasks]);
 
     useEffect(() => {
         if (isOpen && projectId && epicId) {
@@ -253,25 +278,14 @@ export const EpicDetailsModal: React.FC<EpicDetailsModalProps> = ({
                                     </Button>
                                 </div>
 
-                                <div className="flex flex-col items-center justify-center py-10 px-4 bg-[#F1F3FF] rounded-lg text-center space-y-7 animate-in fade-in duration-500">
-                                    <div className="w-12 h-12 bg-[#D7E2FF] rounded-lg flex items-center justify-center shadow-sm">
-                                        <List className="w-6 h-6 text-slate-medium" />
-                                    </div>
-                                    <p className="text-sm font-medium text-slate-dark">
-                                        No tasks have been added to this epic yet
-                                    </p>
-                                    <Button
-                                        variant="primary"
-                                        onClick={() =>
-                                            navigate(
-                                                `/project/${projectId}/tasks/new?epicId=${epicId}`,
-                                            )
-                                        }
-                                    >
-                                        <Plus size={18} />
-                                        <span className="text-sm font-semibold">Add Task</span>
-                                    </Button>
-                                </div>
+                                <TaskList
+                                    tasks={tasks}
+                                    isLoading={isTasksLoading}
+                                    error={tasksError}
+                                    projectId={projectId}
+                                    epicId={epicId}
+                                    onRetry={() => getEpicTasks(epicId)}
+                                />
                             </div>
                         </div>
                     </>
@@ -280,3 +294,5 @@ export const EpicDetailsModal: React.FC<EpicDetailsModalProps> = ({
         </div>
     );
 };
+
+
