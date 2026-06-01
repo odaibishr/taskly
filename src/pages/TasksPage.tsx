@@ -1,9 +1,10 @@
-import { TasksBoardView } from "@/features/tasks";
+import { ListFilterIcon, LucideCircuitBoard, SearchIcon } from "lucide-react";
+import { useParams, useSearchParams } from "react-router-dom";
+
+import { TasksBoardView, TasksListView } from "@/features/tasks";
 import Button from "@/shared/components/Button";
 import ErrorCard from "@/shared/components/ErrorCard";
 import { HeaderSection } from "@/shared/components/HeaderSection";
-import { ListFilterIcon, LucideCircuitBoard, SearchIcon } from "lucide-react";
-import { useParams, useSearchParams } from "react-router-dom";
 
 const TasksPage = () => {
     const { projectId } = useParams<{ projectId: string }>();
@@ -59,7 +60,11 @@ const TasksPage = () => {
                 </div>
             </section>
             {projectId ? (
-                <TasksBoardView projectId={projectId} />
+                view === "list" ? (
+                    <TasksListView projectId={projectId} />
+                ) : (
+                    <TasksBoardView projectId={projectId} />
+                )
             ) : (
                 <ErrorCard retryAction={() => {}} />
             )}
