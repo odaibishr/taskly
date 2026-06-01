@@ -16,7 +16,12 @@ export async function fetchTasksByEpicId(epicId: string): Promise<ProjectTask[]>
     return response.data;
 }
 
-export async function fetchTasksByStatus(projectId: string, status: TaskStatus): Promise<ProjectTask> {
-    const response = await http.get(`/rest/v1/project_tasks?project_id=eq.${projectId}&status=eq.${status}`);
+export async function fetchTasksByStatus(projectId: string, status: TaskStatus): Promise<ProjectTask[]> {
+    const response = await http.get<ProjectTask[]>(`/rest/v1/project_tasks?project_id=eq.${projectId}&status=eq.${status}`);
+    return response.data;
+}
+
+export async function fetchTasksByProjectId(projectId: string): Promise<ProjectTask[]> {
+    const response = await http.get<ProjectTask[]>(`/rest/v1/project_tasks?project_id=eq.${projectId}`);
     return response.data;
 }
