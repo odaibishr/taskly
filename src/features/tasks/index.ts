@@ -1,5 +1,6 @@
 export { default as CreateTaskForm } from "@/features/tasks/components/CreateTaskForm";
 export { default as TasksBoardView } from "@/features/tasks/components/TasksBoardView";
+export { default as TasksListView } from "@/features/tasks/components/TasksListView";
 export { TaskList } from "@/features/tasks/components/TaskList";
 export * from "@/features/tasks/store/tasks.store";
 export * from "@/features/tasks/types";
