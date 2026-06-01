@@ -1,9 +1,7 @@
 import { create } from "zustand";
 
-import { createTask, fetchTasksByEpicId } from "@/features/tasks/api/tasks.api";
+import { createTask, fetchTasksByEpicId, fetchTasksByProjectId } from "@/features/tasks/api/tasks.api";
 import type { CreateTaskPayload, ProjectTask, Task } from "@/features/tasks/types";
-
-
 
 interface TasksState {
     tasks: Task[];
@@ -16,6 +14,11 @@ interface TasksState {
     epicTasksError: string | null;
     getEpicTasks: (epicId: string) => Promise<void>;
     clearEpicTasks: () => void;
+    projectTasks: ProjectTask[];
+    isProjectTasksLoading: boolean;
+    projectTasksError: string | null;
+    getProjectTasks: (projectId: string) => Promise<void>;
+    clearProjectTasks: () => void;
 }
 
 export const useTasksStore = create<TasksState>()((set, get) => ({
@@ -70,4 +73,28 @@ export const useTasksStore = create<TasksState>()((set, get) => ({
         }
     },
     clearEpicTasks: () => set({ epicTasks: [], epicTasksError: null }),
+    projectTasks: [],
+    isProjectTasksLoading: false,
+    projectTasksError: null,
+    getProjectTasks: async (projectId: string) => {
+        set({
+            isProjectTasksLoading: true,
+            projectTasksError: null,
+        });
+        try {
+            const data = await fetchTasksByProjectId(projectId);
+            set({
+                projectTasks: data,
+            });
+        } catch {
+            set({
+                projectTasksError: "Failed to load project tasks",
+            });
+        } finally {
+            set({
+                isProjectTasksLoading: false,
+            });
+        }
+    },
+    clearProjectTasks: () => set({ projectTasks: [], projectTasksError: null }),
 }))
