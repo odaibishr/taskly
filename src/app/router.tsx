@@ -13,8 +13,8 @@ import ProjectMembersPage from "@/pages/ProjectMembersPage";
 import ProjectsPage from "@/pages/ProjectsPage";
 import ResetPasswordPage from "@/pages/ResetPasswordPage";
 import SignUpPage from "@/pages/SignUpPage";
-import { useRecoveryRedirect } from "@/shared/hooks/recoveryRedirect";
 import TasksPage from "@/pages/TasksPage";
+import { useRecoveryRedirect } from "@/shared/hooks/recoveryRedirect";
 
 function RootLayout() {
     useRecoveryRedirect();
