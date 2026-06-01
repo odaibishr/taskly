@@ -7,6 +7,7 @@ import z from "zod";
 import { useEpicsStore } from "@/features/epics";
 import { useProjectMembers } from "@/features/members/hooks/useProjectMembers";
 import { useTasksStore } from "@/features/tasks/store/tasks.store";
+import type { TaskStatus } from "@/features/tasks/types";
 import { createTaskSchema } from "@/features/tasks/validation";
 import Button from "@/shared/components/Button";
 import FormContainer from "@/shared/components/FormContainer";
@@ -38,6 +39,21 @@ const CreateTaskForm = () => {
 
     const { epics, getEpicsByProjectId } = useEpicsStore();
 
+    const from = searchParams.get("from");
+    const redirectUrl = from === "board" ? `/project/${projectId}/tasks` : `/project/${projectId}/epics`;
+
+    const statusParam = searchParams.get("status");
+    const prefilledStatus = (statusParam && [
+        "TO_DO",
+        "IN_PROGRESS",
+        "BLOCKED",
+        "IN_REVIEW",
+        "READY_FOR_QA",
+        "REOPENED",
+        "READY_FOR_PRODUCTION",
+        "DONE"
+    ].includes(statusParam)) ? (statusParam as TaskStatus) : "TO_DO";
+
     useEffect(() => {
         if (projectId) {
             getEpicsByProjectId(projectId);
@@ -60,7 +76,7 @@ const CreateTaskForm = () => {
             epic_id: prefilledEpicId,
             assignee_id: "",
             due_date: "",
-            status: "TO_DO",
+            status: prefilledStatus,
         },
     });
 
@@ -80,7 +96,7 @@ const CreateTaskForm = () => {
                 due_date: isoDueDate,
                 status: data.status,
             });
-            navigate(`/project/${projectId}/epics`);
+            navigate(redirectUrl);
         } catch {
             // Note: The error is automatically caught by useTasksStore and handled gracefully in the UI.
         }
@@ -172,7 +188,7 @@ const CreateTaskForm = () => {
                     <Button
                         type="button"
                         variant="ghost"
-                        onClick={() => navigate(`/project/${projectId}/epics`)}
+                        onClick={() => navigate(redirectUrl)}
                         className="sm:w-fit w-full"
                     >
                         Cancel

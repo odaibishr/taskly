@@ -1,4 +1,4 @@
-import type { CreateTaskPayload, ProjectTask, Task } from "@/features/tasks/types";
+import type { CreateTaskPayload, ProjectTask, Task, TaskStatus } from "@/features/tasks/types";
 import { http } from "@/shared/lib/http";
 
 export async function createTask(payload: CreateTaskPayload): Promise<Task> {
@@ -13,5 +13,15 @@ export async function createTask(payload: CreateTaskPayload): Promise<Task> {
 
 export async function fetchTasksByEpicId(epicId: string): Promise<ProjectTask[]> {
     const response = await http.get<ProjectTask[]>(`/rest/v1/project_tasks?epic_id=eq.${epicId}`);
+    return response.data;
+}
+
+export async function fetchTasksByStatus(projectId: string, status: TaskStatus): Promise<ProjectTask[]> {
+    const response = await http.get<ProjectTask[]>(`/rest/v1/project_tasks?project_id=eq.${projectId}&status=eq.${status}`);
+    return response.data;
+}
+
+export async function fetchTasksByProjectId(projectId: string): Promise<ProjectTask[]> {
+    const response = await http.get<ProjectTask[]>(`/rest/v1/project_tasks?project_id=eq.${projectId}`);
     return response.data;
 }

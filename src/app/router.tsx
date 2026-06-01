@@ -13,6 +13,7 @@ import ProjectMembersPage from "@/pages/ProjectMembersPage";
 import ProjectsPage from "@/pages/ProjectsPage";
 import ResetPasswordPage from "@/pages/ResetPasswordPage";
 import SignUpPage from "@/pages/SignUpPage";
+import TasksPage from "@/pages/TasksPage";
 import { useRecoveryRedirect } from "@/shared/hooks/recoveryRedirect";
 
 function RootLayout() {
@@ -60,7 +61,7 @@ export const router = createBrowserRouter([
                 children: [
                     { path: "epics", element: <EpicsPage /> },
                     { path: "epics/new", element: <CreateEpicPage /> },
-                    { path: "tasks", element: <div>Tasks Page Content</div> },
+                    { path: "tasks", element: <TasksPage /> },
                     { path: "tasks/new", element: <CreateTaskPage /> },
                     { path: "members", element: <ProjectMembersPage /> },
                     { path: "edit", element: <EditProjectPage /> },
