@@ -6,9 +6,10 @@ import { cn, getInitials, formatDueDate, getAvatarColors } from "@/shared/lib/ut
 
 interface TaskBoardCardProps {
     task: ProjectTask;
+    onTaskClick: (taskId: string) => void;
 }
 
-export const TaskBoardCard: React.FC<TaskBoardCardProps> = ({ task }) => {
+export const TaskBoardCard: React.FC<TaskBoardCardProps> = ({ task, onTaskClick }) => {
     const dateBadge = formatDueDate(task.due_date);
     const avColors = task.assignee_name ? getAvatarColors(task.assignee_name) : null;
 
@@ -24,6 +25,7 @@ export const TaskBoardCard: React.FC<TaskBoardCardProps> = ({ task }) => {
                     : "border-slate-100",
                 isBlocked ? "bg-[#FFF5F5]/60 border-[#FEE4E2]" : "",
             )}
+            onClick={() => onTaskClick(task.id)}
         >
             <h4 className="text-[13.5px] font-bold text-[#041B3C] leading-snug tracking-normal line-clamp-3">
                 {task.title}

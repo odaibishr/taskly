@@ -7,9 +7,9 @@ import { useTasksList } from "../hooks/useTasksList";
 import type { ProjectTask, TaskStatus } from "@/features/tasks/types";
 import { cn, getInitials, getAvatarColors, formatDueDate } from "@/shared/lib/utils";
 
-
 interface TasksListViewProps {
     projectId: string;
+    onTaskClick: (taskid: string) => void;
 }
 
 const statusBadges: Record<TaskStatus, { text: string; bg: string; textClass: string }> = {
@@ -23,7 +23,7 @@ const statusBadges: Record<TaskStatus, { text: string; bg: string; textClass: st
     DONE: { text: "COMPLETED", bg: "bg-[#ECFDF3]", textClass: "text-[#027A48]" },
 };
 
-const TasksListView: React.FC<TasksListViewProps> = ({ projectId }) => {
+const TasksListView: React.FC<TasksListViewProps> = ({ projectId, onTaskClick }) => {
     const {
         tasks,
         currentTasks,
@@ -102,7 +102,12 @@ const TasksListView: React.FC<TasksListViewProps> = ({ projectId }) => {
                     </thead>
                     <tbody className="divide-y divide-[#F2F4F7]">
                         {currentTasks.map((task) => (
-                            <TaskRow key={task.id} task={task} projectId={projectId} />
+                            <TaskRow
+                                key={task.id}
+                                task={task}
+                                projectId={projectId}
+                                onTaskClick={onTaskClick}
+                            />
                         ))}
                     </tbody>
                 </table>
@@ -150,9 +155,10 @@ const TasksListView: React.FC<TasksListViewProps> = ({ projectId }) => {
 interface TaskRowProps {
     task: ProjectTask;
     projectId: string;
+    onTaskClick: (taskid: string) => void;
 }
 
-const TaskRow: React.FC<TaskRowProps> = ({ task, projectId }) => {
+const TaskRow: React.FC<TaskRowProps> = ({ task, projectId, onTaskClick }) => {
     const badge = statusBadges[task.status] || {
         text: task.status,
         bg: "bg-slate-100",
@@ -162,7 +168,10 @@ const TaskRow: React.FC<TaskRowProps> = ({ task, projectId }) => {
     const formattedDate = formatDueDate(task.due_date);
 
     return (
-        <tr className="hover:bg-slate-50/20 transition-all duration-200">
+        <tr
+            className="hover:bg-slate-50/20 transition-all duration-200 cursor-pointer"
+            onClick={() => onTaskClick(task.id)}
+        >
             {/* Task ID */}
             <td className="py-4.5 px-6 whitespace-nowrap">
                 <Link

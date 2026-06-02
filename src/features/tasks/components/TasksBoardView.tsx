@@ -8,9 +8,9 @@ import { fetchTasksByStatus } from "@/features/tasks/api/tasks.api";
 import type { ProjectTask, TaskStatus } from "@/features/tasks/types";
 import { cn } from "@/shared/lib/utils";
 
-
 interface TasksBoardViewProps {
     projectId: string;
+    onTaskClick: (taskId: string) => void;
 }
 
 const COLUMNS: { status: TaskStatus; label: string; dotColor: string }[] = [
@@ -24,12 +24,12 @@ const COLUMNS: { status: TaskStatus; label: string; dotColor: string }[] = [
     { status: "DONE", label: "DONE", dotColor: "bg-[#027A48]" },
 ];
 
-const TasksBoardView: React.FC<TasksBoardViewProps> = ({ projectId }) => {
+const TasksBoardView: React.FC<TasksBoardViewProps> = ({ projectId, onTaskClick }) => {
     return (
         <div className="flex gap-6 overflow-x-auto pb-6 pt-2 snap-x scroll-smooth -mx-4 px-4 sm:-mx-6 sm:px-6">
             {COLUMNS.map((column) => (
                 <div key={column.status} className="snap-start shrink-0 w-85 flex flex-col">
-                    <TaskColumn projectId={projectId} column={column} />
+                    <TaskColumn projectId={projectId} column={column} onTaskClick={onTaskClick} />
                 </div>
             ))}
         </div>
@@ -39,9 +39,10 @@ const TasksBoardView: React.FC<TasksBoardViewProps> = ({ projectId }) => {
 interface TaskColumnProps {
     projectId: string;
     column: (typeof COLUMNS)[number];
+    onTaskClick: (taskId: string) => void;
 }
 
-const TaskColumn: React.FC<TaskColumnProps> = ({ projectId, column }) => {
+const TaskColumn: React.FC<TaskColumnProps> = ({ projectId, column, onTaskClick }) => {
     const navigate = useNavigate();
     const [tasks, setTasks] = useState<ProjectTask[]>([]);
     const [isLoading, setIsLoading] = useState(true);
@@ -130,7 +131,7 @@ const TaskColumn: React.FC<TaskColumnProps> = ({ projectId, column }) => {
                         </span>
                     </div>
                 ) : (
-                    tasks.map((task) => <TaskBoardCard key={task.id} task={task} />)
+                    tasks.map((task) => <TaskBoardCard key={task.id} task={task} onTaskClick={onTaskClick} />)
                 )}
             </div>
         </div>
