@@ -12,6 +12,12 @@ interface TasksState {
     epicTasks: ProjectTask[];
     isEpicTasksLoading: boolean;
     epicTasksError: string | null;
+    selectedTaskId: string | null;
+    selectedTask: ProjectTask | null;
+    isSelectedTaskLoading: boolean;
+    isSelectedTaskError: string | null;
+    setSelectedTaskId: (taskId: string | null) => void;
+    getSelectedTaskDetails: (projectId: string, taskId: string) => Promise<void>;
     getEpicTasks: (epicId: string) => Promise<void>;
     clearEpicTasks: () => void;
     projectTasks: ProjectTask[];
