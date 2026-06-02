@@ -14,6 +14,7 @@ interface TasksState {
     epicTasksError: string | null;
     selectedTaskId: string | null;
     selectedTask: ProjectTask | null;
+    selectedTaskError: string | null;
     isSelectedTaskLoading: boolean;
     isSelectedTaskError: string | null;
     setSelectedTaskId: (taskId: string | null) => void;
@@ -103,4 +104,5 @@ export const useTasksStore = create<TasksState>()((set, get) => ({
         }
     },
     clearProjectTasks: () => set({ projectTasks: [], projectTasksError: null }),
+    
 }))
