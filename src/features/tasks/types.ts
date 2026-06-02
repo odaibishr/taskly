@@ -30,6 +30,8 @@ export interface ProjectTask {
     assignee_avatar: string | null;
     due_date: string | null;
     status: TaskStatus;
+    created_at?: string | null;
+    reporter_name?: string | null;
 }
 
 export type CreateTaskPayload = Omit<Task, "id">;
