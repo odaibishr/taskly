@@ -25,3 +25,8 @@ export async function fetchTasksByProjectId(projectId: string): Promise<ProjectT
     const response = await http.get<ProjectTask[]>(`/rest/v1/project_tasks?project_id=eq.${projectId}`);
     return response.data;
 }
+
+export async function fetchTaskDetails(projectId: string, taskId: string): Promise<ProjectTask> {
+    const response = await http.get<ProjectTask[]>(`/rest/v1/project_tasks?project_id=eq.${projectId}&id=eq.${taskId}`);
+    return response.data[0];
+}
