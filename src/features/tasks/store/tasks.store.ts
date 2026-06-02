@@ -1,6 +1,6 @@
 import { create } from "zustand";
 
-import { createTask, fetchTasksByEpicId, fetchTasksByProjectId } from "@/features/tasks/api/tasks.api";
+import { createTask, fetchTaskDetails, fetchTasksByEpicId, fetchTasksByProjectId } from "@/features/tasks/api/tasks.api";
 import type { CreateTaskPayload, ProjectTask, Task } from "@/features/tasks/types";
 
 interface TasksState {
@@ -16,7 +16,7 @@ interface TasksState {
     selectedTask: ProjectTask | null;
     selectedTaskError: string | null;
     isSelectedTaskLoading: boolean;
-    isSelectedTaskError: string | null;
+    isSelectedTaskError: boolean;
     setSelectedTaskId: (taskId: string | null) => void;
     getSelectedTaskDetails: (projectId: string, taskId: string) => Promise<void>;
     getEpicTasks: (epicId: string) => Promise<void>;
@@ -104,5 +104,36 @@ export const useTasksStore = create<TasksState>()((set, get) => ({
         }
     },
     clearProjectTasks: () => set({ projectTasks: [], projectTasksError: null }),
-    
+    selectedTaskId: null,
+    selectedTask: null,
+    selectedTaskError: null,
+    isSelectedTaskLoading: false,
+    isSelectedTaskError: false,
+    setSelectedTaskId: (taskId) => set({
+        selectedTaskId: taskId,
+        selectedTask: taskId ? get().selectedTask : null,
+        selectedTaskError: null,
+    }),
+    getSelectedTaskDetails: async (projectId, taskId) => {
+        set({
+            isSelectedTaskLoading: true,
+            selectedTaskError: null,
+        });
+        try {
+            const data = await fetchTaskDetails(projectId, taskId);
+            set({
+                selectedTask: data,
+            });
+        } catch (error: unknown) {
+            const message = error instanceof Error ? error.message : "Failed to load task details";
+            set({
+                selectedTaskError: message,
+            });
+        } finally {
+            set({
+                isSelectedTaskLoading: false,
+            });
+        }
+    }
+
 }))
