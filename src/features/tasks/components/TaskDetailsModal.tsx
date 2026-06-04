@@ -1,9 +1,10 @@
-import { useTasksStore } from "../store/tasks.store";
+import { useTasksStore } from "@/features/tasks/store/tasks.store";
 import { useShallow } from "zustand/shallow";
 import { useEffect } from "react";
-import { X, Loader2 } from "lucide-react";
+import { Loader2 } from "lucide-react";
 import Button from "@/shared/components/Button";
-import RightTaskModalContent from "./RightTaskModalContent";
+import RightTaskModalContent from "@/features/tasks/components/RightTaskModalContent";
+import LeftTaskkModalContent from "@/features/tasks/components/LeftTaskkModalContent";
 
 interface TaskDetailsModalProps {
     isOpen: boolean;
@@ -110,16 +111,13 @@ const TaskDetailsModal = ({ isOpen, onClose, projectId, taskId }: TaskDetailsMod
                         onClose={onClose}
                     />
 
-                    <div className="bg-surface-highest w-[25%]">
-                        <button
-                            className="inline-flex items-center justify-center rounded-sm bg-error-base hover:bg-error-dark text-surface-on-highest transition-colors"
-                            onClick={onClose}
-                            type="button"
-                            data-testid="task-details-modal-close-btn"
-                        >
-                            <X />
-                        </button>
-                    </div>
+                    <LeftTaskkModalContent
+                        status={selectedTask.status}
+                        assignee_name={selectedTask.assignee_name}
+                        reporter_name={selectedTask.reporter_name}
+                        created_at={selectedTask.created_at}
+                        due_date={selectedTask.due_date}
+                    />
                 </div>
             </div>
         </div>
