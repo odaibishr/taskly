@@ -21,9 +21,39 @@ export async function fetchTasksByStatus(projectId: string, status: TaskStatus):
     return response.data;
 }
 
-export async function fetchTasksByProjectId(projectId: string): Promise<ProjectTask[]> {
-    const response = await http.get<ProjectTask[]>(`/rest/v1/project_tasks?project_id=eq.${projectId}`);
-    return response.data;
+export async function fetchTasksByProjectId(
+    projectId: string,
+    limit?: number,
+    offset?: number
+): Promise<{ data: ProjectTask[]; total: number }> {
+    const params = new URLSearchParams();
+    params.append("project_id", `eq.${projectId}`);
+    if (limit !== undefined) {
+        params.append("limit", String(limit));
+    }
+    if (offset !== undefined) {
+        params.append("offset", String(offset));
+    }
+
+    const response = await http.get<ProjectTask[]>(`/rest/v1/project_tasks?${params.toString()}`, {
+        headers: {
+            'Prefer': 'count=exact'
+        }
+    });
+
+    const contentRange = response.headers['content-range'];
+    let total = response.data.length;
+    if (contentRange) {
+        const match = contentRange.match(/\/(\d+)$/);
+        if (match) {
+            total = parseInt(match[1], 10);
+        }
+    }
+
+    return {
+        data: response.data,
+        total
+    };
 }
 
 export async function fetchTaskDetails(projectId: string, taskId: string): Promise<ProjectTask> {
