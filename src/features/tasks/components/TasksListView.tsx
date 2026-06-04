@@ -1,4 +1,4 @@
-import { User, Loader2, RefreshCw, MoreHorizontal, ChevronLeft, ChevronRight } from "lucide-react";
+import { User, Loader2, RefreshCw, MoreHorizontal, ChevronLeft, ChevronRight, SearchIcon } from "lucide-react";
 import React from "react";
 
 import { useTasksList } from "../hooks/useTasksList";
@@ -20,43 +20,22 @@ const TasksListView: React.FC<TasksListViewProps> = ({ projectId, onTaskClick })
         error,
         currentPage,
         totalPages,
+        localSearchTerm,
+        setLocalSearchTerm,
+        debouncedSearchTerm,
         retry,
         goToNextPage,
         goToPrevPage,
     } = useTasksList(projectId);
 
-    if (isLoading) {
-        return (
-            <div className="flex flex-col items-center justify-center py-20 space-y-3 bg-white rounded-xl border border-gray-100/80 shadow-3xs">
-                <Loader2 className="w-8 h-8 text-primary animate-spin" />
-                <span className="text-sm font-semibold text-slate-medium/80">
-                    Loading project pipeline...
-                </span>
-            </div>
-        );
-    }
+    // Initial empty state when there are no tasks at all in the project (no search term is entered)
+    const isProjectEmpty = !isLoading && totalTasks === 0 && !debouncedSearchTerm;
 
-    if (error) {
-        return (
-            <div className="p-8 bg-red-50/50 border border-red-100 rounded-xl text-center space-y-3 shadow-3xs">
-                <p className="text-sm font-semibold text-red-600">
-                    Failed to load the pipeline tasks
-                </p>
-                <button
-                    onClick={retry}
-                    className="flex items-center gap-1.5 mx-auto text-xs font-bold text-primary hover:underline cursor-pointer"
-                >
-                    <RefreshCw size={12} /> Retry
-                </button>
-            </div>
-        );
-    }
-
-    if (totalTasks === 0) {
+    if (isProjectEmpty) {
         return (
             <div className="py-16 text-center border border-dashed border-slate-200 bg-white rounded-2xl p-8 shadow-3xs">
                 <p className="text-slate-medium font-semibold">
-                    No tasks available in this project.
+                    No tasks found for this project
                 </p>
                 <p className="text-xs text-slate-medium/60 mt-1">
                     Create epics and tasks to begin monitoring pipeline.
@@ -66,7 +45,53 @@ const TasksListView: React.FC<TasksListViewProps> = ({ projectId, onTaskClick })
     }
 
     return (
-        <div className="w-full bg-white rounded-xl border border-[#F2F4F7] shadow-3xs overflow-hidden flex flex-col justify-between min-h-125">
+        <div className="space-y-4 w-full">
+            {/* Search Input Container */}
+            <div className="flex justify-start">
+                <div className="flex w-full gap-2 text-slate-dark md:w-65 px-4 py-2.5 pr-4 text-dark-800 bg-surface-low rounded-sm outline-none ring-none border border-gray-100 focus-within:border-primary/50 transition-colors">
+                    {isLoading ? (
+                        <Loader2 size={24} className="text-slate-medium animate-spin" />
+                    ) : (
+                        <SearchIcon size={24} className="text-slate-medium" />
+                    )}
+                    <input
+                        type="text"
+                        placeholder="Search tasks..."
+                        className="w-full bg-transparent outline-none ring-none"
+                        value={localSearchTerm}
+                        onChange={(e) => setLocalSearchTerm(e.target.value)}
+                    />
+                </div>
+            </div>
+
+            {isLoading ? (
+                <div className="flex flex-col items-center justify-center py-20 space-y-3 bg-white rounded-xl border border-gray-100/80 shadow-3xs">
+                    <Loader2 className="w-8 h-8 text-primary animate-spin" />
+                    <span className="text-sm font-semibold text-slate-medium/80">
+                        Loading project pipeline...
+                    </span>
+                </div>
+            ) : error ? (
+                <div className="p-8 bg-red-50/50 border border-red-100 rounded-xl text-center space-y-3 shadow-3xs">
+                    <p className="text-sm font-semibold text-red-600">
+                        Failed to search tasks
+                    </p>
+                    <button
+                        onClick={retry}
+                        className="flex items-center gap-1.5 mx-auto text-xs font-bold text-primary hover:underline cursor-pointer"
+                    >
+                        <RefreshCw size={12} /> Retry
+                    </button>
+                </div>
+            ) : totalTasks === 0 ? (
+                <div className="py-16 text-center border border-dashed border-slate-200 bg-white rounded-2xl p-8 shadow-3xs">
+                    <p className="text-slate-medium font-semibold">
+                        No tasks found matching your search
+                    </p>
+                </div>
+            ) : (
+                <div className="w-full bg-white rounded-xl border border-[#F2F4F7] shadow-3xs overflow-hidden flex flex-col justify-between min-h-125">
+
             <div className="overflow-x-auto w-full">
                 <table className="w-full border-collapse text-left">
                     <thead>
@@ -136,7 +161,9 @@ const TasksListView: React.FC<TasksListViewProps> = ({ projectId, onTaskClick })
                 </div>
             </div>
         </div>
-    );
+    )}
+</div>
+);
 };
 
 /* Sub-component for individual Task Row */
