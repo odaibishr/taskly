@@ -6,6 +6,7 @@ import { useTasksStore } from "@/features/tasks/store/tasks.store";
 export function useTasksList(projectId: string) {
     const {
         projectTasks: tasks,
+        totalTasks,
         isProjectTasksLoading: isLoading,
         projectTasksError: error,
         getProjectTasks,
@@ -13,6 +14,7 @@ export function useTasksList(projectId: string) {
     } = useTasksStore(
         useShallow((state) => ({
             projectTasks: state.projectTasks,
+            totalTasks: state.totalTasks,
             isProjectTasksLoading: state.isProjectTasksLoading,
             projectTasksError: state.projectTasksError,
             getProjectTasks: state.getProjectTasks,
@@ -25,28 +27,34 @@ export function useTasksList(projectId: string) {
 
     useEffect(() => {
         if (projectId) {
-            getProjectTasks(projectId);
+            const offset = (currentPage - 1) * itemsPerPage;
+            getProjectTasks(projectId, itemsPerPage, offset, false);
         }
+    }, [projectId, currentPage, getProjectTasks]);
+
+    useEffect(() => {
         return () => {
             clearProjectTasks();
         };
-    }, [projectId, getProjectTasks, clearProjectTasks]);
+    }, [clearProjectTasks]);
 
-    const totalPages = Math.ceil(tasks.length / itemsPerPage);
-    const startIndex = (currentPage - 1) * itemsPerPage;
-    const currentTasks = tasks.slice(startIndex, startIndex + itemsPerPage);
+    const totalPages = Math.ceil(totalTasks / itemsPerPage) || 1;
 
     const goToNextPage = () => setCurrentPage((prev) => Math.min(prev + 1, totalPages));
     const goToPrevPage = () => setCurrentPage((prev) => Math.max(prev - 1, 1));
 
     return {
         tasks,
-        currentTasks,
+        currentTasks: tasks,
+        totalTasks,
         isLoading,
         error,
         currentPage,
         totalPages,
-        retry: () => getProjectTasks(projectId),
+        retry: () => {
+            const offset = (currentPage - 1) * itemsPerPage;
+            getProjectTasks(projectId, itemsPerPage, offset, false);
+        },
         goToNextPage,
         goToPrevPage,
     };
