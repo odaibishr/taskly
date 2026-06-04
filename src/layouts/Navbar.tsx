@@ -1,11 +1,12 @@
 import { useLocation } from "react-router-dom";
+import { LogOut } from "lucide-react";
 
 import Logo from "@/assets/Logo.svg";
 import { useAuthStore } from "@/features/auth";
 import { getInitials } from "@/shared/lib/utils";
 
 export default function Navbar() {
-	const { user } = useAuthStore();
+	const { user, handleLogout } = useAuthStore();
 	const location = useLocation();
 
 	const userName = user?.user_metadata?.name || "User";
@@ -35,6 +36,13 @@ export default function Navbar() {
 							<div className="w-10 h-10 rounded-lg bg-[#2563EB] flex items-center justify-center text-white font-bold text-sm shadow-lg shadow-blue-200">
 								{userAvatar}
 							</div>
+							<button
+								onClick={() => handleLogout()}
+								className="lg:hidden w-10 h-10 rounded-lg bg-red-50 hover:bg-red-100 flex items-center justify-center text-red-500 shadow-md shadow-red-100 transition-colors cursor-pointer"
+								title="Logout"
+							>
+								<LogOut size={18} />
+							</button>
 						</div>
 					</div>
 				</header>
