@@ -1,8 +1,10 @@
 import { UserPlusIcon } from "lucide-react";
+import { useState } from "react";
 
 import {
 	MembersTable,
 	MembersTableSkeleton,
+	InviteMemberModal,
 } from "@/features/members";
 import { useProjectMembers } from "@/features/members/hooks/useProjectMembers";
 import Button from "@/shared/components/Button";
@@ -11,6 +13,7 @@ import { HeaderSection } from "@/shared/components/HeaderSection";
 
 const ProjectMembersPage = () => {
 	const { projectId, members, isLoading, error, getMembers } = useProjectMembers();
+	const [isInviteOpen, setIsInviteOpen] = useState(false);
 
 	if (error) {
 		return (
@@ -33,6 +36,8 @@ const ProjectMembersPage = () => {
 					<Button
 						variant="primary"
 						className="flex items-center gap-2"
+						onClick={() => setIsInviteOpen(true)}
+						id="invite-members-btn"
 					>
 						<UserPlusIcon size={20} />
 						Invite Members
@@ -45,8 +50,16 @@ const ProjectMembersPage = () => {
 			) : (
 				<MembersTable members={members} />
 			)}
+
+			{projectId && (
+				<InviteMemberModal
+					isOpen={isInviteOpen}
+					onClose={() => setIsInviteOpen(false)}
+					projectId={projectId}
+				/>
+			)}
 		</main>
 	);
 };
 
-export default ProjectMembersPage;
+export default ProjectMembersPage;

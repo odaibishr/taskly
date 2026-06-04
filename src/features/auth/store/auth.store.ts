@@ -48,7 +48,10 @@ export const useAuthStore = create<AuthState>((set) => ({
 			localStorage.setItem('refresh_token', data.refresh_token);
 			localStorage.setItem('user', JSON.stringify(data.user));
 			set({ user: data.user });
-			window.location.href = ROUTES.PROJECTS;
+			
+			const params = new URLSearchParams(window.location.search);
+			const redirectTo = params.get('redirectTo');
+			window.location.href = redirectTo || ROUTES.PROJECTS;
 		} catch (error: unknown) {
 			const message = error instanceof Error ? error.message : 'Login failed.';
 			set({ error: message });

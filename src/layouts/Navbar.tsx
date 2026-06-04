@@ -1,5 +1,5 @@
-import { useLocation } from "react-router-dom";
 import { LogOut } from "lucide-react";
+import { useLocation } from "react-router-dom";
 
 import Logo from "@/assets/Logo.svg";
 import { useAuthStore } from "@/features/auth";

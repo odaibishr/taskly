@@ -8,6 +8,7 @@ import CreateTaskPage from "@/pages/CreateTaskPage";
 import EditProjectPage from "@/pages/EditProjectPage";
 import EpicsPage from "@/pages/EpicsPage";
 import ForgotPasswordPage from "@/pages/ForgotPasswordPage";
+import InvitePage from "@/pages/InvitePage";
 import LogInPage from "@/pages/LogInPage";
 import ProjectMembersPage from "@/pages/ProjectMembersPage";
 import ProjectsPage from "@/pages/ProjectsPage";
@@ -35,6 +36,7 @@ export const router = createBrowserRouter([
             { index: true, element: <Navigate to="/login" replace /> },
             { path: "/signup", element: <SignUpPage /> },
             { path: "/login", element: <LogInPage /> },
+            { path: "/invite", element: <InvitePage /> },
             { path: "/forget-password", element: <ForgotPasswordPage /> },
             { path: "/reset-password", element: <ResetPasswordPage /> },
         ],
