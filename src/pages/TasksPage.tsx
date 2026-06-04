@@ -1,4 +1,4 @@
-import { ListFilterIcon, LucideCircuitBoard, SearchIcon } from "lucide-react";
+import { ListFilterIcon, LucideCircuitBoard } from "lucide-react";
 import { useState } from "react";
 import { useParams, useSearchParams } from "react-router-dom";
 
@@ -37,15 +37,6 @@ const TasksPage = () => {
                     isBreadcrumbVisible={true}
                 />
                 <div className="flex flex-col md:flex-row md:items-center gap-3">
-                    {/* search */}
-                    <div className="flex w-full gap-2 text-slate-dark md:w-65 px-4 py-2.5 pr-4 text-dark-800 bg-surface-low rounded-sm outline-none ring-none">
-                        <SearchIcon size={24} className="text-slate-medium" />
-                        <input
-                            type="text"
-                            placeholder="Search"
-                            className="w-full outline-none ring-none"
-                        />
-                    </div>
                     {/* view */}
                     <div className="hidden md:flex items-center justify-center cursor-pointer bg-background shadow-sm border border-slate-light rounded-sm py-2 px-4 gap-3">
                         <LucideCircuitBoard size={24} />
