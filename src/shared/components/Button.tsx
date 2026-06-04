@@ -7,6 +7,7 @@ export interface ButtonProps {
     disabled?: boolean;
     className?: string;
     variant?: "primary" | "secondary" | "outline" | "ghost";
+    id?: string;
 }
 
 const variants = {
@@ -16,12 +17,13 @@ const variants = {
     ghost: "text-slate-medium hover:bg-slate-light/10 hover:text-slate-dark",
 };
 
-export default function Button({ children, onClick, type = "button", disabled = false, className, variant = "primary" }: ButtonProps) {
+export default function Button({ children, onClick, type = "button", disabled = false, className, variant = "primary", id }: ButtonProps) {
     return (
         <button
             onClick={onClick}
             type={type}
             disabled={disabled}
+            id={id}
             className={cn(
                 "inline-flex items-center justify-center cursor-pointer text-[16px] font-bold rounded-sm transition-all duration-200 h-12 px-6",
                 variants[variant],
