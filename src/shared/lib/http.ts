@@ -24,7 +24,8 @@ http.interceptors.response.use(
 	(error) => {
 		if (error.response?.status === 401) {
 			localStorage.clear();
-			window.location.href = '/login';
+			const currentPath = window.location.pathname + window.location.search;
+			window.location.href = `/login?redirectTo=${encodeURIComponent(currentPath)}`;
 		}
 
 		return Promise.reject(error);
