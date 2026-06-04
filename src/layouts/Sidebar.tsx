@@ -101,7 +101,7 @@ export default function Sidebar({ isCollapsed, setIsCollapsed }: Props) {
 									isCollapsed ? "justify-center" : "justify-start",
 									active
 										? "bg-white text-[#2563EB] shadow-sm font-semibold"
-										: "text-[#4F5F7B] hover:bg-white hover:shadow-xs hover:text-[#003d9b]"
+										: "text-[#4F5F7B] hover:bg-white hover:shadow-xs hover:text-primary"
 								)}
 							>
 								<Icon
@@ -109,7 +109,7 @@ export default function Sidebar({ isCollapsed, setIsCollapsed }: Props) {
 										"h-5 w-5 transition-colors duration-200",
 										active
 											? "text-[#2563EB]"
-											: "text-[#c3c6d6] group-hover:text-[#2563EB]"
+											: "text-slate-light group-hover:text-[#2563EB]"
 									)}
 								/>
 								{!isCollapsed && (
