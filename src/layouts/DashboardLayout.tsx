@@ -26,7 +26,7 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 			)}>
 				<Navbar />
 
-				<main className="p-6 lg:p-10 flex-1">
+				<main className="p-6 pb-24 lg:p-10 flex-1">
 					<div className="max-w-400 mx-auto">
 						{children}
 					</div>
