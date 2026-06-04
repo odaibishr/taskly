@@ -48,7 +48,7 @@ const ProjectMembersPage = () => {
 			{isLoading ? (
 				<MembersTableSkeleton />
 			) : (
-				<MembersTable members={members} />
+				<MembersTable members={members} projectId={projectId ?? ""} />
 			)}
 
 			{projectId && (
