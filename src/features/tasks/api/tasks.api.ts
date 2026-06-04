@@ -60,3 +60,7 @@ export async function fetchTaskDetails(projectId: string, taskId: string): Promi
     const response = await http.get<ProjectTask[]>(`/rest/v1/project_tasks?project_id=eq.${projectId}&id=eq.${taskId}`);
     return response.data[0];
 }
+
+export async function updateTaskStatus(taskId: string, status: TaskStatus): Promise<void> {
+    await http.patch(`/rest/v1/tasks?id=eq.${taskId}`, { status });
+}
