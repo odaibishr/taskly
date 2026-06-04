@@ -16,7 +16,8 @@ export function useDebounce<T>(value: T, delay: number): T {
 	return debouncedValue;
 }
 
-export function useDebouncedCallback<T extends (...args: unknown[]) => void>(
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function useDebouncedCallback<T extends (...args: any[]) => void>(
 	callback: T,
 	delay: number
 ): (...args: Parameters<T>) => void {
@@ -26,7 +27,7 @@ export function useDebouncedCallback<T extends (...args: unknown[]) => void>(
 		callbackRef.current = callback;
 	});
 
-	const timeoutRef = useRef<NodeJS.Timeout | null>(null);
+	const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
 	const debouncedFn = useCallback(
 		(...args: Parameters<T>) => {
