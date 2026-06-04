@@ -1,10 +1,12 @@
-import { useTasksStore } from "@/features/tasks/store/tasks.store";
-import { useShallow } from "zustand/shallow";
-import { useEffect } from "react";
 import { Loader2 } from "lucide-react";
-import Button from "@/shared/components/Button";
-import RightTaskModalContent from "@/features/tasks/components/RightTaskModalContent";
+import { useEffect } from "react";
+import { useShallow } from "zustand/shallow";
+
 import LeftTaskkModalContent from "@/features/tasks/components/LeftTaskModalContent";
+import MobileTaskModalContent from "@/features/tasks/components/MobileTaskModalContent";
+import RightTaskModalContent from "@/features/tasks/components/RightTaskModalContent";
+import { useTasksStore } from "@/features/tasks/store/tasks.store";
+import Button from "@/shared/components/Button";
 
 interface TaskDetailsModalProps {
     isOpen: boolean;
@@ -37,7 +39,7 @@ const TaskDetailsModal = ({ isOpen, onClose, projectId, taskId }: TaskDetailsMod
         return () => {
             setSelectedTaskId("");
         };
-    }, [isOpen, taskId, getSelectedTaskDetails, setSelectedTaskId]);
+    }, [isOpen, taskId, projectId, getSelectedTaskDetails, setSelectedTaskId]);
 
     useEffect(() => {
         const handleKeyDown = (e: KeyboardEvent) => {
@@ -98,27 +100,31 @@ const TaskDetailsModal = ({ isOpen, onClose, projectId, taskId }: TaskDetailsMod
 
     return (
         <div
-            className="fixed inset-0  z-50 flex items-center justify-center p-4 bg-slate-dark/40 backdrop-blur-md transition-all duration-300 animate-in fade-in"
+            className="fixed inset-0 z-50 flex items-end md:items-center justify-center md:p-4 bg-slate-dark/40 backdrop-blur-md transition-all duration-300 animate-in fade-in"
             onClick={handleBackdropClick}
             id="task-details-modal-overlay"
         >
-            <div className="relative w-full max-w-4xl min-h-[90vh] flex flex-col bg-white rounded-lg shadow-2xl overflow-y-auto transition-all duration-300 animate-in zoom-in-95 slide-in-from-bottom-8">
-                <div className="flex-1 flex items-stretch justify-between">
+            <div className="relative w-full max-h-[85vh] md:min-h-[90vh] md:max-w-4xl flex flex-col bg-[#F3F4F8] md:bg-white rounded-t-4xl md:rounded-lg shadow-2xl overflow-y-auto transition-all duration-300 animate-in zoom-in-95 slide-in-from-bottom-full">
+                {/* Desktop layout */}
+                <div className="hidden md:flex flex-1 items-stretch justify-between">
                     <RightTaskModalContent
                         id={selectedTask.id}
                         title={selectedTask.title}
-                        description={selectedTask.description}
+                        description={selectedTask.description ?? undefined}
                         onClose={onClose}
                     />
 
                     <LeftTaskkModalContent
                         status={selectedTask.status}
-                        assignee_name={selectedTask.assignee_name}
-                        reporter_name={selectedTask.reporter_name}
-                        created_at={selectedTask.created_at}
-                        due_date={selectedTask.due_date}
+                        assignee_name={selectedTask.assignee_name ?? undefined}
+                        reporter_name={selectedTask.reporter_name ?? undefined}
+                        created_at={selectedTask.created_at ?? undefined}
+                        due_date={selectedTask.due_date ?? undefined}
                     />
                 </div>
+
+                {/* Mobile layout (Bottom Sheet) */}
+                <MobileTaskModalContent task={selectedTask} onClose={onClose} />
             </div>
         </div>
     );

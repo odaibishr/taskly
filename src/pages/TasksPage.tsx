@@ -1,11 +1,11 @@
 import { ListFilterIcon, LucideCircuitBoard, SearchIcon } from "lucide-react";
+import { useState } from "react";
 import { useParams, useSearchParams } from "react-router-dom";
 
 import { TaskDetailsModal, TasksBoardView, TasksListView } from "@/features/tasks";
 import Button from "@/shared/components/Button";
 import ErrorCard from "@/shared/components/ErrorCard";
 import { HeaderSection } from "@/shared/components/HeaderSection";
-import { useState } from "react";
 
 const TasksPage = () => {
     const { projectId } = useParams<{ projectId: string }>();

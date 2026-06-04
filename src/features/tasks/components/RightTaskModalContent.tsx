@@ -1,6 +1,8 @@
-import Button from "@/shared/components/Button";
 import { Link2 } from "lucide-react";
+
 import TaskModalHeader from "./TaskModalHeader";
+
+import Button from "@/shared/components/Button";
 
 interface RightTaskModalContentPrps {
     id: string;
