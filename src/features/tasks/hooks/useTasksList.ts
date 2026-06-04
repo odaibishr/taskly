@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useShallow } from "zustand/react/shallow";
 
 import { useTasksStore } from "@/features/tasks/store/tasks.store";
+import { useDebounce } from "@/shared/hooks/useDebounce";
 
 export function useTasksList(projectId: string) {
     const {
@@ -23,14 +24,22 @@ export function useTasksList(projectId: string) {
     );
 
     const [currentPage, setCurrentPage] = useState(1);
+    const [localSearchTerm, setLocalSearchTerm] = useState("");
+    const debouncedSearchTerm = useDebounce(localSearchTerm, 300);
     const itemsPerPage = 5;
 
     useEffect(() => {
         if (projectId) {
             const offset = (currentPage - 1) * itemsPerPage;
-            getProjectTasks(projectId, itemsPerPage, offset, false);
+            getProjectTasks(projectId, itemsPerPage, offset, false, debouncedSearchTerm);
         }
-    }, [projectId, currentPage, getProjectTasks]);
+    }, [projectId, currentPage, debouncedSearchTerm, getProjectTasks]);
+
+    const [prevSearchTerm, setPrevSearchTerm] = useState(debouncedSearchTerm);
+    if (debouncedSearchTerm !== prevSearchTerm) {
+        setPrevSearchTerm(debouncedSearchTerm);
+        setCurrentPage(1);
+    }
 
     useEffect(() => {
         return () => {
@@ -51,9 +60,12 @@ export function useTasksList(projectId: string) {
         error,
         currentPage,
         totalPages,
+        localSearchTerm,
+        setLocalSearchTerm,
+        debouncedSearchTerm,
         retry: () => {
             const offset = (currentPage - 1) * itemsPerPage;
-            getProjectTasks(projectId, itemsPerPage, offset, false);
+            getProjectTasks(projectId, itemsPerPage, offset, false, debouncedSearchTerm);
         },
         goToNextPage,
         goToPrevPage,
