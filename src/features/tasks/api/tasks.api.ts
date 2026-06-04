@@ -24,10 +24,14 @@ export async function fetchTasksByStatus(projectId: string, status: TaskStatus):
 export async function fetchTasksByProjectId(
     projectId: string,
     limit?: number,
-    offset?: number
+    offset?: number,
+    search?: string
 ): Promise<{ data: ProjectTask[]; total: number }> {
     const params = new URLSearchParams();
     params.append("project_id", `eq.${projectId}`);
+    if (search) {
+        params.append("title", `ilike.%${search}%`);
+    }
     if (limit !== undefined) {
         params.append("limit", String(limit));
     }
