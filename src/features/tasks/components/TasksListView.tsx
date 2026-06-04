@@ -14,8 +14,8 @@ interface TasksListViewProps {
 
 const TasksListView: React.FC<TasksListViewProps> = ({ projectId, onTaskClick }) => {
     const {
-        tasks,
         currentTasks,
+        totalTasks,
         isLoading,
         error,
         currentPage,
@@ -52,7 +52,7 @@ const TasksListView: React.FC<TasksListViewProps> = ({ projectId, onTaskClick })
         );
     }
 
-    if (tasks.length === 0) {
+    if (totalTasks === 0) {
         return (
             <div className="py-16 text-center border border-dashed border-slate-200 bg-white rounded-2xl p-8 shadow-3xs">
                 <p className="text-slate-medium font-semibold">
@@ -104,7 +104,7 @@ const TasksListView: React.FC<TasksListViewProps> = ({ projectId, onTaskClick })
             {/* Pagination footer */}
             <div className="flex items-center justify-between py-4 px-6 border-t border-[#F2F4F7]">
                 <div className="text-[13px] font-semibold text-slate-medium/70 select-none">
-                    Showing {currentTasks.length} of {tasks.length} tasks
+                    Showing {currentTasks.length} of {totalTasks} tasks
                 </div>
 
                 <div className="flex items-center gap-3">

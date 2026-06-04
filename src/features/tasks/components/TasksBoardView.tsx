@@ -5,8 +5,8 @@ import { useShallow } from "zustand/react/shallow";
 
 import TaskBoardCard from "./TaskBoardCard";
 
-import { useTasksStore } from "@/features/tasks/store/tasks.store";
 import { TASK_STATUSES } from "@/features/tasks/constants";
+import { useTasksStore } from "@/features/tasks/store/tasks.store";
 import type { ProjectTask } from "@/features/tasks/types";
 import { cn } from "@/shared/lib/utils";
 
@@ -20,6 +20,7 @@ const COLUMNS = TASK_STATUSES;
 const TasksBoardView: React.FC<TasksBoardViewProps> = ({ projectId, onTaskClick }) => {
     const {
         projectTasks,
+        totalTasks,
         isLoading,
         error,
         getProjectTasks,
@@ -27,6 +28,7 @@ const TasksBoardView: React.FC<TasksBoardViewProps> = ({ projectId, onTaskClick 
     } = useTasksStore(
         useShallow((state) => ({
             projectTasks: state.projectTasks,
+            totalTasks: state.totalTasks,
             isLoading: state.isProjectTasksLoading,
             error: state.projectTasksError,
             getProjectTasks: state.getProjectTasks,
@@ -34,9 +36,49 @@ const TasksBoardView: React.FC<TasksBoardViewProps> = ({ projectId, onTaskClick 
         }))
     );
 
+    const limit = 15;
+
+    const loadMoreTasks = React.useCallback(() => {
+        if (isLoading) return;
+        if (projectTasks.length >= totalTasks) return;
+
+        const nextPage = Math.ceil(projectTasks.length / limit) + 1;
+        const offset = (nextPage - 1) * limit;
+        getProjectTasks(projectId, limit, offset, true);
+    }, [isLoading, projectTasks.length, totalTasks, projectId, getProjectTasks]);
+
+    // Handle mobile responsiveness and scroll to bottom of page
+    const [isMobile, setIsMobile] = React.useState(false);
+
+    useEffect(() => {
+        const checkMobile = () => {
+            setIsMobile(window.innerWidth < 768);
+        };
+        checkMobile();
+        window.addEventListener("resize", checkMobile);
+        return () => {
+            window.removeEventListener("resize", checkMobile);
+        };
+    }, []);
+
+    useEffect(() => {
+        if (!isMobile) return;
+
+        const handleWindowScroll = () => {
+            if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 100) {
+                loadMoreTasks();
+            }
+        };
+
+        window.addEventListener("scroll", handleWindowScroll);
+        return () => {
+            window.removeEventListener("scroll", handleWindowScroll);
+        };
+    }, [isMobile, loadMoreTasks]);
+
     useEffect(() => {
         if (projectId) {
-            getProjectTasks(projectId);
+            getProjectTasks(projectId, limit, 0, false);
         }
         return () => {
             clearProjectTasks();
@@ -59,7 +101,7 @@ const TasksBoardView: React.FC<TasksBoardViewProps> = ({ projectId, onTaskClick 
             <div className="p-8 bg-red-50/50 border border-red-100 rounded-xl text-center space-y-3">
                 <p className="text-sm font-semibold text-red-600">Failed to load board tasks</p>
                 <button
-                    onClick={() => getProjectTasks(projectId)}
+                    onClick={() => getProjectTasks(projectId, limit, 0, false)}
                     className="flex items-center gap-1.5 mx-auto text-xs font-bold text-primary hover:underline cursor-pointer"
                 >
                     <RefreshCw size={12} /> Retry
@@ -79,6 +121,8 @@ const TasksBoardView: React.FC<TasksBoardViewProps> = ({ projectId, onTaskClick 
                             column={column}
                             tasks={columnTasks}
                             onTaskClick={onTaskClick}
+                            onScrollNearBottom={loadMoreTasks}
+                            isLoadingMore={isLoading && projectTasks.length > 0}
                         />
                     </div>
                 );
@@ -92,9 +136,18 @@ interface TaskColumnProps {
     column: (typeof COLUMNS)[number];
     tasks: ProjectTask[];
     onTaskClick: (taskId: string) => void;
+    onScrollNearBottom: () => void;
+    isLoadingMore: boolean;
 }
 
-const TaskColumn: React.FC<TaskColumnProps> = ({ projectId, column, tasks, onTaskClick }) => {
+const TaskColumn: React.FC<TaskColumnProps> = ({ 
+    projectId, 
+    column, 
+    tasks, 
+    onTaskClick,
+    onScrollNearBottom,
+    isLoadingMore,
+}) => {
     const navigate = useNavigate();
 
     const handleAddTask = () => {
@@ -136,7 +189,15 @@ const TaskColumn: React.FC<TaskColumnProps> = ({ projectId, column, tasks, onTas
                 </button>
             </div>
 
-            <div className="flex-1 space-y-4 overflow-y-auto max-h-137.5 pr-1 scrollbar-thin">
+            <div 
+                onScroll={(e) => {
+                    const target = e.currentTarget;
+                    if (target.scrollHeight - target.scrollTop - target.clientHeight < 50) {
+                        onScrollNearBottom();
+                    }
+                }}
+                className="flex-1 space-y-4 overflow-y-auto max-h-137.5 pr-1 scrollbar-thin"
+            >
                 {tasks.length === 0 ? (
                     <div className="py-8 text-center border border-dashed border-slate-100 rounded-xl">
                         <span className="text-[11px] text-slate-medium/40 font-medium">
@@ -145,6 +206,11 @@ const TaskColumn: React.FC<TaskColumnProps> = ({ projectId, column, tasks, onTas
                     </div>
                 ) : (
                     tasks.map((task) => <TaskBoardCard key={task.id} task={task} onTaskClick={onTaskClick} />)
+                )}
+                {isLoadingMore && (
+                    <div className="flex justify-center py-2">
+                        <Loader2 className="w-5.5 h-5.5 text-primary animate-spin" />
+                    </div>
                 )}
             </div>
         </div>
