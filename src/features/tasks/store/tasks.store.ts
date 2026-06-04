@@ -25,7 +25,7 @@ interface TasksState {
     totalTasks: number;
     isProjectTasksLoading: boolean;
     projectTasksError: string | null;
-    getProjectTasks: (projectId: string, limit?: number, offset?: number, append?: boolean) => Promise<void>;
+    getProjectTasks: (projectId: string, limit?: number, offset?: number, append?: boolean, search?: string) => Promise<void>;
     clearProjectTasks: () => void;
     updateTaskStatus: (taskId: string, status: TaskStatus) => Promise<void>;
 }
@@ -86,13 +86,13 @@ export const useTasksStore = create<TasksState>()((set, get) => ({
     totalTasks: 0,
     isProjectTasksLoading: false,
     projectTasksError: null,
-    getProjectTasks: async (projectId: string, limit?: number, offset?: number, append: boolean = false) => {
+    getProjectTasks: async (projectId: string, limit?: number, offset?: number, append: boolean = false, search?: string) => {
         set({
             isProjectTasksLoading: true,
             projectTasksError: null,
         });
         try {
-            const { data, total } = await fetchTasksByProjectId(projectId, limit, offset);
+            const { data, total } = await fetchTasksByProjectId(projectId, limit, offset, search);
             set({
                 projectTasks: append
                     ? [
