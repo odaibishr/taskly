@@ -4,14 +4,14 @@ import TaskModalHeader from "./TaskModalHeader";
 
 import Button from "@/shared/components/Button";
 
-interface RightTaskModalContentPrps {
+interface RightTaskModalContentProps {
     id: string;
     title: string;
     description?: string;
     onClose: () => void;
 }
 
-const RightTaskModalContent = ({ id, title, description, onClose }: RightTaskModalContentPrps) => (
+const RightTaskModalContent = ({ id, title, description, onClose }: RightTaskModalContentProps) => (
     <div className="flex-1 flex flex-col items  pt-6">
         <TaskModalHeader taskId={id} title={title} />
 

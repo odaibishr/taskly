@@ -1,19 +1,9 @@
 import type { TaskStatus } from "@/features/tasks";
+import { TASK_STATUSES, TASK_STATUS_MAP } from "@/features/tasks/constants";
 import { cn, formatDueDate } from "@/shared/lib/utils";
 
-const TaskStatusSelect: { status: TaskStatus; label: string; dotColor: string }[] = [
-    { status: "TO_DO", label: "TO DO", dotColor: "bg-[#3B66F5]" },
-    { status: "IN_PROGRESS", label: "IN PROGRESS", dotColor: "bg-[#0052CC]" },
-    { status: "BLOCKED", label: "BLOCKED", dotColor: "bg-[#D92D20]" },
-    { status: "IN_REVIEW", label: "IN REVIEW", dotColor: "bg-[#B54708]" },
-    { status: "READY_FOR_QA", label: "READY FOR QA", dotColor: "bg-[#1570EF]" },
-    { status: "REOPENED", label: "REOPENED", dotColor: "bg-[#C11574]" },
-    { status: "READY_FOR_PRODUCTION", label: "READY FOR PRODUCTION", dotColor: "bg-[#027A48]" },
-    { status: "DONE", label: "DONE", dotColor: "bg-[#027A48]" },
-];
-
 interface LeftTaskModalContentProps {
-    status: string;
+    status: TaskStatus;
     assignee_name?: string;
     reporter_name?: string;
     created_at?: string;
@@ -27,20 +17,21 @@ const LeftTaskModalContent = ({
     created_at,
     due_date,
 }: LeftTaskModalContentProps) => {
+    const activeStatus = TASK_STATUS_MAP[status];
+
     return (
         <div className="bg-surface-highest w-[25%] border-l border-l-surface-low p-8 flex flex-col gap-8">
             <div className="space-y-1.5">
                 <p className="text-[10px] uppercase font-medium text-[#434654]">Status</p>
                 <select
+                    value={status}
+                    onChange={() => {}}
                     className={cn(
                         "w-full text-white border border-surface-low rounded-lg p-2 outline-none ring-none border-none cursor-pointer",
-                        TaskStatusSelect.find((s) => s.status === status)?.dotColor,
+                        activeStatus?.dotColor,
                     )}
                 >
-                    <option value={status}>
-                        {TaskStatusSelect.find((s) => s.status === status)?.label}
-                    </option>
-                    {TaskStatusSelect.map((s) => (
+                    {TASK_STATUSES.map((s) => (
                         <option key={s.status} value={s.status}>
                             {s.label}
                         </option>

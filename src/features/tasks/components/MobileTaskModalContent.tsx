@@ -1,5 +1,6 @@
 import { Calendar, Check, Clock, Layers, User, X } from "lucide-react";
 
+import { TASK_STATUS_MAP } from "@/features/tasks/constants";
 import type { ProjectTask } from "@/features/tasks/types";
 import { cn, formatDueDate, getAvatarColors, getInitials } from "@/shared/lib/utils";
 
@@ -8,20 +9,9 @@ interface MobileTaskModalContentProps {
     onClose: () => void;
 }
 
-const STATUS_BADGES: Record<string, { text: string; bg: string; textClass: string }> = {
-    TO_DO: { text: "TO DO", bg: "bg-[#F1F3FF]", textClass: "text-[#4F5F7B]" },
-    IN_PROGRESS: { text: "IN PROGRESS", bg: "bg-[#E0ECFF]", textClass: "text-[#0052CC]" },
-    BLOCKED: { text: "URGENT", bg: "bg-[#FEE4E2]", textClass: "text-[#D92D20]" },
-    IN_REVIEW: { text: "IN REVIEW", bg: "bg-[#FEF0C7]", textClass: "text-[#B54708]" },
-    READY_FOR_QA: { text: "READY FOR QA", bg: "bg-[#EFF8FF]", textClass: "text-[#1570EF]" },
-    REOPENED: { text: "REOPENED", bg: "bg-[#FDF2FA]", textClass: "text-[#C11574]" },
-    READY_FOR_PRODUCTION: { text: "READY PROD", bg: "bg-[#ECFDF3]", textClass: "text-[#027A48]" },
-    DONE: { text: "COMPLETED", bg: "bg-[#ECFDF3]", textClass: "text-[#027A48]" },
-};
-
 const MobileTaskModalContent = ({ task, onClose }: MobileTaskModalContentProps) => {
-    const statusInfo = STATUS_BADGES[task.status] || {
-        text: task.status,
+    const statusInfo = TASK_STATUS_MAP[task.status] || {
+        badgeText: task.status,
         bg: "bg-slate-100",
         textClass: "text-slate-700",
     };
@@ -62,7 +52,7 @@ const MobileTaskModalContent = ({ task, onClose }: MobileTaskModalContentProps) 
                             <Check size={10} strokeWidth={3} />
                         </span>
                     )}
-                    {statusInfo.text}
+                    {statusInfo.badgeText}
                 </span>
 
                 {task.epic_id && (

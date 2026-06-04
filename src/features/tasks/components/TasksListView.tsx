@@ -1,27 +1,16 @@
 import { User, Loader2, RefreshCw, MoreHorizontal, ChevronLeft, ChevronRight } from "lucide-react";
 import React from "react";
-import { Link } from "react-router-dom";
 
 import { useTasksList } from "../hooks/useTasksList";
 
-import type { ProjectTask, TaskStatus } from "@/features/tasks/types";
+import { TASK_STATUS_MAP } from "@/features/tasks/constants";
+import type { ProjectTask } from "@/features/tasks/types";
 import { cn, getInitials, getAvatarColors, formatDueDate } from "@/shared/lib/utils";
 
 interface TasksListViewProps {
     projectId: string;
     onTaskClick: (taskid: string) => void;
 }
-
-const statusBadges: Record<TaskStatus, { text: string; bg: string; textClass: string }> = {
-    TO_DO: { text: "TO DO", bg: "bg-[#F1F3FF]", textClass: "text-[#4F5F7B]" },
-    IN_PROGRESS: { text: "IN PROGRESS", bg: "bg-[#E0ECFF]", textClass: "text-[#0052CC]" },
-    BLOCKED: { text: "URGENT", bg: "bg-[#FEE4E2]", textClass: "text-[#D92D20]" },
-    IN_REVIEW: { text: "IN REVIEW", bg: "bg-[#FEF0C7]", textClass: "text-[#B54708]" },
-    READY_FOR_QA: { text: "READY FOR QA", bg: "bg-[#EFF8FF]", textClass: "text-[#1570EF]" },
-    REOPENED: { text: "REOPENED", bg: "bg-[#FDF2FA]", textClass: "text-[#C11574]" },
-    READY_FOR_PRODUCTION: { text: "READY PROD", bg: "bg-[#ECFDF3]", textClass: "text-[#027A48]" },
-    DONE: { text: "COMPLETED", bg: "bg-[#ECFDF3]", textClass: "text-[#027A48]" },
-};
 
 const TasksListView: React.FC<TasksListViewProps> = ({ projectId, onTaskClick }) => {
     const {
@@ -105,7 +94,6 @@ const TasksListView: React.FC<TasksListViewProps> = ({ projectId, onTaskClick })
                             <TaskRow
                                 key={task.id}
                                 task={task}
-                                projectId={projectId}
                                 onTaskClick={onTaskClick}
                             />
                         ))}
@@ -154,13 +142,12 @@ const TasksListView: React.FC<TasksListViewProps> = ({ projectId, onTaskClick })
 /* Sub-component for individual Task Row */
 interface TaskRowProps {
     task: ProjectTask;
-    projectId: string;
     onTaskClick: (taskid: string) => void;
 }
 
-const TaskRow: React.FC<TaskRowProps> = ({ task, projectId, onTaskClick }) => {
-    const badge = statusBadges[task.status] || {
-        text: task.status,
+const TaskRow: React.FC<TaskRowProps> = ({ task, onTaskClick }) => {
+    const badge = TASK_STATUS_MAP[task.status] || {
+        badgeText: task.status,
         bg: "bg-slate-100",
         textClass: "text-slate-medium",
     };
@@ -174,12 +161,9 @@ const TaskRow: React.FC<TaskRowProps> = ({ task, projectId, onTaskClick }) => {
         >
             {/* Task ID */}
             <td className="py-4.5 px-6 whitespace-nowrap">
-                <Link
-                    to={`/project/${projectId}/tasks/new?status=${task.status}&from=board`}
-                    className="text-sm font-semibold text-[#0052CC] hover:underline"
-                >
+                <span className="text-sm font-semibold text-[#0052CC] hover:underline">
                     TASK-{task.id.substring(0, 8).toUpperCase()}
-                </Link>
+                </span>
             </td>
             {/* Title */}
             <td className="py-4.5 px-6">
@@ -196,7 +180,7 @@ const TaskRow: React.FC<TaskRowProps> = ({ task, projectId, onTaskClick }) => {
                         badge.textClass,
                     )}
                 >
-                    {badge.text}
+                    {badge.badgeText}
                 </span>
             </td>
             {/* Due Date */}

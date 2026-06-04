@@ -1,11 +1,9 @@
 import { Loader2 } from "lucide-react";
-import { useEffect } from "react";
-import { useShallow } from "zustand/shallow";
 
-import LeftTaskkModalContent from "@/features/tasks/components/LeftTaskModalContent";
+import LeftTaskModalContent from "@/features/tasks/components/LeftTaskModalContent";
 import MobileTaskModalContent from "@/features/tasks/components/MobileTaskModalContent";
 import RightTaskModalContent from "@/features/tasks/components/RightTaskModalContent";
-import { useTasksStore } from "@/features/tasks/store/tasks.store";
+import { useTaskDetails } from "@/features/tasks/hooks/useTaskDetails";
 import Button from "@/shared/components/Button";
 
 interface TaskDetailsModalProps {
@@ -16,52 +14,16 @@ interface TaskDetailsModalProps {
 }
 
 const TaskDetailsModal = ({ isOpen, onClose, projectId, taskId }: TaskDetailsModalProps) => {
-    const {
-        selectedTask,
-        isSelectedTaskLoading,
-        selectedTaskError,
-        getSelectedTaskDetails,
-        setSelectedTaskId,
-    } = useTasksStore(
-        useShallow((state) => ({
-            selectedTask: state.selectedTask,
-            isSelectedTaskLoading: state.isSelectedTaskLoading,
-            selectedTaskError: state.selectedTaskError,
-            getSelectedTaskDetails: state.getSelectedTaskDetails,
-            setSelectedTaskId: state.setSelectedTaskId,
-        })),
-    );
-
-    useEffect(() => {
-        if (isOpen && taskId) {
-            getSelectedTaskDetails(projectId, taskId);
-        }
-        return () => {
-            setSelectedTaskId("");
-        };
-    }, [isOpen, taskId, projectId, getSelectedTaskDetails, setSelectedTaskId]);
-
-    useEffect(() => {
-        const handleKeyDown = (e: KeyboardEvent) => {
-            if (e.key === "Escape") onClose();
-        };
-        if (isOpen) {
-            window.addEventListener("keydown", handleKeyDown);
-            document.body.style.overflow = "hidden";
-        }
-        return () => {
-            window.removeEventListener("keydown", handleKeyDown);
-            document.body.style.overflow = "unset";
-        };
-    }, [isOpen, onClose]);
+    const { selectedTask, isLoading, error, handleBackdropClick } = useTaskDetails({
+        isOpen,
+        onClose,
+        projectId,
+        taskId,
+    });
 
     if (!isOpen) return null;
 
-    const handleBackdropClick = (e: React.MouseEvent<HTMLDivElement>) => {
-        if (e.target === e.currentTarget) onClose();
-    };
-
-    if (isSelectedTaskLoading) {
+    if (isLoading) {
         return (
             <div
                 className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-dark/40 backdrop-blur-md transition-all duration-300 animate-in fade-in"
@@ -78,7 +40,7 @@ const TaskDetailsModal = ({ isOpen, onClose, projectId, taskId }: TaskDetailsMod
         );
     }
 
-    if (selectedTaskError) {
+    if (error) {
         return (
             <div
                 className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-dark/40 backdrop-blur-md transition-all duration-300 animate-in fade-in"
@@ -87,7 +49,7 @@ const TaskDetailsModal = ({ isOpen, onClose, projectId, taskId }: TaskDetailsMod
             >
                 <div className="relative w-full max-w-lg p-8 flex flex-col items-center justify-center bg-white rounded-lg shadow-2xl space-y-4">
                     <h3 className="text-lg font-bold text-red-600">Error Loading Task</h3>
-                    <p className="text-sm text-slate-medium text-center">{selectedTaskError}</p>
+                    <p className="text-sm text-slate-medium text-center">{error}</p>
                     <Button variant="primary" onClick={onClose}>
                         Close
                     </Button>
@@ -114,7 +76,7 @@ const TaskDetailsModal = ({ isOpen, onClose, projectId, taskId }: TaskDetailsMod
                         onClose={onClose}
                     />
 
-                    <LeftTaskkModalContent
+                    <LeftTaskModalContent
                         status={selectedTask.status}
                         assignee_name={selectedTask.assignee_name ?? undefined}
                         reporter_name={selectedTask.reporter_name ?? undefined}
