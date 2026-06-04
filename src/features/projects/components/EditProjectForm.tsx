@@ -54,7 +54,7 @@ const EditProjectForm = () => {
 
 	const onSubmit = async (data: EditProjectFormData) => {
 		if (!projectId) return;
-		await updateProject(projectId, data);
+		await updateProject(projectId, { ...data, description: data.description ?? null });
 		navigate(ROUTES.PROJECTS);
 	};
 	if (isLoading && !currentProject) {
