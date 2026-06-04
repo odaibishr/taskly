@@ -4,6 +4,8 @@ import LeftTaskModalContent from "@/features/tasks/components/LeftTaskModalConte
 import MobileTaskModalContent from "@/features/tasks/components/MobileTaskModalContent";
 import RightTaskModalContent from "@/features/tasks/components/RightTaskModalContent";
 import { useTaskDetails } from "@/features/tasks/hooks/useTaskDetails";
+import { useTasksStore } from "@/features/tasks";
+import type { TaskStatus } from "@/features/tasks";
 import Button from "@/shared/components/Button";
 
 interface TaskDetailsModalProps {
@@ -20,6 +22,12 @@ const TaskDetailsModal = ({ isOpen, onClose, projectId, taskId }: TaskDetailsMod
         projectId,
         taskId,
     });
+    const updateTaskStatus = useTasksStore((state) => state.updateTaskStatus);
+
+    const handleStatusChange = async (newStatus: TaskStatus) => {
+        if (!selectedTask) return;
+        await updateTaskStatus(selectedTask.id, newStatus);
+    };
 
     if (!isOpen) return null;
 
@@ -77,11 +85,13 @@ const TaskDetailsModal = ({ isOpen, onClose, projectId, taskId }: TaskDetailsMod
                     />
 
                     <LeftTaskModalContent
+                        taskId={selectedTask.id}
                         status={selectedTask.status}
                         assignee_name={selectedTask.assignee_name ?? undefined}
                         reporter_name={selectedTask.reporter_name ?? undefined}
                         created_at={selectedTask.created_at ?? undefined}
                         due_date={selectedTask.due_date ?? undefined}
+                        onStatusChange={handleStatusChange}
                     />
                 </div>
 
