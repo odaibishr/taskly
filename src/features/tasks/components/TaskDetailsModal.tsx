@@ -1,7 +1,7 @@
 import { useTasksStore } from "../store/tasks.store";
 import { useShallow } from "zustand/shallow";
 import { useEffect } from "react";
-import { X, Loader2 } from "lucide-react";
+import { X, Loader2, Link2 } from "lucide-react";
 import Button from "@/shared/components/Button";
 
 interface TaskDetailsModalProps {
@@ -103,23 +103,27 @@ const TaskDetailsModal = ({ isOpen, onClose, projectId, taskId }: TaskDetailsMod
             <div className="relative w-full max-w-4xl min-h-[90vh] flex flex-col bg-white rounded-lg shadow-2xl overflow-y-auto transition-all duration-300 animate-in zoom-in-95 slide-in-from-bottom-8">
                 <div className="flex-1 flex items-stretch justify-between">
                     <div className="flex-1 flex flex-col items  pt-6">
-                        <ModalHeader
-                            taskId={selectedTask.id}
-                            title={selectedTask.title}
-                        />
+                        <ModalHeader taskId={selectedTask.id} title={selectedTask.title} />
 
                         <div className="flex-1 flex flex-col items-stretch justify-between gap-10 pt-8">
                             <div className="flex-1 space-y-2 px-8">
                                 <h6 className="text-xs uppercase text-[#434654] font-bold">
                                     Description
                                 </h6>
-                                <p className="text-md text-[#434654]">
-                                    {selectedTask.description}
-                                </p>
+                                <p className="text-md text-[#434654]">{selectedTask.description}</p>
                             </div>
 
                             <div className="flex justify-between items-center py-4 px-8 bg-surface-low">
-                                <div></div>
+                                <Button
+                                    variant="ghost"
+                                    className="flex items-center text-sm gap-2 group cursor-pointer"
+                                    onClick={() => {
+                                        navigator.clipboard.writeText(window.location.href);
+                                    }}
+                                >
+                                    <Link2 size={18} />
+                                    Copy Link
+                                </Button>
                                 <Button variant="primary" onClick={onClose}>
                                     Close
                                 </Button>
@@ -144,13 +148,7 @@ const TaskDetailsModal = ({ isOpen, onClose, projectId, taskId }: TaskDetailsMod
 
 export default TaskDetailsModal;
 
-const ModalHeader = ({
-    title,
-    taskId,
-}: {
-    title: string;
-    taskId: string;
-}) => {
+const ModalHeader = ({ title, taskId }: { title: string; taskId: string }) => {
     return (
         <div className="py-6 px-8 space-y-2 border-b border-gray-200">
             <div className="flex items-center justify-between bg-surface-highest px-6 py-2 w-fit text-primary font-bold text-xs rounded-sm">
