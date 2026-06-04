@@ -4,7 +4,7 @@ import { useEffect } from "react";
 import { Loader2 } from "lucide-react";
 import Button from "@/shared/components/Button";
 import RightTaskModalContent from "@/features/tasks/components/RightTaskModalContent";
-import LeftTaskkModalContent from "@/features/tasks/components/LeftTaskkModalContent";
+import LeftTaskkModalContent from "@/features/tasks/components/LeftTaskModalContent";
 
 interface TaskDetailsModalProps {
     isOpen: boolean;
