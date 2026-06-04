@@ -1,5 +1,5 @@
 import { DragDropContext, Droppable, Draggable, type DropResult } from "@hello-pangea/dnd";
-import { Plus, Loader2, RefreshCw } from "lucide-react";
+import { Plus, Loader2, RefreshCw, SearchIcon } from "lucide-react";
 import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useShallow } from "zustand/react/shallow";
@@ -9,6 +9,7 @@ import TaskBoardCard from "./TaskBoardCard";
 import { TASK_STATUSES } from "@/features/tasks/constants";
 import { useTasksStore } from "@/features/tasks/store/tasks.store";
 import type { ProjectTask, TaskStatus } from "@/features/tasks/types";
+import { useDebounce } from "@/shared/hooks/useDebounce";
 import { cn } from "@/shared/lib/utils";
 
 interface TasksBoardViewProps {
@@ -43,6 +44,9 @@ const TasksBoardView: React.FC<TasksBoardViewProps> = ({ projectId, onTaskClick 
         null,
     );
 
+    const [localSearchTerm, setLocalSearchTerm] = React.useState("");
+    const debouncedSearchTerm = useDebounce(localSearchTerm, 300);
+
     const limit = 15;
 
     const loadMoreTasks = React.useCallback(() => {
@@ -51,8 +55,8 @@ const TasksBoardView: React.FC<TasksBoardViewProps> = ({ projectId, onTaskClick 
 
         const nextPage = Math.ceil(projectTasks.length / limit) + 1;
         const offset = (nextPage - 1) * limit;
-        getProjectTasks(projectId, limit, offset, true);
-    }, [isLoading, projectTasks.length, totalTasks, projectId, getProjectTasks]);
+        getProjectTasks(projectId, limit, offset, true, debouncedSearchTerm);
+    }, [isLoading, projectTasks.length, totalTasks, projectId, getProjectTasks, debouncedSearchTerm]);
 
     const [isMobile, setIsMobile] = React.useState(false);
 
@@ -85,14 +89,19 @@ const TasksBoardView: React.FC<TasksBoardViewProps> = ({ projectId, onTaskClick 
         };
     }, [isMobile, loadMoreTasks]);
 
+    // Fetch tasks on project or search term change
     useEffect(() => {
         if (projectId) {
-            getProjectTasks(projectId, limit, 0, false);
+            getProjectTasks(projectId, limit, 0, false, debouncedSearchTerm);
         }
+    }, [projectId, debouncedSearchTerm, getProjectTasks]);
+
+    // Clean up store on unmount
+    useEffect(() => {
         return () => {
             clearProjectTasks();
         };
-    }, [projectId, getProjectTasks, clearProjectTasks]);
+    }, [clearProjectTasks]);
 
     useEffect(() => {
         if (!toast) return;
@@ -123,99 +132,138 @@ const TasksBoardView: React.FC<TasksBoardViewProps> = ({ projectId, onTaskClick 
         }
     };
 
-    if (isLoading && projectTasks.length === 0) {
-        return (
-            <div className="flex flex-col items-center justify-center py-20 space-y-3">
-                <Loader2 className="w-8 h-8 text-primary animate-spin" />
-                <span className="text-sm font-semibold text-slate-medium/80">
-                    Loading workboard...
-                </span>
-            </div>
-        );
-    }
+    // Initial empty state when there are no tasks at all in the project (no search term)
+    const isProjectEmpty = !isLoading && totalTasks === 0 && !debouncedSearchTerm;
 
-    if (error) {
+    if (isProjectEmpty) {
         return (
-            <div className="p-8 bg-red-50/50 border border-red-100 rounded-xl text-center space-y-3">
-                <p className="text-sm font-semibold text-red-600">Failed to load board tasks</p>
-                <button
-                    onClick={() => getProjectTasks(projectId, limit, 0, false)}
-                    className="flex items-center gap-1.5 mx-auto text-xs font-bold text-primary hover:underline cursor-pointer"
-                >
-                    <RefreshCw size={12} /> Retry
-                </button>
+            <div className="py-16 text-center border border-dashed border-slate-200 bg-white rounded-2xl p-8 shadow-3xs">
+                <p className="text-slate-medium font-semibold">
+                    No tasks found for this project
+                </p>
+                <p className="text-xs text-slate-medium/60 mt-1">
+                    Create epics and tasks to begin monitoring pipeline.
+                </p>
             </div>
         );
     }
 
     return (
-        <>
-            <DragDropContext onDragEnd={handleDragEnd}>
-                <div className="flex gap-6 overflow-x-auto pb-6 pt-2 snap-x scroll-smooth -mx-4 px-4 sm:-mx-6 sm:px-6">
-                    {COLUMNS.map((column) => {
-                        const columnTasks = projectTasks.filter((t) => t.status === column.status);
-                        return (
-                            <div
-                                key={column.status}
-                                className="snap-start shrink-0 w-85 flex flex-col"
-                            >
-                                <TaskColumn
-                                    projectId={projectId}
-                                    column={column}
-                                    tasks={columnTasks}
-                                    onTaskClick={onTaskClick}
-                                    onScrollNearBottom={loadMoreTasks}
-                                    isLoadingMore={isLoading && projectTasks.length > 0}
-                                />
-                            </div>
-                        );
-                    })}
+        <div className="space-y-4 w-full">
+            {/* Search Input Container */}
+            <div className="flex justify-start">
+                <div className="flex w-full gap-2 text-slate-dark md:w-65 px-4 py-2.5 pr-4 text-dark-800 bg-surface-low rounded-sm outline-none ring-none border border-gray-100 focus-within:border-primary/50 transition-colors">
+                    {isLoading && projectTasks.length === 0 ? (
+                        <Loader2 size={24} className="text-slate-medium animate-spin" />
+                    ) : (
+                        <SearchIcon size={24} className="text-slate-medium" />
+                    )}
+                    <input
+                        type="text"
+                        placeholder="Search tasks..."
+                        className="w-full bg-transparent outline-none ring-none"
+                        value={localSearchTerm}
+                        onChange={(e) => setLocalSearchTerm(e.target.value)}
+                    />
                 </div>
-            </DragDropContext>
+            </div>
 
-            {/* Custom premium toast display */}
-            {toast && (
-                <div className="fixed bottom-6 right-6 z-50 flex items-center gap-3 bg-white border border-[#FEE4E2] dark:bg-slate-900 dark:border-red-950/50 shadow-lg rounded-2xl p-4 pr-5 max-w-sm animate-toast-slide-in">
-                    <div className="w-8 h-8 rounded-full bg-[#FEF3F2] flex items-center justify-center text-red-600 shrink-0">
-                        <svg
-                            className="w-5 h-5"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                            strokeWidth={2}
-                        >
-                            <path
-                                strokeLinecap="round"
-                                strokeLinejoin="round"
-                                d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
-                            />
-                        </svg>
-                    </div>
-                    <div className="flex-1 min-w-0">
-                        <h4 className="text-xs font-bold text-slate-dark">Update Failed</h4>
-                        <p className="text-[11px] text-slate-medium mt-0.5 leading-snug">
-                            {toast.message}
-                        </p>
-                    </div>
+            {isLoading && projectTasks.length === 0 ? (
+                <div className="flex flex-col items-center justify-center py-20 space-y-3">
+                    <Loader2 className="w-8 h-8 text-primary animate-spin" />
+                    <span className="text-sm font-semibold text-slate-medium/80">
+                        Loading workboard...
+                    </span>
+                </div>
+            ) : error && projectTasks.length === 0 ? (
+                <div className="p-8 bg-red-50/50 border border-red-100 rounded-xl text-center space-y-3">
+                    <p className="text-sm font-semibold text-red-600">
+                        Failed to search tasks
+                    </p>
                     <button
-                        onClick={() => setToast(null)}
-                        className="text-slate-medium/50 hover:text-slate-dark cursor-pointer text-xs font-semibold p-1"
+                        onClick={() => getProjectTasks(projectId, limit, 0, false, debouncedSearchTerm)}
+                        className="flex items-center gap-1.5 mx-auto text-xs font-bold text-primary hover:underline cursor-pointer"
                     >
-                        ✕
+                        <RefreshCw size={12} /> Retry
                     </button>
                 </div>
-            )}
+            ) : totalTasks === 0 ? (
+                <div className="py-16 text-center border border-dashed border-slate-200 bg-white rounded-2xl p-8 shadow-3xs">
+                    <p className="text-slate-medium font-semibold">
+                        No tasks found matching your search
+                    </p>
+                </div>
+            ) : (
+                <>
+                    <DragDropContext onDragEnd={handleDragEnd}>
+                        <div className="flex gap-6 overflow-x-auto pb-6 pt-2 snap-x scroll-smooth -mx-4 px-4 sm:-mx-6 sm:px-6">
+                            {COLUMNS.map((column) => {
+                                const columnTasks = projectTasks.filter((t) => t.status === column.status);
+                                return (
+                                    <div
+                                        key={column.status}
+                                        className="snap-start shrink-0 w-85 flex flex-col"
+                                    >
+                                        <TaskColumn
+                                            projectId={projectId}
+                                            column={column}
+                                            tasks={columnTasks}
+                                            onTaskClick={onTaskClick}
+                                            onScrollNearBottom={loadMoreTasks}
+                                            isLoadingMore={isLoading && projectTasks.length > 0}
+                                            hasError={!!error}
+                                        />
+                                    </div>
+                                );
+                            })}
+                        </div>
+                    </DragDropContext>
 
-            <style>{`
-                @keyframes toast-slide-in {
-                    0% { transform: translateY(1rem); opacity: 0; }
-                    100% { transform: translateY(0); opacity: 1; }
-                }
-                .animate-toast-slide-in {
-                    animation: toast-slide-in 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-                }
-            `}</style>
-        </>
+                    {/* Custom premium toast display */}
+                    {toast && (
+                        <div className="fixed bottom-6 right-6 z-50 flex items-center gap-3 bg-white border border-[#FEE4E2] dark:bg-slate-900 dark:border-red-950/50 shadow-lg rounded-2xl p-4 pr-5 max-w-sm animate-toast-slide-in">
+                            <div className="w-8 h-8 rounded-full bg-[#FEF3F2] flex items-center justify-center text-red-600 shrink-0">
+                                <svg
+                                    className="w-5 h-5"
+                                    fill="none"
+                                    viewBox="0 0 24 24"
+                                    stroke="currentColor"
+                                    strokeWidth={2}
+                                >
+                                    <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+                                    />
+                                </svg>
+                            </div>
+                            <div className="flex-1 min-w-0">
+                                <h4 className="text-xs font-bold text-slate-dark">Update Failed</h4>
+                                <p className="text-[11px] text-slate-medium mt-0.5 leading-snug">
+                                    {toast.message}
+                                </p>
+                            </div>
+                            <button
+                                onClick={() => setToast(null)}
+                                className="text-slate-medium/50 hover:text-slate-dark cursor-pointer text-xs font-semibold p-1"
+                            >
+                                ✕
+                            </button>
+                        </div>
+                    )}
+
+                    <style>{`
+                        @keyframes toast-slide-in {
+                            0% { transform: translateY(1rem); opacity: 0; }
+                            100% { transform: translateY(0); opacity: 1; }
+                        }
+                        .animate-toast-slide-in {
+                            animation: toast-slide-in 0.25s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+                        }
+                    `}</style>
+                </>
+            )}
+        </div>
     );
 };
 
@@ -226,6 +274,7 @@ interface TaskColumnProps {
     onTaskClick: (taskId: string) => void;
     onScrollNearBottom: () => void;
     isLoadingMore: boolean;
+    hasError: boolean;
 }
 
 const TaskColumn: React.FC<TaskColumnProps> = ({
@@ -235,6 +284,7 @@ const TaskColumn: React.FC<TaskColumnProps> = ({
     onTaskClick,
     onScrollNearBottom,
     isLoadingMore,
+    hasError,
 }) => {
     const navigate = useNavigate();
 
@@ -324,6 +374,19 @@ const TaskColumn: React.FC<TaskColumnProps> = ({
                         {isLoadingMore && (
                             <div className="flex justify-center py-2">
                                 <Loader2 className="w-5.5 h-5.5 text-primary animate-spin" />
+                            </div>
+                        )}
+                        {hasError && (
+                            <div className="flex flex-col items-center gap-1.5 py-2 text-center">
+                                <span className="text-[11px] text-red-500 font-semibold">
+                                    Failed to load more tasks
+                                </span>
+                                <button
+                                    onClick={onScrollNearBottom}
+                                    className="flex items-center gap-1 text-[10px] font-bold text-primary hover:underline cursor-pointer"
+                                >
+                                    <RefreshCw size={10} /> Retry
+                                </button>
                             </div>
                         )}
                     </div>

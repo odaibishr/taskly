@@ -10,6 +10,17 @@ interface EpicsState {
 	selectedEpic: ProjectEpic | null;
 	isSelectedEpicLoading: boolean;
 	selectedEpicError: string | null;
+
+	// Search and Pagination State
+	searchTerm: string;
+	currentPage: number;
+	totalCount: number;
+	limit: number;
+	projectId: string | null;
+
+	setSearchTerm: (term: string) => void;
+	setCurrentPage: (page: number) => void;
+
 	createEpic: (payload: CreateEpicPayload) => Promise<void>;
 	getEpicsByProjectId: (projectId: string) => Promise<void>;
 	getEpicDetails: (projectId: string, epicId: string) => Promise<void>;
@@ -17,13 +28,27 @@ interface EpicsState {
 	clearError: () => void;
 }
 
-export const useEpicsStore = create<EpicsState>()((set) => ({
+export const useEpicsStore = create<EpicsState>()((set, get) => ({
 	epics: [],
 	isLoading: false,
 	error: null,
 	selectedEpic: null,
 	isSelectedEpicLoading: false,
 	selectedEpicError: null,
+
+	searchTerm: "",
+	currentPage: 1,
+	totalCount: 0,
+	limit: 10,
+	projectId: null,
+
+	setSearchTerm: (term: string) => {
+		set({ searchTerm: term, currentPage: 1 });
+	},
+	setCurrentPage: (page: number) => {
+		set({ currentPage: page });
+	},
+
 	createEpic: async (payload: CreateEpicPayload) => {
 		set({ isLoading: true, error: null });
 		try {
@@ -37,13 +62,22 @@ export const useEpicsStore = create<EpicsState>()((set) => ({
 		}
 	},
 	getEpicsByProjectId: async (projectId: string) => {
+		const currentProjectId = get().projectId;
+		if (currentProjectId !== projectId) {
+			set({ projectId, searchTerm: "", currentPage: 1, totalCount: 0 });
+		} else {
+			set({ projectId });
+		}
+
 		set({ isLoading: true, error: null });
+		const { searchTerm, currentPage, limit } = get();
+		const offset = (currentPage - 1) * limit;
+
 		try {
-			const data = await fetchEpicsByProjectId(projectId);
-			set({ epics: data });
-		} catch (error: unknown) {
-			const message = error instanceof Error ? error.message : "Failed to fetch epics";
-			set({ error: message });
+			const { data, total } = await fetchEpicsByProjectId(projectId, searchTerm, limit, offset);
+			set({ epics: data, totalCount: total });
+		} catch {
+			set({ error: "Failed to search epics", epics: [], totalCount: 0 });
 		} finally {
 			set({ isLoading: false });
 		}
