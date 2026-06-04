@@ -26,7 +26,7 @@ const LeftTaskModalContent = ({
     reporter_name,
     created_at,
     due_date,
-}: LeftTaskkModalContentProps) => {
+}: LeftTaskModalContentProps) => {
     return (
         <div className="bg-surface-highest w-[25%] border-l border-l-surface-low p-8 flex flex-col gap-8">
             <div className="space-y-1.5">
@@ -78,4 +78,4 @@ const LeftTaskModalContent = ({
     );
 };
 
-export default LeftTaskkModalContent;
+export default LeftTaskModalContent;
