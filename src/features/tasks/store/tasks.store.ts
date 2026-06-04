@@ -22,9 +22,10 @@ interface TasksState {
     getEpicTasks: (epicId: string) => Promise<void>;
     clearEpicTasks: () => void;
     projectTasks: ProjectTask[];
+    totalTasks: number;
     isProjectTasksLoading: boolean;
     projectTasksError: string | null;
-    getProjectTasks: (projectId: string) => Promise<void>;
+    getProjectTasks: (projectId: string, limit?: number, offset?: number, append?: boolean) => Promise<void>;
     clearProjectTasks: () => void;
 }
 
@@ -81,17 +82,26 @@ export const useTasksStore = create<TasksState>()((set, get) => ({
     },
     clearEpicTasks: () => set({ epicTasks: [], epicTasksError: null }),
     projectTasks: [],
+    totalTasks: 0,
     isProjectTasksLoading: false,
     projectTasksError: null,
-    getProjectTasks: async (projectId: string) => {
+    getProjectTasks: async (projectId: string, limit?: number, offset?: number, append: boolean = false) => {
         set({
             isProjectTasksLoading: true,
             projectTasksError: null,
         });
         try {
-            const data = await fetchTasksByProjectId(projectId);
+            const { data, total } = await fetchTasksByProjectId(projectId, limit, offset);
             set({
-                projectTasks: data,
+                projectTasks: append
+                    ? [
+                          ...get().projectTasks,
+                          ...data.filter(
+                              (newTask) => !get().projectTasks.some((t) => t.id === newTask.id)
+                          ),
+                      ]
+                    : data,
+                totalTasks: total,
             });
         } catch {
             set({
@@ -103,7 +113,7 @@ export const useTasksStore = create<TasksState>()((set, get) => ({
             });
         }
     },
-    clearProjectTasks: () => set({ projectTasks: [], projectTasksError: null }),
+    clearProjectTasks: () => set({ projectTasks: [], totalTasks: 0, projectTasksError: null }),
     selectedTaskId: null,
     selectedTask: null,
     selectedTaskError: null,
