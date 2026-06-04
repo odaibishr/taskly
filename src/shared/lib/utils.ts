@@ -13,17 +13,22 @@ export function getInitials(name: string): string {
     return name.substring(0, 2).toUpperCase();
 }
 
-export function formatDueDate(dateString?: string | null): string {
+export function formatDueDate(dateString?: string | null, formt: "full" | "short" = "full"): string {
     if (!dateString) return "";
     const date = new Date(dateString);
     if (isNaN(date.getTime())) return "";
-    
+
     const day = String(date.getDate()).padStart(2, '0');
     const months = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
     const month = months[date.getMonth()];
     const year = date.getFullYear();
-    
-    return `${day} ${month} ${year}`;
+
+    switch (formt) {
+        case "full":
+            return `${day} ${month} ${year}`;
+        case "short":
+            return `${day} ${month}`;
+    }
 }
 
 export function getAvatarColors(name: string) {

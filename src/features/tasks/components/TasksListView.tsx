@@ -1,29 +1,18 @@
 import { User, Loader2, RefreshCw, MoreHorizontal, ChevronLeft, ChevronRight } from "lucide-react";
 import React from "react";
-import { Link } from "react-router-dom";
 
 import { useTasksList } from "../hooks/useTasksList";
 
-import type { ProjectTask, TaskStatus } from "@/features/tasks/types";
+import { TASK_STATUS_MAP } from "@/features/tasks/constants";
+import type { ProjectTask } from "@/features/tasks/types";
 import { cn, getInitials, getAvatarColors, formatDueDate } from "@/shared/lib/utils";
-
 
 interface TasksListViewProps {
     projectId: string;
+    onTaskClick: (taskid: string) => void;
 }
 
-const statusBadges: Record<TaskStatus, { text: string; bg: string; textClass: string }> = {
-    TO_DO: { text: "TO DO", bg: "bg-[#F1F3FF]", textClass: "text-[#4F5F7B]" },
-    IN_PROGRESS: { text: "IN PROGRESS", bg: "bg-[#E0ECFF]", textClass: "text-[#0052CC]" },
-    BLOCKED: { text: "URGENT", bg: "bg-[#FEE4E2]", textClass: "text-[#D92D20]" },
-    IN_REVIEW: { text: "IN REVIEW", bg: "bg-[#FEF0C7]", textClass: "text-[#B54708]" },
-    READY_FOR_QA: { text: "READY FOR QA", bg: "bg-[#EFF8FF]", textClass: "text-[#1570EF]" },
-    REOPENED: { text: "REOPENED", bg: "bg-[#FDF2FA]", textClass: "text-[#C11574]" },
-    READY_FOR_PRODUCTION: { text: "READY PROD", bg: "bg-[#ECFDF3]", textClass: "text-[#027A48]" },
-    DONE: { text: "COMPLETED", bg: "bg-[#ECFDF3]", textClass: "text-[#027A48]" },
-};
-
-const TasksListView: React.FC<TasksListViewProps> = ({ projectId }) => {
+const TasksListView: React.FC<TasksListViewProps> = ({ projectId, onTaskClick }) => {
     const {
         tasks,
         currentTasks,
@@ -102,7 +91,11 @@ const TasksListView: React.FC<TasksListViewProps> = ({ projectId }) => {
                     </thead>
                     <tbody className="divide-y divide-[#F2F4F7]">
                         {currentTasks.map((task) => (
-                            <TaskRow key={task.id} task={task} projectId={projectId} />
+                            <TaskRow
+                                key={task.id}
+                                task={task}
+                                onTaskClick={onTaskClick}
+                            />
                         ))}
                     </tbody>
                 </table>
@@ -149,12 +142,12 @@ const TasksListView: React.FC<TasksListViewProps> = ({ projectId }) => {
 /* Sub-component for individual Task Row */
 interface TaskRowProps {
     task: ProjectTask;
-    projectId: string;
+    onTaskClick: (taskid: string) => void;
 }
 
-const TaskRow: React.FC<TaskRowProps> = ({ task, projectId }) => {
-    const badge = statusBadges[task.status] || {
-        text: task.status,
+const TaskRow: React.FC<TaskRowProps> = ({ task, onTaskClick }) => {
+    const badge = TASK_STATUS_MAP[task.status] || {
+        badgeText: task.status,
         bg: "bg-slate-100",
         textClass: "text-slate-medium",
     };
@@ -162,15 +155,15 @@ const TaskRow: React.FC<TaskRowProps> = ({ task, projectId }) => {
     const formattedDate = formatDueDate(task.due_date);
 
     return (
-        <tr className="hover:bg-slate-50/20 transition-all duration-200">
+        <tr
+            className="hover:bg-slate-50/20 transition-all duration-200 cursor-pointer"
+            onClick={() => onTaskClick(task.id)}
+        >
             {/* Task ID */}
             <td className="py-4.5 px-6 whitespace-nowrap">
-                <Link
-                    to={`/project/${projectId}/tasks/new?status=${task.status}&from=board`}
-                    className="text-sm font-semibold text-[#0052CC] hover:underline"
-                >
+                <span className="text-sm font-semibold text-[#0052CC] hover:underline">
                     TASK-{task.id.substring(0, 8).toUpperCase()}
-                </Link>
+                </span>
             </td>
             {/* Title */}
             <td className="py-4.5 px-6">
@@ -187,7 +180,7 @@ const TaskRow: React.FC<TaskRowProps> = ({ task, projectId }) => {
                         badge.textClass,
                     )}
                 >
-                    {badge.text}
+                    {badge.badgeText}
                 </span>
             </td>
             {/* Due Date */}

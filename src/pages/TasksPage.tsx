@@ -1,7 +1,8 @@
 import { ListFilterIcon, LucideCircuitBoard, SearchIcon } from "lucide-react";
+import { useState } from "react";
 import { useParams, useSearchParams } from "react-router-dom";
 
-import { TasksBoardView, TasksListView } from "@/features/tasks";
+import { TaskDetailsModal, TasksBoardView, TasksListView } from "@/features/tasks";
 import Button from "@/shared/components/Button";
 import ErrorCard from "@/shared/components/ErrorCard";
 import { HeaderSection } from "@/shared/components/HeaderSection";
@@ -9,6 +10,17 @@ import { HeaderSection } from "@/shared/components/HeaderSection";
 const TasksPage = () => {
     const { projectId } = useParams<{ projectId: string }>();
     const [searchParams, setSearchParams] = useSearchParams();
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [selectedTaskId, setSelectedTaskId] = useState<string>("");
+
+    const handleOpenModal = (taskId: string) => {
+        setSelectedTaskId(taskId);
+        setIsModalOpen(true);
+    };
+
+    const handleCloseModal = () => {
+        setIsModalOpen(false);
+    };
 
     const view = searchParams.get("view") || "board";
 
@@ -61,12 +73,21 @@ const TasksPage = () => {
             </section>
             {projectId ? (
                 view === "list" ? (
-                    <TasksListView projectId={projectId} />
+                    <TasksListView projectId={projectId} onTaskClick={handleOpenModal}/>
                 ) : (
-                    <TasksBoardView projectId={projectId} />
+                    <TasksBoardView projectId={projectId} onTaskClick={handleOpenModal}/>
                 )
             ) : (
                 <ErrorCard retryAction={() => {}} />
+            )}
+
+            {projectId && isModalOpen && (
+                <TaskDetailsModal
+                    isOpen={isModalOpen}
+                    onClose={handleCloseModal}
+                    projectId={projectId}
+                    taskId={selectedTaskId}
+                />
             )}
         </main>
     );
