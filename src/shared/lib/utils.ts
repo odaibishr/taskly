@@ -43,3 +43,9 @@ export function getAvatarColors(name: string) {
     ];
     return colors[hash % colors.length];
 }
+
+export function parseContentRange(contentRangeHeader?: string | null, fallbackCount: number = 0): number {
+    if (!contentRangeHeader) return fallbackCount;
+    const match = contentRangeHeader.match(/\/(\d+)$/);
+    return match ? parseInt(match[1], 10) : fallbackCount;
+}
