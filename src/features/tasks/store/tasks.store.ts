@@ -1,7 +1,7 @@
 import { create } from "zustand";
 
-import { createTask, fetchTaskDetails, fetchTasksByEpicId, fetchTasksByProjectId } from "@/features/tasks/api/tasks.api";
-import type { CreateTaskPayload, ProjectTask, Task } from "@/features/tasks/types";
+import { createTask, fetchTaskDetails, fetchTasksByEpicId, fetchTasksByProjectId, updateTaskStatus as updateTaskStatusApi } from "@/features/tasks/api/tasks.api";
+import type { CreateTaskPayload, ProjectTask, Task, TaskStatus } from "@/features/tasks/types";
 
 interface TasksState {
     tasks: Task[];
@@ -27,6 +27,7 @@ interface TasksState {
     projectTasksError: string | null;
     getProjectTasks: (projectId: string, limit?: number, offset?: number, append?: boolean) => Promise<void>;
     clearProjectTasks: () => void;
+    updateTaskStatus: (taskId: string, status: TaskStatus) => Promise<void>;
 }
 
 export const useTasksStore = create<TasksState>()((set, get) => ({
@@ -95,11 +96,11 @@ export const useTasksStore = create<TasksState>()((set, get) => ({
             set({
                 projectTasks: append
                     ? [
-                          ...get().projectTasks,
-                          ...data.filter(
-                              (newTask) => !get().projectTasks.some((t) => t.id === newTask.id)
-                          ),
-                      ]
+                        ...get().projectTasks,
+                        ...data.filter(
+                            (newTask) => !get().projectTasks.some((t) => t.id === newTask.id)
+                        ),
+                    ]
                     : data,
                 totalTasks: total,
             });
@@ -114,6 +115,36 @@ export const useTasksStore = create<TasksState>()((set, get) => ({
         }
     },
     clearProjectTasks: () => set({ projectTasks: [], totalTasks: 0, projectTasksError: null }),
+    /**
+     * Updates a task's status optimistically on the board.
+     * Throws the backend API error to allow callers to handle toast notifications.
+     */
+    updateTaskStatus: async (taskId: string, status: TaskStatus) => {
+        const originalTasks = get().projectTasks;
+
+
+        const updatedTasks = originalTasks.map((task) =>
+            task.id === taskId ? { ...task, status } : task
+        );
+        set({ projectTasks: updatedTasks });
+
+
+        const selectedTask = get().selectedTask;
+        if (selectedTask && selectedTask.id === taskId) {
+            set({ selectedTask: { ...selectedTask, status } });
+        }
+
+        try {
+            await updateTaskStatusApi(taskId, status);
+        } catch (error) {
+
+            set({ projectTasks: originalTasks });
+            if (selectedTask && selectedTask.id === taskId) {
+                set({ selectedTask });
+            }
+            throw error;
+        }
+    },
     selectedTaskId: null,
     selectedTask: null,
     selectedTaskError: null,
