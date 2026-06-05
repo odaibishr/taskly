@@ -4,11 +4,11 @@ import MemberRow from "@/features/members/components/MemberRow"
 import type { ProjectMember } from "@/features/members/types"
 
 interface MembersTableProps {
-    members: ProjectMember[],
+    members: ProjectMember[];
+    projectId: string;
 }
 
-
-const MembersTable = ({ members }: MembersTableProps) => {
+const MembersTable = ({ members, projectId }: MembersTableProps) => {
 
     if (members.length === 0) {
         return (
@@ -41,7 +41,7 @@ const MembersTable = ({ members }: MembersTableProps) => {
                     </thead>
                     <tbody className="divide-y divide-gray-100 bg-white">
                         {members.map((member) => (
-                            <MemberRow key={member.id} member={member} />
+                            <MemberRow key={member.id} member={member} projectId={projectId} />
                         ))}
                     </tbody>
                 </table>

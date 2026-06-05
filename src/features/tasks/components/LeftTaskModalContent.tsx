@@ -3,19 +3,24 @@ import { TASK_STATUSES, TASK_STATUS_MAP } from "@/features/tasks/constants";
 import { cn, formatDueDate } from "@/shared/lib/utils";
 
 interface LeftTaskModalContentProps {
+    taskId: string;
     status: TaskStatus;
     assignee_name?: string;
     reporter_name?: string;
     created_at?: string;
     due_date?: string;
+    /** Called when the user changes the task status from the dropdown. */
+    onStatusChange?: (status: TaskStatus) => void;
 }
 
 const LeftTaskModalContent = ({
+    taskId: _taskId,
     status,
     assignee_name,
     reporter_name,
     created_at,
     due_date,
+    onStatusChange,
 }: LeftTaskModalContentProps) => {
     const activeStatus = TASK_STATUS_MAP[status];
 
@@ -25,11 +30,12 @@ const LeftTaskModalContent = ({
                 <p className="text-[10px] uppercase font-medium text-[#434654]">Status</p>
                 <select
                     value={status}
-                    onChange={() => {}}
+                    onChange={(e) => onStatusChange?.(e.target.value as TaskStatus)}
                     className={cn(
                         "w-full text-white border border-surface-low rounded-lg p-2 outline-none ring-none border-none cursor-pointer",
                         activeStatus?.dotColor,
                     )}
+                    aria-label="Task status"
                 >
                     {TASK_STATUSES.map((s) => (
                         <option key={s.status} value={s.status}>

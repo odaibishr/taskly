@@ -5,7 +5,6 @@ import { useShallow } from "zustand/react/shallow";
 
 import EpicDetail from "@/assets/EpicDetail.svg";
 import { useEpicsStore } from "@/features/epics/store/epics.store";
-import { TaskList, useTasksStore } from "@/features/tasks";
 import Button from "@/shared/components/Button";
 import { getInitials } from "@/shared/lib/utils";
 
@@ -14,6 +13,7 @@ interface EpicDetailsModalProps {
     onClose: () => void;
     projectId: string;
     epicId: string;
+    tasksSlot?: React.ReactNode;
 }
 
 export const EpicDetailsModal: React.FC<EpicDetailsModalProps> = ({
@@ -21,6 +21,7 @@ export const EpicDetailsModal: React.FC<EpicDetailsModalProps> = ({
     onClose,
     projectId,
     epicId,
+    tasksSlot,
 }) => {
     const navigate = useNavigate();
     const {
@@ -38,30 +39,6 @@ export const EpicDetailsModal: React.FC<EpicDetailsModalProps> = ({
             setSelectedEpic: state.setSelectedEpic,
         })),
     );
-
-    const {
-        tasks,
-        isTasksLoading,
-        tasksError,
-        getEpicTasks,
-        clearEpicTasks,
-    } = useTasksStore(
-        useShallow((state) => ({
-            tasks: state.epicTasks,
-            isTasksLoading: state.isEpicTasksLoading,
-            tasksError: state.epicTasksError,
-            getEpicTasks: state.getEpicTasks,
-            clearEpicTasks: state.clearEpicTasks,
-        })),
-    );
-
-    useEffect(() => {
-        if (isOpen && epicId) {
-            getEpicTasks(epicId);
-        } else {
-            clearEpicTasks();
-        }
-    }, [isOpen, epicId, getEpicTasks, clearEpicTasks]);
 
     useEffect(() => {
         if (isOpen && projectId && epicId) {
@@ -278,14 +255,7 @@ export const EpicDetailsModal: React.FC<EpicDetailsModalProps> = ({
                                     </Button>
                                 </div>
 
-                                <TaskList
-                                    tasks={tasks}
-                                    isLoading={isTasksLoading}
-                                    error={tasksError}
-                                    projectId={projectId}
-                                    epicId={epicId}
-                                    onRetry={() => getEpicTasks(epicId)}
-                                />
+                                {tasksSlot}
                             </div>
                         </div>
                     </>

@@ -1,11 +1,51 @@
 import { PlusCircle, SearchIcon, Loader2 } from "lucide-react";
+import { useEffect } from "react";
 import { useParams } from "react-router-dom";
+import { useShallow } from "zustand/react/shallow";
 
 import { EpicsList, EpicsSkeleton, EmptyEpics, EpicDetailsModal } from "@/features/epics";
 import { useEpicsPage } from "@/features/epics";
+import { TaskList } from "@/features/tasks";
+import { useTasksStore } from "@/features/tasks";
 import Button from "@/shared/components/Button";
 import ErrorCard from "@/shared/components/ErrorCard";
 import { HeaderSection } from "@/shared/components/HeaderSection";
+
+/**
+ * EpicTasksSlot — fetches and renders tasks for a specific epic inside
+ * the EpicDetailsModal. Lives in EpicsPage (not inside the epics feature)
+ * to prevent the epics <-> tasks circular dependency.
+ */
+const EpicTasksSlot = ({ projectId, epicId }: { projectId: string; epicId: string }) => {
+    const { epicTasks, isEpicTasksLoading, epicTasksError, getEpicTasks, clearEpicTasks } =
+        useTasksStore(
+            useShallow((state) => ({
+                epicTasks: state.epicTasks,
+                isEpicTasksLoading: state.isEpicTasksLoading,
+                epicTasksError: state.epicTasksError,
+                getEpicTasks: state.getEpicTasks,
+                clearEpicTasks: state.clearEpicTasks,
+            })),
+        );
+
+    useEffect(() => {
+        getEpicTasks(epicId);
+        return () => {
+            clearEpicTasks();
+        };
+    }, [epicId, getEpicTasks, clearEpicTasks]);
+
+    return (
+        <TaskList
+            tasks={epicTasks}
+            isLoading={isEpicTasksLoading}
+            error={epicTasksError}
+            projectId={projectId}
+            epicId={epicId}
+            onRetry={() => getEpicTasks(epicId)}
+        />
+    );
+};
 
 const EpicsPage = () => {
     const { projectId } = useParams<{ projectId: string }>();
@@ -102,7 +142,13 @@ const EpicsPage = () => {
                     isSearchActive={!!searchTerm}
                 />
             ) : (
-                <div className={isLoading ? "opacity-60 transition-opacity duration-200 pointer-events-none" : "transition-opacity duration-200"}>
+                <div
+                    className={
+                        isLoading
+                            ? "opacity-60 transition-opacity duration-200 pointer-events-none"
+                            : "transition-opacity duration-200"
+                    }
+                >
                     <EpicsList
                         epics={epics}
                         onCreateEpic={handleCreateRedirect}
@@ -122,6 +168,9 @@ const EpicsPage = () => {
                     onClose={handleCloseModal}
                     projectId={projectId}
                     epicId={selectedEpicId}
+                    tasksSlot={
+                        <EpicTasksSlot projectId={projectId} epicId={selectedEpicId} />
+                    }
                 />
             )}
         </main>

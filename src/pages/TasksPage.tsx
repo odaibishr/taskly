@@ -1,6 +1,6 @@
 import { ListFilterIcon, LucideCircuitBoard } from "lucide-react";
 import { useState } from "react";
-import { useParams, useSearchParams } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 
 import { TaskDetailsModal, TasksBoardView, TasksListView } from "@/features/tasks";
 import Button from "@/shared/components/Button";
@@ -9,6 +9,7 @@ import { HeaderSection } from "@/shared/components/HeaderSection";
 
 const TasksPage = () => {
     const { projectId } = useParams<{ projectId: string }>();
+    const navigate = useNavigate();
     const [searchParams, setSearchParams] = useSearchParams();
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedTaskId, setSelectedTaskId] = useState<string>("");
@@ -28,6 +29,12 @@ const TasksPage = () => {
         setSearchParams({ view: e.target.value });
     };
 
+    const handleAddTask = () => {
+        if (projectId) {
+            navigate(`/project/${projectId}/tasks/new`);
+        }
+    };
+
     return (
         <main className="w-full">
             <section className="flex flex-col md:flex-row justify-between md:items-center max-sm:mb-5">
@@ -37,7 +44,7 @@ const TasksPage = () => {
                     isBreadcrumbVisible={true}
                 />
                 <div className="flex flex-col md:flex-row md:items-center gap-3">
-                    {/* view */}
+                    {/* view selector */}
                     <div className="hidden md:flex items-center justify-center cursor-pointer bg-background shadow-sm border border-slate-light rounded-sm py-2 px-4 gap-3">
                         <LucideCircuitBoard size={24} />
                         <select
@@ -49,14 +56,16 @@ const TasksPage = () => {
                             <option value="list">List</option>
                         </select>
                     </div>
-                    {/* add task */}
+                    {/* filter button (desktop only) */}
                     <button className="rounded-sm hidden md:flex items-center justify-center bg-surface-highest p-2 cursor-pointer">
                         <ListFilterIcon size={24} />
                     </button>
+                    {/* mobile Add Task — now navigates to the task creation page */}
                     <Button
                         variant="primary"
                         className="cursor-pointer md:hidden"
-                        onClick={() => console.log("add task")}
+                        onClick={handleAddTask}
+                        id="mobile-add-task-btn"
                     >
                         Add Task
                     </Button>
@@ -64,9 +73,9 @@ const TasksPage = () => {
             </section>
             {projectId ? (
                 view === "list" ? (
-                    <TasksListView projectId={projectId} onTaskClick={handleOpenModal}/>
+                    <TasksListView projectId={projectId} onTaskClick={handleOpenModal} />
                 ) : (
-                    <TasksBoardView projectId={projectId} onTaskClick={handleOpenModal}/>
+                    <TasksBoardView projectId={projectId} onTaskClick={handleOpenModal} />
                 )
             ) : (
                 <ErrorCard retryAction={() => {}} />

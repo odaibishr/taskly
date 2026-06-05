@@ -32,7 +32,7 @@ const CreateProjectForm = () => {
 	});
 
 	const onSubmit = async (data: CreateProjectFormData) => {
-		await createProject(data);
+		await createProject({ ...data, description: data.description ?? null });
 		navigate(ROUTES.PROJECTS);
 	};
 
