@@ -33,17 +33,19 @@ export interface LoginPayload {
 	password: string;
 }
 
+export interface User {
+	id: string;
+	email: string;
+	user_metadata: {
+		name: string;
+		department: string;
+	};
+}
+
 export interface AuthResponse {
 	access_token: string;
 	refresh_token: string;
-	user: {
-		id: string;
-		email: string;
-		user_metadata: {
-			name: string;
-			department: string;
-		};
-	};
+	user: User;
 }
 
 export interface SendResetLinkPayload {

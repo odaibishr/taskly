@@ -1,25 +1,26 @@
-import type z from "zod";
-import { resetPasswordSchema } from "../validation";
-import { useAuthStore } from "../store/auth.store";
-import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import FormContainer from "../../../shared/components/FormContainer";
-import HeaderSection from "./HeaderSection";
-import Input from "./Input";
-import Button from "../../../shared/components/Button";
+import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
+import type z from "zod";
+
+import HeaderSection from "@/features/auth/components/HeaderSection";
+import { useAuthStore } from "@/features/auth/store/auth.store";
+import { resetPasswordSchema } from "@/features/auth/validation";
+import Button from "@/shared/components/Button";
+import FormContainer from "@/shared/components/FormContainer";
+import Input from "@/shared/components/Input";
+
 
 type ResetPasswordFormData = z.infer<typeof resetPasswordSchema>;
 
 export default function ResetPasswordForm() {
-	const { isLoading, error, clearError, handleUpdatePassword } = useAuthStore();
+	const { isLoading, error, handleUpdatePassword } = useAuthStore();
 	const { register, handleSubmit, formState: { errors } } = useForm<ResetPasswordFormData>({
 		resolver: zodResolver(resetPasswordSchema)
 	});
 
-	const onSubimt = async (data: ResetPasswordFormData) => {
+	const onSubmit = async (data: ResetPasswordFormData) => {
 		await handleUpdatePassword({ password: data.password });
-		clearError();
 	}
 
 	return (
@@ -29,7 +30,7 @@ export default function ResetPasswordForm() {
 				description="Create a new, strong password to secure your workstation access."
 			/>
 
-			<form onSubmit={handleSubmit(onSubimt)}>
+			<form onSubmit={handleSubmit(onSubmit)}>
 				<Input
 					register={register}
 					name="password"

@@ -1,20 +1,23 @@
-import { useForm } from 'react-hook-form';
 import { zodResolver } from "@hookform/resolvers/zod";
-import { signUpSchema } from '../validation';
+import { useForm } from 'react-hook-form';
+import { Link, useNavigate } from 'react-router-dom';
 import type { z } from 'zod';
-import { useAuthStore } from '../store/auth.store';
-import FormContainer from '../../../shared/components/FormContainer';
-import HeaderSection from './HeaderSection';
-import Input from './Input';
-import Button from '../../../shared/components/Button';
-import { Link } from 'react-router-dom';
+
+import HeaderSection from "@/features/auth/components/HeaderSection";
+import { useAuthStore } from "@/features/auth/store/auth.store";
+import { signUpSchema } from "@/features/auth/validation";
+import Button from "@/shared/components/Button";
+import FormContainer from "@/shared/components/FormContainer";
+import Input from "@/shared/components/Input";
+
 
 type SignUpFormData = z.infer<typeof signUpSchema>;
 
 export const SignUpForm = () => {
-	const { isLoading, error, isSignUpSuccess, handleSignUp, clearError } = useAuthStore();
+	const navigate = useNavigate();
+	const { isLoading, error, isSignUpSuccess, handleSignUp } = useAuthStore();
 
-	const { register, handleSubmit, formState: { errors }, reset } = useForm<SignUpFormData>({
+	const { register, handleSubmit, formState: { errors } } = useForm<SignUpFormData>({
 		resolver: zodResolver(signUpSchema),
 	});
 
@@ -42,7 +45,7 @@ export const SignUpForm = () => {
 					<p className="text-gray-600 mb-6">
 						We've sent a confirmation link to your email address. Please click it to activate your account.
 					</p>
-					<Button onClick={() => window.location.href = '/login'}>
+					<Button onClick={() => navigate('/login')}>
 						Go to Login
 					</Button>
 				</div>

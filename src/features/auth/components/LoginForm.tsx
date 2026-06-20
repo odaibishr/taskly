@@ -1,13 +1,15 @@
-import type z from "zod";
-import { loginSchema } from "../validation";
-import { useAuthStore } from "../store/auth.store";
-import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import FormContainer from "../../../shared/components/FormContainer";
-import HeaderSection from "./HeaderSection";
-import Input from "./Input";
-import Button from "../../../shared/components/Button";
+import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
+import type z from "zod";
+
+import HeaderSection from "@/features/auth/components/HeaderSection";
+import { useAuthStore } from "@/features/auth/store/auth.store";
+import { loginSchema } from "@/features/auth/validation";
+import Button from "@/shared/components/Button";
+import FormContainer from "@/shared/components/FormContainer";
+import Input from "@/shared/components/Input";
+
 
 type LoginFormData = z.infer<typeof loginSchema>;
 
@@ -17,7 +19,7 @@ export default function LoginForm() {
 		resolver: zodResolver(loginSchema),
 	});
 
-	const onSubimt = async (data: LoginFormData) => {
+	const onSubmit = async (data: LoginFormData) => {
 		await handleSignIn(data);
 	}
 
@@ -27,7 +29,7 @@ export default function LoginForm() {
 				title="Welcome Back"
 				description="Please enter your details to access your workspace" />
 
-			<form onSubmit={handleSubmit(onSubimt)} className="space-y-4">
+			<form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
 				<Input
 					register={register}
 					name="email"

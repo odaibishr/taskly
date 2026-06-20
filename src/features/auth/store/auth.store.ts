@@ -1,9 +1,25 @@
+import axios from "axios";
 import { create } from "zustand";
-import { sendResetLink, signIn, signUp, updatePassword } from "../api/auth.api";
-import type { LoginPayload, SendResetLinkPayload, SignUpPayload, UpdatePasswordPayload } from "../types";
+
+import { sendResetLink, signIn, signUp, updatePassword, logout } from "@/features/auth/api/auth.api";
+import type { LoginPayload, SendResetLinkPayload, SignUpPayload, UpdatePasswordPayload, User } from "@/features/auth/types";
+import { ROUTES } from "@/shared/lib/routes";
+
+const getErrorMessage = (error: unknown, fallback: string): string => {
+	if (axios.isAxiosError(error)) {
+		return (
+			error.response?.data?.error_description ??
+			error.response?.data?.message ??
+			error.response?.data?.msg ??
+			error.message ??
+			fallback
+		);
+	}
+	return error instanceof Error ? error.message : fallback;
+};
 
 interface AuthState {
-	user: any | null;
+	user: User | null;
 	isLoading: boolean;
 	error: string | null;
 	isSignUpSuccess: boolean;
@@ -12,6 +28,7 @@ interface AuthState {
 	handleSignIn: (payload: LoginPayload) => Promise<void>;
 	handleForgotPassword: (payload: SendResetLinkPayload) => Promise<void>;
 	handleUpdatePassword: (payload: UpdatePasswordPayload) => Promise<void>;
+	handleLogout: () => Promise<void>;
 	clearError: () => void;
 	reset: () => void;
 }
@@ -27,63 +44,63 @@ export const useAuthStore = create<AuthState>((set) => ({
 		try {
 			await signUp(payload);
 			set({ isSignUpSuccess: true });
-		} catch (error: any) {
-			const message = error.response?.data?.msg || error.message || 'Something went wrong. Please try again.';
-			set({ error: message });
+		} catch (error: unknown) {
+			set({ error: getErrorMessage(error, 'Something went wrong. Please try again.') });
 		} finally {
 			set({ isLoading: false });
 		}
 	},
 	handleSignIn: async (payload) => {
-		set({
-			isLoading: true,
-			error: null,
-		});
+		set({ isLoading: true, error: null });
 		try {
 			const data = await signIn(payload);
 			localStorage.setItem('access_token', data.access_token);
 			localStorage.setItem('refresh_token', data.refresh_token);
 			localStorage.setItem('user', JSON.stringify(data.user));
 			set({ user: data.user });
-			window.location.href = '/'
-		} catch (error: any) {
-			const message = error.response?.data?.error_description || error.message || 'Login failed.';
-			set({ error: message });
+
+			const params = new URLSearchParams(window.location.search);
+			const redirectTo = params.get('redirectTo');
+			window.location.href = redirectTo || ROUTES.PROJECTS;
+		} catch (error: unknown) {
+			set({ error: getErrorMessage(error, 'Login failed. Please check your credentials.') });
+		} finally {
+			set({ isLoading: false });
+		}
+	},
+	handleLogout: async () => {
+		set({ isLoading: true, error: null });
+		try {
+			await logout();
+			localStorage.removeItem('access_token');
+			localStorage.removeItem('refresh_token');
+			localStorage.removeItem('user');
+			window.location.href = ROUTES.LOGIN;
+		} catch (error: unknown) {
+			set({ error: getErrorMessage(error, 'Failed to logout.') });
 		} finally {
 			set({ isLoading: false });
 		}
 	},
 	handleForgotPassword: async (payload) => {
-		set({
-			isLoading: true,
-			error: null,
-			isForgotSuccess: false,
-		});
+		set({ isLoading: true, error: null, isForgotSuccess: false });
 		try {
 			await sendResetLink(payload);
-			set({
-				isForgotSuccess: true,
-			})
-		} catch (error) {
-			const message = error.response?.data?.error_description || error.message || 'Failed to send reset link.';
-			set({ error: message });
+			set({ isForgotSuccess: true });
+		} catch (error: unknown) {
+			set({ error: getErrorMessage(error, 'Failed to send reset link.') });
 		} finally {
 			set({ isLoading: false });
 		}
 	},
 	handleUpdatePassword: async (payload) => {
-		set({
-			isLoading: true,
-			error: null,
-		});
-
+		set({ isLoading: true, error: null });
 		try {
 			await updatePassword(payload);
 			localStorage.clear();
-			window.location.href = '/login';
-		} catch (error: any) {
-			const message = error.response?.data?.error_description || error.message || 'Failed to update password.';
-			set({ error: message });
+			window.location.href = ROUTES.LOGIN;
+		} catch (error: unknown) {
+			set({ error: getErrorMessage(error, 'Failed to update password.') });
 		} finally {
 			set({ isLoading: false });
 		}

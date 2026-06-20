@@ -15,6 +15,9 @@ dist-ssr
 .env.local
 .agents
 /docs
+CLAUDE.md
+.antigravitycli
+GEMINI.md
 
 # Editor directories and files
 .vscode/*

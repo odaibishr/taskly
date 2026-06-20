@@ -1,0 +1,39 @@
+import type { CreateProjectPayload, GetProjectsParams, UpdateProjectPayload } from "@/features/projects/types";
+import { http } from "@/shared/lib/http";
+
+export async function createProject(payload: CreateProjectPayload) {
+	const response = await http.post('/rest/v1/projects', payload, {
+		headers: {
+			'Prefer': 'return=representation'
+		}
+	});
+	return response.data[0];
+}
+
+export async function getProjects(params: GetProjectsParams) {
+	const response = await http.get(
+		'/rest/v1/rpc/get_projects',
+		{
+			params,
+			headers: {
+				'Prefer': 'count=exact'
+			}
+		});
+
+	const contentRange = response.headers['content-range'];
+	const totalCount = contentRange ? parseInt(contentRange.split('/')[1]) : 0;
+	return {
+		data: response.data,
+		totalCount
+	}
+}
+
+export async function getProjectById(id: string) {
+	const response = await http.get(`/rest/v1/projects?id=eq.${id}`);
+	return response.data[0];
+}
+
+export async function updateProject(projectId: string, payload: UpdateProjectPayload) {
+	const response = await http.patch(`/rest/v1/projects?id=eq.${projectId}`, payload);
+	return response.data;
+}
